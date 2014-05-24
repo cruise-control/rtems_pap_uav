@@ -6,7 +6,8 @@
 
 #define AIRFRAME_NAME "Microjet"
 #define AC_ID 5
-#define MD5SUM ((uint8_t*)"\255\330\262\026\155\027\337\146\133\256\275\220\063\134\050\144")
+#define MD5SUM ((uint8_t*)"\234\000\002\231\046\142\267\120\150\322\371\160\202\075\337\133")
+
 
 #define SERVOS_DEFAULT_NB 4
 /*#include "subsystems/actuators/actuators_default.h"*/

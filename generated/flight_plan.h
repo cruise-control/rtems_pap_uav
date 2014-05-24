@@ -25,10 +25,13 @@
 #define WP_MOB 5
 #define WP_S1 6
 #define WP_S2 7
-#define WP_AF 8
-#define WP_TD 9
-#define WP__BASELEG 10
-#define WP_CLIMB 11
+#define WP_S3 8
+#define WP_S4 9
+#define WP_S5 10
+#define WP_AF 11
+#define WP_TD 12
+#define WP__BASELEG 13
+#define WP_CLIMB 14
 #define WAYPOINTS { \
  {42.0, 42.0, 260},\
  {0.0, 0.0, 260},\

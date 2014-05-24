@@ -7,11 +7,12 @@
 #include <stdio.h>
 #include <bsp.h>
 #include <rtems/rtems_bsdnet.h>
+#include <network_interface_add.h>
 
 /*Network configuration*/
 static struct rtems_bsdnet_ifconfig netdriver_config = {
-		RTEMS_BSP_NETWORK_DRIVER_NAME, RTEMS_BSP_NETWORK_DRIVER_ATTACH, NULL,
-		"10.42.0.2", /* IP address */
+RTEMS_BSP_NETWORK_DRIVER_NAME, RTEMS_BSP_NETWORK_DRIVER_ATTACH, NULL,
+		"10.42.0.2", /*IP address*/
 		"255.255.255.0", /* IP net mask */
 		NULL, 0, };
 
@@ -30,19 +31,19 @@ NULL, /* Use fixed network configuration */
 
 static bool isInitialized = false;
 
-void ethernet_init(){
+void ethernet_init() {
 	if (!isInitialized) {
 		int net_state = 0;
-		//printf("\"Network\" initializing! HI DIEGO\n");
+		printf("\"Network\" initializing! HI DIEGO\n");
 		net_state = rtems_bsdnet_initialize_network();
-		//printf("\"Network\" initialized! %d\n", net_state);
+		printf("\"Network\" initialized! %d\n", net_state);
 		isInitialized = true;
-		//rtems_bsdnet_show_inet_routes();
-		//rtems_bsdnet_show_mbuf_stats();
-		//rtems_bsdnet_show_if_stats();
-		//rtems_bsdnet_show_ip_stats();
-		//rtems_bsdnet_show_udp_stats();
-	} else{
-		//printf("Ethernet is already initialized! \n");
+		rtems_bsdnet_show_inet_routes();
+		rtems_bsdnet_show_mbuf_stats();
+		rtems_bsdnet_show_if_stats();
+		rtems_bsdnet_show_ip_stats();
+		rtems_bsdnet_show_udp_stats();
+	} else {
+		printf("Ethernet is already initialized! \n");
 	}
 }

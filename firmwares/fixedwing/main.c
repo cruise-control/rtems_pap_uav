@@ -32,34 +32,21 @@
 #include <rtems/termiostypes.h>
 
 /*set the uart resource as input driven and set this resource when uart get initialised.*/
-struct drvmgr_key grlib_drv_res_apbuart0[] ={
-												{"mode",KEY_TYPE_INT,((unsigned int)TERMIOS_IRQ_DRIVEN)},
-												{"syscon",KEY_TYPE_INT,((unsigned int)0)},
-												{"dbgcon", KEY_TYPE_INT, ((unsigned int)0)},
-												KEY_EMPTY
-											};
+struct drvmgr_key grlib_drv_res_apbuart0[] = { { "mode", KEY_TYPE_INT,
+		((unsigned int) TERMIOS_IRQ_DRIVEN) }, { "syscon", KEY_TYPE_INT,
+		((unsigned int) 0) }, { "dbgcon", KEY_TYPE_INT, ((unsigned int) 0) },
+KEY_EMPTY };
 
-
-struct drvmgr_key grlib_drv_res_apbuart1[] ={
-												{"mode",KEY_TYPE_INT,((unsigned int)TERMIOS_IRQ_DRIVEN)},
-												{"syscon",KEY_TYPE_INT,((unsigned int)0)},
-												{"dbgcon", KEY_TYPE_INT, ((unsigned int)0)},
-												KEY_EMPTY
-											};
-
-
-
-
+struct drvmgr_key grlib_drv_res_apbuart1[] = { { "mode", KEY_TYPE_INT,
+		((unsigned int) TERMIOS_IRQ_DRIVEN) }, { "syscon", KEY_TYPE_INT,
+		((unsigned int) 0) }, { "dbgcon", KEY_TYPE_INT, ((unsigned int) 0) },
+KEY_EMPTY };
 
 /*it will override the grlib_drv_resources in the amba.c*/
-struct drvmgr_bus_res grlib_drv_resources  ={
-												.next = NULL,
-												.resource = {
-																{DRIVER_AMBAPP_GAISLER_APBUART_ID, 0,&grlib_drv_res_apbuart0[0]},
-																//{DRIVER_AMBAPP_GAISLER_APBUART_ID, 1,&grlib_drv_res_apbuart1[0]},
-																RES_EMPTY
-															}
-											};
+struct drvmgr_bus_res grlib_drv_resources = { .next = NULL, .resource = { {
+		DRIVER_AMBAPP_GAISLER_APBUART_ID, 0, &grlib_drv_res_apbuart0[0] },
+//{DRIVER_AMBAPP_GAISLER_APBUART_ID, 1,&grlib_drv_res_apbuart1[0]},
+		RES_EMPTY } };
 
 #ifdef FBW
 #include "firmwares/fixedwing/main_fbw.h"
@@ -74,25 +61,23 @@ struct drvmgr_bus_res grlib_drv_resources  ={
 #else
 #define Ap(f)
 #endif
-rtems_task Init(
-  rtems_task_argument ignored
-){
+rtems_task Init(rtems_task_argument ignored) {
 #ifndef SERIO_TESTING
-  Fbw(init);
-  Ap(init);
-  //printf("end of init");
-  while (1) {
-	update_bat(12.0);
-    Fbw(handle_periodic_tasks);
-    Ap(handle_periodic_tasks);
-    Fbw(event_task);
-    Ap(event_task);
-  }
+	Fbw(init);
+	Ap(init);
+	//printf("end of init");
+	while (1) {
+		update_bat(12.0);
+		Fbw(handle_periodic_tasks);
+		Ap(handle_periodic_tasks);
+		Fbw(event_task);
+		Ap(event_task);
+	}
 #else
-  UART1Init();
-  while(1){
-	  Ap(event_task);
-  }
+	UART1Init();
+	while(1) {
+		Ap(event_task);
+	}
 #endif
-  return ;
+	return;
 }

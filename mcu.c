@@ -75,10 +75,6 @@ void mcu_init(void) {
 #if defined RADIO_CONTROL & defined RADIO_CONTROL_SPEKTRUM_PRIMARY_PORT & defined RADIO_CONTROL_BIND_IMPL_FUNC
   RADIO_CONTROL_BIND_IMPL_FUNC();
 #endif
-  /*Sai: */
-#ifndef NO_ETHERNET
-  ethernet_init();
-#endif
 #ifdef USE_UART0
   uart0_init();
 #endif
@@ -114,6 +110,10 @@ void mcu_init(void) {
 #endif
 #ifdef USE_USB_SERIAL
   VCOM_init();
+#endif
+  /*Sai: */
+#ifndef NO_ETHERNET
+  ethernet_init();
 #endif
 
 #if USE_SPI

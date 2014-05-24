@@ -10,8 +10,6 @@
 
 #define CONFIGURE_INIT
 
-
-
 #include <rtems.h>
 #include "system_time_config.h"
 /* configuration information */
@@ -26,7 +24,7 @@
 
 #define CONFIGURE_MAXIMUM_TIMERS 8
 //#define CONFIGURE_MAXIMUM_TASKS            1
-#define CONFIGURE_MAXIMUM_TASKS            3
+#define CONFIGURE_MAXIMUM_TASKS            4
 #define  CONFIGURE_MICROSECONDS_PER_TICK (1000000/SYS_TIME_FREQUENCY)
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 #define CONFIGURE_LIBIO_MAXIMUM_FILE_DESCRIPTORS 10
@@ -35,7 +33,11 @@
 #include <rtems/confdefs.h>
 #define CONFIGURE_DRIVER_AMBAPP_GAISLER_GPTIMER
 #define	CONFIGURE_DRIVER_AMBAPP_GAISLER_APBUART
+//#ifndef CONFIGURE_DRIVER_AMBAPP_GAISLER_GRETH
+//#define	CONFIGURE_DRIVER_AMBAPP_GAISLER_GRETH
+//
+//#endif
+#define ENABLE_NETWORK
 #include <drvmgr/drvmgr_confdefs.h>
-
 
 #endif /* SYSTEM_H_ */

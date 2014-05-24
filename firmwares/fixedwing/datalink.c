@@ -228,8 +228,7 @@ void dl_parse_msg(void) {
 		uint8_t ac_id = DL_ACINFO_ac_id(dl_buffer);
 	} else
 #endif
-#ifndef NO_ETHERNET
-#else
+#ifdef NO_ETHERNET
 //	  // Sai: Code that will be executed when a simulator message is arrived on autopilot
 #ifdef SHITL
 	if (msg_id == DL_HITL_GPS_COMMON) {

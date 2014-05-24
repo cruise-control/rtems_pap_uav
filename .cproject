@@ -38,7 +38,6 @@
 								<option id="org.rtems.cdt.tool.gcc.option.b.540189051" name="Search paths (-B)" superClass="org.rtems.cdt.tool.gcc.option.b"/>
 								<option id="org.rtems.cdt.tool.gcc.option.d.40729312" name="Defined symbols (-D)" superClass="org.rtems.cdt.tool.gcc.option.d" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AGR_CLIMB"/>
-									<listOptionValue builtIn="false" value="NO_ETHERNET"/>
 									<listOptionValue builtIn="false" value="LOITER_TRIM"/>
 									<listOptionValue builtIn="false" value="BOARD_CONFIG=\&quot;boards/pc_sim.h\&quot;"/>
 									<listOptionValue builtIn="false" value="PERIPHERALS_AUTO_INIT"/>
@@ -60,7 +59,7 @@
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_H=\&quot;subsystems/radio_control/ppm.h\&quot;"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
 									<listOptionValue builtIn="false" value="CTRL_TYPE_H=\&quot;firmwares/fixedwing/guidance/guidance_v.h\&quot;"/>
-									<listOptionValue builtIn="false" value="USE_INFRARED"/>
+									<listOptionValue builtIn="false" value="USE_INFRARED=1"/>
 									<listOptionValue builtIn="false" value="AHRS_TYPE_H=\&quot;subsystems/ahrs/ahrs_infrared.h\&quot;"/>
 									<listOptionValue builtIn="false" value="USE_AHRS"/>
 									<listOptionValue builtIn="false" value="USE_GPS"/>
@@ -76,7 +75,6 @@
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
 									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=UART1"/>
 									<listOptionValue builtIn="false" value="USE_UART1"/>
-									<listOptionValue builtIn="false" value="NO_ETHERNET"/>
 								</option>
 								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u"/>
 								<option id="org.rtems.cdt.tool.gcc.option.optimizationflags.700160298" name="Optimization flags:" superClass="org.rtems.cdt.tool.gcc.option.optimizationflags" value="" valueType="string"/>

@@ -693,7 +693,23 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
-
+#ifdef OLD_MSG_FORMAT
+#define DOWNLINK_SEND_DESIRED(_trans, _dev, roll, pitch, course, x, y, altitude, climb, airspeed){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "DESIRED", DL_DESIRED, 0+4+4+4+4+4+4+4+4) \
+	  DownlinkPutFloatByAddr(_trans, _dev, (roll)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (pitch)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (course)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (x)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (y)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (altitude)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (climb)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+#else
 #define DOWNLINK_SEND_DESIRED(_trans, _dev, roll, pitch, course, x, y, altitude, climb, airspeed){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
@@ -710,6 +726,8 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
+#endif
+
 
 #define DOWNLINK_SEND_GPS_SOL(_trans, _dev, Pacc, Sacc, PDOP, numSV){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+2+1))) {\
@@ -2179,7 +2197,9 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
-
+#ifdef OLD_MSG_FORMAT
+#define DOWNLINK_SEND_TIMESTAMP(_trans, _dev, timestamp){ }
+#else
 #define DOWNLINK_SEND_TIMESTAMP(_trans, _dev, timestamp){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4)); \
@@ -2189,6 +2209,7 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
+#endif
 
 #define DOWNLINK_SEND_STAB_ATTITUDE_FLOAT(_trans, _dev, est_p, est_q, est_r, est_phi, est_theta, est_psi, ref_phi, ref_theta, ref_psi, sum_err_phi, sum_err_theta, sum_err_psi, delta_a_fb, delta_e_fb, delta_r_fb, delta_a_ff, delta_e_ff, delta_r_ff, delta_a, delta_e, delta_r, est_p_d, est_q_d, est_r_d){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4))) {\

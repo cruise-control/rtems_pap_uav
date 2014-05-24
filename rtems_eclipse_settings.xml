@@ -90,7 +90,7 @@
 <name>CTRL_TYPE_H</name><value>\"firmwares/fixedwing/guidance/guidance_v.h\"</value>
 </macro>
 <macro>
-<name>USE_INFRARED</name><value/>
+<name>USE_INFRARED</name>TRUE<value/>
 </macro>
 <macro>
 <name>AHRS_TYPE_H</name><value>\"subsystems/ahrs/ahrs_infrared.h\"</value>
