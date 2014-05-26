@@ -103,8 +103,8 @@ extern uint16_t adc0_val[];
 #endif
 
 static inline void fbw_downlink_periodic_task(void) {
-	PeriodicSendFbw(CommChannel, DefaultDevice) /* Sai: Changing DefaultChannel to ComChannel */
+	PeriodicSendFbw(CommChannel, DefaultDevice)
+	/* Sai: Changing DefaultChannel to CommChannel */
 }
-
 
 #endif /* FBW_DOWNLINK_H */

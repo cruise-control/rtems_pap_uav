@@ -49,33 +49,32 @@
 #define UDP 3
 
 EXTERN bool_t dl_msg_available;
-/** Sai: */
-#ifndef NO_ETHERNET
-EXTERN bool_t eth_msg_available;
-#endif
-
+///** Sai: */
+//#ifndef NO_ETHERNET
+//EXTERN bool_t eth_msg_available;
+//#endif
 
 /** Flag provided to control calls to ::dl_parse_msg. NOT used in this module*/
 
 EXTERN uint16_t datalink_time;
 
 #define MSG_SIZE 128
-EXTERN uint8_t dl_buffer[MSG_SIZE]  __attribute__ ((aligned));
+///** Sai: */
+//#ifndef NO_ETHERNET
+//EXTERN uint8_t eth_buffer[MSG_SIZE]  __attribute__ ((aligned));
+//EXTERN void eth_parse_msg(void);
+///** Check for eth message and parse */
+//#define EthernetParse() {   \
+//	if (eth_msg_available) {      \
+//	  eth_parse_msg();      \
+//	  eth_msg_available = FALSE;  \
+//	  }                            \
+//  }
+//#endif
 
-/** Sai: */
-#ifndef NO_ETHERNET
-EXTERN uint8_t eth_buffer[MSG_SIZE]  __attribute__ ((aligned));
-EXTERN void eth_parse_msg(void);
-/** Check for eth message and parse */
-#define EthernetParse() {   \
-	if (eth_msg_available) {      \
-	  eth_parse_msg();      \
-	  eth_msg_available = FALSE;  \
-	  }                            \
-  }
-#endif
 EXTERN void dl_parse_msg(void);
 /** Should be called when chars are available in dl_buffer */
+EXTERN uint8_t dl_buffer[MSG_SIZE] __attribute__ ((aligned));
 
 /** Check for new message and parse */
 #define DlCheckAndParse() {   \
@@ -86,19 +85,18 @@ EXTERN void dl_parse_msg(void);
 }
 
 #if defined DATALINK && DATALINK == PPRZ
-
 #define DatalinkEvent() {                       \
     PprzCheckAndParse(PPRZ_UART, pprz_tp);      \
     DlCheckAndParse();                          \
   }
 
-/** Sai: */
-#ifndef NO_ETHERNET
-#define EthernetEvent() {						\
+#elif defined DATALINK && DATALINK == ETH
+
+#define DatalinkEvent() {						\
 	EthCheckAndParse(eth_tp);      				\
-	EthernetParse();                          	\
+	DlCheckAndParse();                          	\
  }
-#endif  // end NO_ETHERNET
+
 #elif defined DATALINK && DATALINK == XBEE
 
 #define DatalinkEvent() {                       \
@@ -119,7 +117,6 @@ EXTERN void dl_parse_msg(void);
     UdpCheckAndParse();                        \
     DlCheckAndParse();                          \
   }
-
 
 #else
 

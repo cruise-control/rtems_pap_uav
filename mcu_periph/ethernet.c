@@ -8,6 +8,7 @@
 #include <bsp.h>
 #include <rtems/rtems_bsdnet.h>
 #include <network_interface_add.h>
+#include "../../mcu_periph/uart.h"
 
 /*Network configuration*/
 static struct rtems_bsdnet_ifconfig netdriver_config = {

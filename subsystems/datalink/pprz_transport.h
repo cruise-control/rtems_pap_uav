@@ -56,7 +56,6 @@
 //#include <sys/ioctl.h>
 #include <sys/sockio.h>
 
-#define recvPort 10000
 
 /* PPRZ Transport
  * downlink macros
@@ -120,7 +119,6 @@ extern uint8_t ck_a, ck_b;
   }
 #endif
 
-
 #define PprzTransportPutInt8ByAddr(_dev, _x) PprzTransportPut1ByteByAddr(_dev, _x)
 #define PprzTransportPutUint8ByAddr(_dev, _x) PprzTransportPut1ByteByAddr(_dev, (const uint8_t*)_x)
 #define PprzTransportPutInt16ByAddr(_dev, _x) PprzTransportPut2ByteByAddr(_dev, (const uint8_t*)_x)
@@ -148,7 +146,6 @@ extern uint8_t ck_a, ck_b;
 
 #define PprzTransportPutUint8Array(_dev, _n, _x) PprzTransportPutArray(_dev, PprzTransportPutUint8ByAddr, _n, _x)
 
-
 /** Receiving pprz messages */
 
 // PPRZ parsing state machine
@@ -159,61 +156,57 @@ extern uint8_t ck_a, ck_b;
 #define GOT_CRC1    4
 
 struct pprz_transport {
-  // generic interface
-  struct transport trans;
-  // specific pprz transport variables
-  uint8_t status;
-  uint8_t payload_idx;
-  uint8_t ck_a, ck_b;
+	// generic interface
+	struct transport trans;
+	// specific pprz transport variables
+	uint8_t status;
+	uint8_t payload_idx;
+	uint8_t ck_a, ck_b;
 };
 
 extern struct pprz_transport pprz_tp;
 
-/* Sai */
-extern struct pprz_transport eth_tp;
-
-static inline void parse_pprz(struct pprz_transport * t, uint8_t c ) {
-  switch (t->status) {
-  case UNINIT:
-    if (c == STX)
-      t->status++;
-    break;
-  case GOT_STX:
-    if (t->trans.msg_received) {
-      t->trans.ovrn++;
-      goto error;
-    }
-    t->trans.payload_len = c-4; /* Counting STX, LENGTH and CRC1 and CRC2 */
-    t->ck_a = t->ck_b = c;
-    t->status++;
-    t->payload_idx = 0;
-    break;
-  case GOT_LENGTH:
-    t->trans.payload[t->payload_idx] = c;
-    t->ck_a += c; t->ck_b += t->ck_a;
-    t->payload_idx++;
-    if (t->payload_idx == t->trans.payload_len)
-      t->status++;
-    break;
-  case GOT_PAYLOAD:
-    if (c != t->ck_a)
-      goto error;
-    t->status++;
-    break;
-  case GOT_CRC1:
-    if (c != t->ck_b)
-      goto error;
-    t->trans.msg_received = TRUE;
-    goto restart;
-  default:
-    goto error;
-  }
-  return;
- error:
-  t->trans.error++;
- restart:
-  t->status = UNINIT;
-  return;
+static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
+	switch (t->status) {
+	case UNINIT:
+		if (c == STX)
+			t->status++;
+		break;
+	case GOT_STX:
+		if (t->trans.msg_received) {
+			t->trans.ovrn++;
+			goto error;
+		}
+		t->trans.payload_len = c - 4; /* Counting STX, LENGTH and CRC1 and CRC2 */
+		t->ck_a = t->ck_b = c;
+		t->status++;
+		t->payload_idx = 0;
+		break;
+	case GOT_LENGTH:
+		t->trans.payload[t->payload_idx] = c;
+		t->ck_a += c;
+		t->ck_b += t->ck_a;
+		t->payload_idx++;
+		if (t->payload_idx == t->trans.payload_len)
+			t->status++;
+		break;
+	case GOT_PAYLOAD:
+		if (c != t->ck_a)
+			goto error;
+		t->status++;
+		break;
+	case GOT_CRC1:
+		if (c != t->ck_b)
+			goto error;
+		t->trans.msg_received = TRUE;
+		goto restart;
+	default:
+		goto error;
+	}
+	return;
+	error: t->trans.error++;
+	restart: t->status = UNINIT;
+	return;
 }
 
 static inline void pprz_parse_payload(struct pprz_transport * t) {
@@ -221,72 +214,6 @@ static inline void pprz_parse_payload(struct pprz_transport * t) {
   for(i = 0; i < t->trans.payload_len; i++)
     dl_buffer[i] = t->trans.payload[i];
   dl_msg_available = TRUE;
-}
-
-/* Sai: */
-#ifndef NO_ETHERNET
-static inline void eth_parse_payload(struct pprz_transport * t) {
-  uint8_t i;
-  for(i = 0; i < t->trans.payload_len; i++)
-    eth_buffer[i] = t->trans.payload[i];
-  eth_msg_available = TRUE;
-}
-#endif
-static inline void readEthBuffer(struct pprz_transport* t){
-
-	int recv_fd;
-	//fd_set read_set;
-	uint8_t buffer[256];
-	//char reply[256];
-	buffer[0] = '\0';
-	//reply[0] = '\0';
-	//struct sockaddr_in serv_addr;
-	struct sockaddr_in recv_addr;
-	//int n;
-	//struct timeval tv;
-	//tv.tv_sec = 2;
-	//tv.tv_usec = 500000;
-
-	//listen_fd = socket(AF_INET, SOCK_STREAM, 0);
-	recv_fd = socket(AF_INET, SOCK_STREAM, 0);
-//	if (listen_fd < 0)
-//		printf("ERROR opening socket");
-	if (recv_fd < 0)
-		//printf("ERROR opening receive socket");
-
-	//memset(&serv_addr, '0', sizeof(serv_addr));
-	memset(&recv_addr, '0', sizeof(recv_addr));
-//	portno = LISTEN_PORT;
-//	serv_addr.sin_family = AF_INET;
-//	serv_addr.sin_addr.s_addr = INADDR_ANY;
-//	serv_addr.sin_port = htons(portno);
-
-	// Sai:
-	recv_addr.sin_family = AF_INET;
-	recv_addr.sin_addr.s_addr = inet_addr("10.42.0.3");
-	recv_addr.sin_port = htons(recvPort);
-	int status = connect(recv_fd, &recv_addr, sizeof(recv_addr));
-
-	if (status != -1) {
-		//printf("connected\n");
-	} else {
-		//printf("error connecting\n");
-	}
-	//send(qt_fd, reply, strlen(reply), 0);
-	memset(&buffer, 0, sizeof(buffer));
-	int numBytes = recv(recv_fd, buffer, sizeof(buffer) - 1, 0);
-	buffer[numBytes]='\0';
-	//printf(buffer);
-	//printf("\n");
-	close(recv_fd);
-	int var;
-	for (var = 0; var < sizeof(buffer) ; ++var) {
-		if(buffer[var] == '\0'){
-			break;
-		}
-		uint8_t ch = buffer[var];
-		parse_pprz(t, ch);
-	}
 }
 
 #define PprzBuffer(_dev) TransportLink(_dev,ChAvailable())
@@ -299,15 +226,6 @@ static inline void readEthBuffer(struct pprz_transport* t){
       _trans.trans.msg_received = FALSE;  \
     }                                     \
   }                                       \
-}
-
-/* Sai: */
-#define EthCheckAndParse(_trans) {  \
-	readEthBuffer(&(_trans));          \
-    if (_trans.trans.msg_received) {      \
-    	eth_parse_payload(&(_trans));      \
-      _trans.trans.msg_received = FALSE;  \
-    }									\
 }
 
 #endif /* PPRZ_TRANSPORT_H */

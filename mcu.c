@@ -57,9 +57,9 @@
 #include "mcu_periph/dac.h"
 #endif
  /* Sai: */
-#ifndef NO_ETHERNET
+#ifdef USE_ETH
 #include "mcu_periph/ethernet.h"
-#endif /* end NO_ETHERNET */
+#endif
 #endif /* PERIPHERALS_AUTO_INIT */
 
 void mcu_init(void) {
@@ -112,7 +112,7 @@ void mcu_init(void) {
   VCOM_init();
 #endif
   /*Sai: */
-#ifndef NO_ETHERNET
+#ifdef USE_ETH
   ethernet_init();
 #endif
 

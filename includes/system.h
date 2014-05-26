@@ -32,11 +32,10 @@
 #define CONFIGURE_INIT_TASK_STACK_SIZE    (10*1024)
 #include <rtems/confdefs.h>
 #define CONFIGURE_DRIVER_AMBAPP_GAISLER_GPTIMER
+#ifdef USE_UART1
 #define	CONFIGURE_DRIVER_AMBAPP_GAISLER_APBUART
-//#ifndef CONFIGURE_DRIVER_AMBAPP_GAISLER_GRETH
-//#define	CONFIGURE_DRIVER_AMBAPP_GAISLER_GRETH
-//
-//#endif
+#endif
+
 #define ENABLE_NETWORK
 #include <drvmgr/drvmgr_confdefs.h>
 

@@ -44,7 +44,7 @@ KEY_EMPTY };
 
 /*it will override the grlib_drv_resources in the amba.c*/
 struct drvmgr_bus_res grlib_drv_resources = { .next = NULL, .resource = { {
-		DRIVER_AMBAPP_GAISLER_APBUART_ID, 0, &grlib_drv_res_apbuart0[0] },
+DRIVER_AMBAPP_GAISLER_APBUART_ID, 0, &grlib_drv_res_apbuart0[0] },
 //{DRIVER_AMBAPP_GAISLER_APBUART_ID, 1,&grlib_drv_res_apbuart1[0]},
 		RES_EMPTY } };
 
@@ -62,6 +62,8 @@ struct drvmgr_bus_res grlib_drv_resources = { .next = NULL, .resource = { {
 #define Ap(f)
 #endif
 rtems_task Init(rtems_task_argument ignored) {
+	long counter = 0;
+	char buf[256];
 #ifndef SERIO_TESTING
 	Fbw(init);
 	Ap(init);
@@ -72,6 +74,10 @@ rtems_task Init(rtems_task_argument ignored) {
 		Ap(handle_periodic_tasks);
 		Fbw(event_task);
 		Ap(event_task);
+		if (counter++ % 100 == 0) {
+			sprintf(buf, "Loop %d \n", counter);
+			UART1PutBuf(buf);
+		}
 	}
 #else
 	UART1Init();

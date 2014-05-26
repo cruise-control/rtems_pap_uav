@@ -38,6 +38,9 @@
 								<option id="org.rtems.cdt.tool.gcc.option.b.540189051" name="Search paths (-B)" superClass="org.rtems.cdt.tool.gcc.option.b"/>
 								<option id="org.rtems.cdt.tool.gcc.option.d.40729312" name="Defined symbols (-D)" superClass="org.rtems.cdt.tool.gcc.option.d" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AGR_CLIMB"/>
+									<listOptionValue builtIn="false" value="USE_UART1"/>
+									<listOptionValue builtIn="false" value="USE_ETH"/>
+									<listOptionValue builtIn="false" value="NO_ETHERNET"/>
 									<listOptionValue builtIn="false" value="LOITER_TRIM"/>
 									<listOptionValue builtIn="false" value="BOARD_CONFIG=\&quot;boards/pc_sim.h\&quot;"/>
 									<listOptionValue builtIn="false" value="PERIPHERALS_AUTO_INIT"/>
@@ -54,7 +57,7 @@
 									<listOptionValue builtIn="false" value="INS_TYPE_H=\&quot;subsystems/ins/ins_alt_float.h\&quot;"/>
 									<listOptionValue builtIn="false" value="SHITL"/>
 									<listOptionValue builtIn="false" value="DOWNLINK"/>
-									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=IvyTransport"/>
+									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=Ethernet"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_H=\&quot;subsystems/radio_control/ppm.h\&quot;"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
@@ -69,12 +72,11 @@
 									<listOptionValue builtIn="false" value="DC_SHUTTER_SERVO=COMMAND_SHUTTER"/>
 									<listOptionValue builtIn="false" value="DIGITAL_CAM"/>
 									<listOptionValue builtIn="false" value="SENSOR_SYNC_SEND=1"/>
-									<listOptionValue builtIn="false" value="DATALINK=PPRZ"/>
+									<listOptionValue builtIn="false" value="DATALINK=ETH"/>
 									<listOptionValue builtIn="false" value="PPRZ_UART=UART1"/>
 									<listOptionValue builtIn="false" value="SINGLE_MCU"/>
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
-									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=UART1"/>
-									<listOptionValue builtIn="false" value="USE_UART1"/>
+									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=Ethernet"/>
 								</option>
 								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u"/>
 								<option id="org.rtems.cdt.tool.gcc.option.optimizationflags.700160298" name="Optimization flags:" superClass="org.rtems.cdt.tool.gcc.option.optimizationflags" value="" valueType="string"/>

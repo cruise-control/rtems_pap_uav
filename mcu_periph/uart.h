@@ -14,7 +14,7 @@
 void UART0Init(void);
 bool_t UART0CheckFreeSpace(uint8_t _x);
 void UART0Transmit(uint8_t _x);
-static inline void UART0SendMessage(){
+static inline void UART0SendMessage() {
 	return;
 }
 bool_t UART0ChAvailable(void);
@@ -29,6 +29,9 @@ void UART0SetBaudrate(uint32_t baudrate);
 extern void uart1_init(void);
 void UART1Init(void);
 bool_t UART1CheckFreeSpace(uint8_t _x);
+void UART1PutBuf(char *dta);
+void UART1Putc(uint8_t dta);
+void UART1Puts(const char * dta);
 void UART1Transmit(uint8_t _x);
 inline void UART1SendMessage();
 bool_t UART1ChAvailable(void);
@@ -40,12 +43,11 @@ void UART1SetBaudrate(uint32_t baudrate);
 #endif
 //#define Uart1InitParam(_b, _m, _fm) uart_periph_init_param(&uart1, _b, _m, _fm, "")
 
-
 #ifdef USE_UART2
 void UART2Init(void);
 bool_t UART2CheckFreeSpace(uint8_t _x);
 void UART2Transmit(uint8_t _x);
-static inline void UART2SendMessage(){
+static inline void UART2SendMessage() {
 	return;
 }
 bool_t UART2ChAvailable(void);
@@ -60,7 +62,7 @@ void UART2SetBaudrate(uint32_t baudrate);
 void UART3Init(void);
 bool_t UART3CheckFreeSpace(uint8_t _x);
 void UART3Transmit(uint8_t _x);
-static inline void UART3SendMessage(){
+static inline void UART3SendMessage() {
 	return;
 }
 bool_t UART3ChAvailable(void);
@@ -75,7 +77,7 @@ void UART3SetBaudrate(uint32_t baudrate);
 void UART5Init(void);
 bool_t UART5CheckFreeSpace(uint8_t _x);
 void UART5Transmit(uint8_t _x);
-static inline void UART5SendMessage(){
+static inline void UART5SendMessage() {
 	return;
 }
 bool_t UART5ChAvailable(void);
