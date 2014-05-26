@@ -89,6 +89,9 @@ char *buffLen = &eth_buf[1];
 //	UART1Puts("ethSend complete\n");
 //}
 
+int obtainedSocket = 0;
+int send_fd;
+
 void ethernet_send_msg(int length) {
 
 	/*
@@ -100,8 +103,12 @@ void ethernet_send_msg(int length) {
 	 * This will add more latency to communications but keeps the serial_pap
 	 * program simple and generic
 	 */
+#ifdef DEBUG_ETH
+	struct timespec er;
+	rtems_clock_get_uptime(&er);
 
 	UART1Puts(">> ethernet_send_msg");
+#endif
 #define MAX_BUF_SIZE 256
 
 	int txLength = length;
@@ -115,17 +122,33 @@ void ethernet_send_msg(int length) {
 	uint8_t temp_buffer[txLength];
 	memset(temp_buffer, '0', sizeof(temp_buffer));
 	memcpy(temp_buffer, eth_buf, txLength);
-	int send_fd;
-	struct sockaddr_in send_addr;
-	send_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (send_fd < 0) {
-		//We don't have a socket fd, this message is lost, return
-		//printf("ERROR opening send socket");
-//		UART1Puts("ethSend bad fd\n");
-//		return;
 
+	/*
+	 * Only obtain the socket once. Hold open and write to other times
+	 */
+	if (!obtainedSocket) {
+		send_fd = socket(AF_INET, SOCK_STREAM, 0);
+		if (send_fd < 0) {
+#ifdef DEBUG_ETH
+			//We don't have a socket fd, this message is lost, return
+			struct timespec ex;
+			rtems_clock_get_uptime(&ex);
+
+			long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+			long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+			char buf[256];
+			buf[0] = '\0';
+			sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\n",
+					er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
+					finish - begin);
+			UART1PutBuf(buf);
+#endif
+			return;
+		}
+		obtainedSocket = 0;
 	}
 
+	struct sockaddr_in send_addr;
 	memset(&send_addr, '0', sizeof(send_addr));
 
 	send_addr.sin_family = AF_INET;
@@ -133,19 +156,40 @@ void ethernet_send_msg(int length) {
 	send_addr.sin_port = htons(sendPort);
 	int status = connect(send_fd, &send_addr, sizeof(send_addr));
 
-	if (status != -1) {
-		//printf("connected\n");
-	} else {
-		//We don't have a socket connection, this message is lost, return
-//		UART1Puts("ethSend no connect\n");
-//		return;
+	if (status < 0) {
+#ifdef DEBUG_ETH
+		struct timespec ex;
+		rtems_clock_get_uptime(&ex);
+
+		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+		char buf[256];
+		buf[0] = '\0';
+		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\n", er.tv_sec,
+				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+		UART1PutBuf(buf);
+#endif
+		return;
 	}
+
 	int num_bytes = send(send_fd, temp_buffer, txLength, 0);
 	if (num_bytes != txLength) {
 		//printf("Could not send all the bytes in one single packet");
 	}
-	close(send_fd);
 
+	close(send_fd);
+#ifdef DEBUG_ETH
+	struct timespec ex;
+	rtems_clock_get_uptime(&ex);
+
+	long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+	long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+	char buf[256];
+	buf[0] = '\0';
+	sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
+			er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+	UART1PutBuf(buf);
 	UART1Puts(" >>\n");
+#endif
 
 }

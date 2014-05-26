@@ -124,8 +124,9 @@ static inline void eth_parse_payload(struct pprz_transport * t) {
 }
 
 static inline void readEthBuffer(struct pprz_transport* t) {
-
+#ifdef DEBUG_ETH
 	UART1Puts(">> readEthBuffer");
+#endif
 	int recv_fd;
 	//fd_set read_set;
 	uint8_t buffer[256];
@@ -135,41 +136,48 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	//struct sockaddr_in serv_addr;
 	struct sockaddr_in recv_addr;
 	//int n;
-	//struct timeval tv;
-	//tv.tv_sec = 2;
-	//tv.tv_usec = 500000;
+	struct timespec er;
+	rtems_clock_get_uptime(&er);
 
 	//listen_fd = socket(AF_INET, SOCK_STREAM, 0);
 	recv_fd = socket(AF_INET, SOCK_STREAM, 0);
-//	if (listen_fd < 0)
-//		printf("ERROR opening socket");
 	if (recv_fd < 0) {
-		//No file descriptor, bail until we try again
-//		UART1Puts("ethRead bad fd\n");
-//		return;
-//		printf("ERROR opening receive socket");
+#ifdef DEBUG_ETH
+		struct timespec ex;
+		rtems_clock_get_uptime(&ex);
+
+		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+		char buf[256];
+		buf[0] = '\0';
+		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\n", er.tv_sec,
+				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+		UART1PutBuf(buf);
+#endif
+		return;
 	}
 
-	//memset(&serv_addr, '0', sizeof(serv_addr));
 	memset(&recv_addr, '0', sizeof(recv_addr));
-//	portno = LISTEN_PORT;
-//	serv_addr.sin_family = AF_INET;
-//	serv_addr.sin_addr.s_addr = INADDR_ANY;
-//	serv_addr.sin_port = htons(portno);
-
 	// Sai:
 	recv_addr.sin_family = AF_INET;
 	recv_addr.sin_addr.s_addr = inet_addr("10.42.0.3");
 	recv_addr.sin_port = htons(recvPort);
 	int status = connect(recv_fd, &recv_addr, sizeof(recv_addr));
 
-	if (status != -1) {
-		//printf("connected\n");
-	} else {
-//		UART1Puts("ethRead no connection\n");
-		//printf("error connecting\n");
-		//There is no connection so bail
-//		return;
+	if (status < 0) {
+#ifdef DEBUG_ETH
+		struct timespec ex;
+		rtems_clock_get_uptime(&ex);
+
+		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+		char buf[256];
+		buf[0] = '\0';
+		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\n", er.tv_sec,
+				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+		UART1PutBuf(buf);
+#endif
+		return;
 	}
 	//send(qt_fd, reply, strlen(reply), 0);
 	memset(&buffer, 0, sizeof(buffer));
@@ -187,8 +195,19 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 		uint8_t ch = buffer[var];
 		parse_pprz(t, ch);
 	}
+#ifdef DEBUG_ETH
+	struct timespec ex;
+	rtems_clock_get_uptime(&ex);
 
+	long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+	long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+	char buf[256];
+	buf[0] = '\0';
+	sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
+			er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+	UART1PutBuf(buf);
 	UART1Puts(" >>\n");
+#endif
 }
 
 /* Sai */

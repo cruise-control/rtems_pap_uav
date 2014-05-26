@@ -63,7 +63,6 @@ DRIVER_AMBAPP_GAISLER_APBUART_ID, 0, &grlib_drv_res_apbuart0[0] },
 #endif
 rtems_task Init(rtems_task_argument ignored) {
 	long counter = 0;
-	char buf[256];
 #ifndef SERIO_TESTING
 	Fbw(init);
 	Ap(init);
@@ -74,9 +73,26 @@ rtems_task Init(rtems_task_argument ignored) {
 		Ap(handle_periodic_tasks);
 		Fbw(event_task);
 		Ap(event_task);
-		if (counter++ % 100 == 0) {
-			sprintf(buf, "Loop %d \n", counter);
+		if (counter++ % 500 == 0) {
+			static int firstRun = 1;
+			static struct timespec cur;
+			static struct timespec prev;
+
+			if (firstRun) {
+				rtems_clock_get_uptime(&prev);
+				firstRun = 0;
+			}
+
+			rtems_clock_get_uptime(&cur);
+
+			long begin = prev.tv_sec * 1000 * 1000 + prev.tv_nsec / 1000;
+			long finish = cur.tv_sec * 1000 * 1000 + cur.tv_nsec / 1000;
+			char buf[256];
+			buf[0] = '\0';
+			double freq = (double)1.0 / ((finish - begin) / 500);
+			sprintf(buf, "%d diff %ld freq %f \n", counter, finish - begin, freq);
 			UART1PutBuf(buf);
+			prev = cur;
 		}
 	}
 #else
