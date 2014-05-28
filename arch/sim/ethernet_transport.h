@@ -114,7 +114,6 @@ extern void ethernet_send_msg(int);
 #define EthernetPutFloatArray(_dev,_n, _x) EthernetPutArray(_dev,EthernetPutOneFloatByAddr, _n, _x)
 #define EthernetPutDoubleArray(_dev,_n, _x) EthernetPutFloatArray(_dev,_n, _x)
 
-/* Sai: */
 #ifdef USE_ETH
 static inline void eth_parse_payload(struct pprz_transport * t) {
 	uint8_t i;
@@ -122,70 +121,81 @@ static inline void eth_parse_payload(struct pprz_transport * t) {
 		dl_buffer[i] = t->trans.payload[i];
 	dl_msg_available = TRUE;
 }
+#define DEBUG_ETH
+
 
 static inline void readEthBuffer(struct pprz_transport* t) {
-#ifdef DEBUG_ETH
+	static int sockfd, clientfd, portno;
+	static fd_set read_set;
+	static struct sockaddr_in serv_addr, cli_addr;
+	static int ethServerSetup = 0;
+
+	#ifdef DEBUG_ETH
 	UART1Puts(">> readEthBuffer");
-#endif
-	int recv_fd;
-	//fd_set read_set;
-	uint8_t buffer[256];
-	//char reply[256];
-	buffer[0] = '\0';
-	//reply[0] = '\0';
-	//struct sockaddr_in serv_addr;
-	struct sockaddr_in recv_addr;
-	//int n;
 	struct timespec er;
 	rtems_clock_get_uptime(&er);
-
-	//listen_fd = socket(AF_INET, SOCK_STREAM, 0);
-	recv_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (recv_fd < 0) {
-#ifdef DEBUG_ETH
-		struct timespec ex;
-		rtems_clock_get_uptime(&ex);
-
-		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
-		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
-		char buf[256];
-		buf[0] = '\0';
-		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\n", er.tv_sec,
-				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
-		UART1PutBuf(buf);
 #endif
-		return;
+
+	if (!ethServerSetup) {
+		sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		if (sockfd < 0) {
+			UART1Puts("ERROR opening socket");
+			return;
+		}
+
+		memset(&serv_addr, '0', sizeof(serv_addr));
+		portno = 10000;
+		serv_addr.sin_family = AF_INET;
+		serv_addr.sin_addr.s_addr = INADDR_ANY;
+		serv_addr.sin_port = htons(portno);
+
+		if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr))
+				< 0) {
+#ifdef DEBUG_ETH
+			struct timespec ex;
+			rtems_clock_get_uptime(&ex);
+
+			long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+			long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+			char buf[256];
+			buf[0] = '\0';
+			sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\r\n",
+					er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
+					finish - begin);
+			UART1PutBuf(buf);
+#endif
+			return;
+		}
+
+		listen(sockfd, 5);
+
+		printf("Server waiting for accept\r\n");
+		//waiting for connection
+		clientfd = accept(sockfd, NULL, NULL);
+		if (clientfd < 0) {
+#ifdef DEBUG_ETH
+			struct timespec ex;
+			rtems_clock_get_uptime(&ex);
+
+			long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+			long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+			char buf[256];
+			buf[0] = '\0';
+			sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\r\n",
+					er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
+					finish - begin);
+			UART1PutBuf(buf);
+#endif
+		}
+		UART1Puts("Server received accept\r\n");
+		ethServerSetup = 1;
 	}
 
-	memset(&recv_addr, '0', sizeof(recv_addr));
-	// Sai:
-	recv_addr.sin_family = AF_INET;
-	recv_addr.sin_addr.s_addr = inet_addr("10.42.0.3");
-	recv_addr.sin_port = htons(recvPort);
-	int status = connect(recv_fd, &recv_addr, sizeof(recv_addr));
-
-	if (status < 0) {
-#ifdef DEBUG_ETH
-		struct timespec ex;
-		rtems_clock_get_uptime(&ex);
-
-		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
-		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
-		char buf[256];
-		buf[0] = '\0';
-		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\n", er.tv_sec,
-				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
-		UART1PutBuf(buf);
-#endif
-		return;
-	}
-	//send(qt_fd, reply, strlen(reply), 0);
+	char buffer[257];
 	memset(&buffer, 0, sizeof(buffer));
-	int numBytes = recv(recv_fd, buffer, sizeof(buffer) - 1, 0);
-	buffer[numBytes] = '\0';
+	int numBytes = read(clientfd, buffer, 256);
 	//printf(buffer);
-	//printf("\n");
-	close(recv_fd);
+	//printf("\r\n");
 
 	int var;
 	for (var = 0; var < sizeof(buffer); ++var) {
@@ -206,9 +216,99 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
 			er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
 	UART1PutBuf(buf);
-	UART1Puts(" >>\n");
+	UART1PutBuf(buffer);
+	UART1Puts(" >>\r\n");
 #endif
+	if (!ethServerSetup)
+		close();
 }
+
+//static inline void readEthBuffer(struct pprz_transport* t) {
+//#ifdef DEBUG_ETH
+//	UART1Puts(">> readEthBuffer");
+//#endif
+//	int recv_fd;
+//	//fd_set read_set;
+//	uint8_t buffer[256];
+//	//char reply[256];
+//	buffer[0] = '\0';
+//	//reply[0] = '\0';
+//	//struct sockaddr_in serv_addr;
+//	struct sockaddr_in recv_addr;
+//	//int n;
+//	struct timespec er;
+//	rtems_clock_get_uptime(&er);
+//
+//	//listen_fd = socket(AF_INET, SOCK_STREAM, 0);
+//	recv_fd = socket(AF_INET, SOCK_STREAM, 0);
+//	if (recv_fd < 0) {
+//#ifdef DEBUG_ETH
+//		struct timespec ex;
+//		rtems_clock_get_uptime(&ex);
+//
+//		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+//		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+//		char buf[256];
+//		buf[0] = '\0';
+//		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\r\n", er.tv_sec,
+//				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+//		UART1PutBuf(buf);
+//#endif
+//		return;
+//	}
+//
+//	memset(&recv_addr, '0', sizeof(recv_addr));
+//	// Sai:
+//	recv_addr.sin_family = AF_INET;
+//	recv_addr.sin_addr.s_addr = inet_addr("10.42.0.3");
+//	recv_addr.sin_port = htons(recvPort);
+//	int status = connect(recv_fd, &recv_addr, sizeof(recv_addr));
+//
+//	if (status < 0) {
+//#ifdef DEBUG_ETH
+//		struct timespec ex;
+//		rtems_clock_get_uptime(&ex);
+//
+//		long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+//		long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+//		char buf[256];
+//		buf[0] = '\0';
+//		sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\r\n", er.tv_sec,
+//				er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+//		UART1PutBuf(buf);
+//#endif
+//		return;
+//	}
+//	//send(qt_fd, reply, strlen(reply), 0);
+//	memset(&buffer, 0, sizeof(buffer));
+//	int numBytes = recv(recv_fd, buffer, sizeof(buffer) - 1, 0);
+//	buffer[numBytes] = '\0';
+//	//printf(buffer);
+//	//printf("\r\n");
+//	close(recv_fd);
+//
+//	int var;
+//	for (var = 0; var < sizeof(buffer); ++var) {
+//		if (buffer[var] == '\0') {
+//			break;
+//		}
+//		uint8_t ch = buffer[var];
+//		parse_pprz(t, ch);
+//	}
+//#ifdef DEBUG_ETH
+//	struct timespec ex;
+//	rtems_clock_get_uptime(&ex);
+//
+//	long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+//	long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+//	char buf[256];
+//	buf[0] = '\0';
+//	sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
+//			er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+//	UART1PutBuf(buf);
+//	UART1Puts(" >>\r\n");
+//#endif
+//}
 
 /* Sai */
 extern struct pprz_transport eth_tp;
