@@ -94,7 +94,7 @@ EXTERN uint8_t dl_buffer[MSG_SIZE] __attribute__ ((aligned));
 
 #define DatalinkEvent() {						\
 	EthCheckAndParse(eth_tp);      				\
-	DlCheckAndParse();                          	\
+	DlCheckAndParse();                         	\
  }
 
 #elif defined DATALINK && DATALINK == XBEE

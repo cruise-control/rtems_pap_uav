@@ -146,7 +146,7 @@ void dl_parse_msg(void) {
 	uint8_t msg_id = IdOfMsg(dl_buffer);
 
 	char buf[256];
-	sprintf(buf, "dl_parse_msg %d\n", msg_id);
+	sprintf(buf, "dl_parse_msg %d\r\n", msg_id);
 	UART1PutBuf(buf);
 
 #if 0 // not ready yet
@@ -248,7 +248,7 @@ void dl_parse_msg(void) {
 		double time = DL_HITL_GPS_COMMON_time(dl_buffer);
 		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
 		sim_update_sv();
-		sprintf(buf, "DL_HITL_GPS_COMMON %f,%f,%f,%f,%f,%f,%f\n", lat, lon, alt,
+		sprintf(buf, "DL_HITL_GPS_COMMON %f,%f,%f,%f,%f,%f,%f\r\n", lat, lon, alt,
 				course, gspeed, climb, time);
 		UART1PutBuf(buf);
 	} else if (msg_id == DL_HITL_IR_AHRS) {
@@ -260,7 +260,9 @@ void dl_parse_msg(void) {
 		double r = DL_HITL_IR_AHRS_r(dl_buffer);
 		// copy to AHRS
 		provide_attitude_and_rates(roll, pitch, yaw, p, q, r);
-
+		sprintf(buf, "DL_HITL_IR_AHRS %f,%f,%f,%f,%f,%f\r\n", roll, pitch, yaw, p,
+				q, r);
+		UART1PutBuf(buf);
 		// copy IR
 		set_ir(roll, pitch);
 	} else

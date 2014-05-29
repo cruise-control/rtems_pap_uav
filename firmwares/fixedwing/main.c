@@ -73,7 +73,7 @@ rtems_task Init(rtems_task_argument ignored) {
 		Ap(handle_periodic_tasks);
 		Fbw(event_task);
 		Ap(event_task);
-		if (counter++ % 500 == 0) {
+		if (counter++ % 1000 == 0) {
 			static int firstRun = 1;
 			static struct timespec cur;
 			static struct timespec prev;
@@ -89,8 +89,9 @@ rtems_task Init(rtems_task_argument ignored) {
 			long finish = cur.tv_sec * 1000 * 1000 + cur.tv_nsec / 1000;
 			char buf[256];
 			buf[0] = '\0';
-			double freq = (double)1.0 / ((finish - begin) / 500);
-			sprintf(buf, "%d diff %ld freq %f \n", counter, finish - begin, freq);
+			double freq = 1000 / ((finish - begin));
+			sprintf(buf, "%d diff %ld freq %f \r\n", counter, finish - begin,
+					freq);
 			UART1PutBuf(buf);
 			prev = cur;
 		}

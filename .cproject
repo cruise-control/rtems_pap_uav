@@ -103,6 +103,10 @@
 							<tool id="org.rtems.cdt.linker.cpp.2058606974" name="RTEMS C++ Linker" superClass="org.rtems.cdt.linker.cpp"/>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry excluding="lib" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>

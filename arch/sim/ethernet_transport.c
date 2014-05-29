@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <sys/sockio.h>
 #include "../../mcu_periph/uart.h"
+//#include "ethernet_transport.h"
 
 #define sendPort 9999
 
@@ -24,7 +25,9 @@ int send_fd;
 
 struct sockaddr_in send_addr;
 #ifndef DEBUG_ETH
-#define DEBUG_ETH
+
+#else
+#undef DEBUG_ETH
 #endif
 void ethernet_send_msg(int length) {
 
@@ -95,8 +98,6 @@ void ethernet_send_msg(int length) {
 	sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
 			er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
 	UART1PutBuf(buf);
-	temp_buffer[num_bytes] = '\0';
-	UART1PutBuf(temp_buffer);
 	UART1Puts(" >>\r\n");
 #endif
 

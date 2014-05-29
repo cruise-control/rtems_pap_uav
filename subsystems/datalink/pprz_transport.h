@@ -169,8 +169,10 @@ extern struct pprz_transport pprz_tp;
 static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 	switch (t->status) {
 	case UNINIT:
-		if (c == STX)
+		if (c == STX){
 			t->status++;
+			UART1Putc('0');
+		}
 		break;
 	case GOT_STX:
 		if (t->trans.msg_received) {
@@ -181,24 +183,35 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		t->ck_a = t->ck_b = c;
 		t->status++;
 		t->payload_idx = 0;
+		UART1Putc('1');
 		break;
 	case GOT_LENGTH:
 		t->trans.payload[t->payload_idx] = c;
 		t->ck_a += c;
 		t->ck_b += t->ck_a;
 		t->payload_idx++;
-		if (t->payload_idx == t->trans.payload_len)
+		if (t->payload_idx == t->trans.payload_len){
 			t->status++;
+			UART1Putc('2');
+		}
 		break;
 	case GOT_PAYLOAD:
 		if (c != t->ck_a)
 			goto error;
 		t->status++;
+		UART1Putc('3');
 		break;
 	case GOT_CRC1:
 		if (c != t->ck_b)
 			goto error;
 		t->trans.msg_received = TRUE;
+#define ETH_RX_DEBUG
+#ifdef ETH_RX_DEBUG
+		char buf[256];
+		buf[0] = '\0';
+		sprintf(buf, "Have parsed the buffer and gotten a new message\r\n");
+		UART1PutBuf(buf);
+#endif
 		goto restart;
 	default:
 		goto error;
