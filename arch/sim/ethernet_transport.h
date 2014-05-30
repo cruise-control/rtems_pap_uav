@@ -179,11 +179,13 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	struct fd_set working;
 	struct timeval timeout;
 
-#ifdef DEBUG_ETH
-	UART1Puts(">> readEthBuffer");
-	struct timespec er;
-	rtems_clock_get_uptime(&er);
-#endif
+	/*
+	 #ifdef DEBUG_ETH
+	 UART1Puts(">> readEthBuffer");
+	 struct timespec er;
+	 rtems_clock_get_uptime(&er);
+	 #endif
+	 */
 
 	if (!ethServerSetup) {
 		//Initialise the ethernet buffer
@@ -202,19 +204,21 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 
 		if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr))
 				< 0) {
-#ifdef DEBUG_ETH
-			struct timespec ex;
-			rtems_clock_get_uptime(&ex);
+			/*
+			 #ifdef DEBUG_ETH
+			 struct timespec ex;
+			 rtems_clock_get_uptime(&ex);
 
-			long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
-			long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
-			char buf[256];
-			buf[0] = '\0';
-			sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\r\n",
-					er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
-					finish - begin);
-			UART1PutBuf(buf);
-#endif
+			 long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+			 long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+			 char buf[256];
+			 buf[0] = '\0';
+			 sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld XX\r\n",
+			 er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
+			 finish - begin);
+			 UART1PutBuf(buf);
+			 #endif
+			 */
 			return;
 		}
 
@@ -224,19 +228,21 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 		//waiting for connection
 		clientfd = accept(sockfd, NULL, NULL);
 		if (clientfd < 0) {
-#ifdef DEBUG_ETH
-			struct timespec ex;
-			rtems_clock_get_uptime(&ex);
+			/*
+			 #ifdef DEBUG_ETH
+			 struct timespec ex;
+			 rtems_clock_get_uptime(&ex);
 
-			long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
-			long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
-			char buf[256];
-			buf[0] = '\0';
-			sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\r\n",
-					er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
-					finish - begin);
-			UART1PutBuf(buf);
-#endif
+			 long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+			 long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+			 char buf[256];
+			 buf[0] = '\0';
+			 sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\r\n",
+			 er.tv_sec, er.tv_nsec, ex.tv_sec, ex.tv_nsec,
+			 finish - begin);
+			 UART1PutBuf(buf);
+			 #endif
+			 */
 		}
 #define MSG_READ_SIZE 40
 
@@ -315,37 +321,39 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	UART1PutBuf(buf);
 #endif
 
-#ifdef USE_CIRC_BUF
-	char buf[MSG_READ_SIZE];
-	buf[0] = '\0';
-	int p;
-	int len;
-	for (p = 0; p < numBytes; p++) {
-		buf[0] = '\0';
-		sprintf(buf, "%X ", buffer[p]);
-		UART1PutBuf(buf);
-	}
-	ringBusS_putBlock(&ethBufRx, (uint8_t*) buffer, numBytes);
-	buf[0] = '\0';
-	sprintf(buf, "\r\nR %d B %d", numBytes, ethBufRx.count);
-	UART1PutBuf(buf);
-	UART1PutBuf("\r\n");
-#endif
+	/*
+	 #ifdef USE_CIRC_BUF
+	 char buf[MSG_READ_SIZE];
+	 buf[0] = '\0';
+	 int p;
+	 int len;
+	 for (p = 0; p < numBytes; p++) {
+	 buf[0] = '\0';
+	 sprintf(buf, "%X ", buffer[p]);
+	 UART1PutBuf(buf);
+	 }
+	 ringBusS_putBlock(&ethBufRx, (uint8_t*) buffer, numBytes);
+	 buf[0] = '\0';
+	 sprintf(buf, "\r\nR %d B %d", numBytes, ethBufRx.count);
+	 UART1PutBuf(buf);
+	 UART1PutBuf("\r\n");
+	 #endif
 
-#ifdef DEBUG_ETH
-	struct timespec ex;
-	rtems_clock_get_uptime(&ex);
+	 #ifdef DEBUG_ETH
+	 struct timespec ex;
+	 rtems_clock_get_uptime(&ex);
 
-	long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
-	long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
-	char buf[256];
-	buf[0] = '\0';
-	sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
-			er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
-	UART1PutBuf(buf);
-	UART1PutBuf(buffer);
-	UART1Puts(" >>\r\n");
-#endif
+	 long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+	 long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+	 char buf[256];
+	 buf[0] = '\0';
+	 sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
+	 er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+	 UART1PutBuf(buf);
+	 UART1PutBuf(buffer);
+	 UART1Puts(" >>\r\n");
+	 #endif
+	 */
 	if (!ethServerSetup)
 		close();
 }
