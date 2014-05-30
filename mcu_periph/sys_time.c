@@ -25,6 +25,7 @@ static char timer_name[SYS_TIME_NB_TIMER][4]=
 
 
 void sys_time_init(void){
+	//TODO Figure this out, especially hw it relates to the autopilot view of time
 	int i;
 	/*rtems_clock_get(RTEMS_CLOCK_GET_TICKS_PER_SECOND,&sys_time.ticks_per_sec);*/
 	sys_time.ticks_per_sec=SYS_TIME_FREQUENCY;

@@ -203,9 +203,10 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		t->trans.msg_received = TRUE;
 //#define ETH_RX_DEBUG
 #ifdef ETH_RX_DEBUG
+		static int counter = 0;
 		char buf[256];
 		buf[0] = '\0';
-		sprintf(buf, "Have parsed the buffer and gotten a new message\r\n");
+		sprintf(buf, "new Msg %d \r\n",counter++);
 		UART1PutBuf(buf);
 #endif
 		goto restart;

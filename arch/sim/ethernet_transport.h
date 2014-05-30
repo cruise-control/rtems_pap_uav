@@ -6,6 +6,8 @@
  */
 
 #include <stdio.h>
+#include <fcntl.h>
+#include <errno.h>
 #include "subsystems/datalink/transport.h"
 
 //#include "system.h"
@@ -174,6 +176,8 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	static fd_set read_set;
 	static struct sockaddr_in serv_addr, cli_addr;
 	static int ethServerSetup = 0;
+	struct fd_set working;
+	struct timeval timeout;
 
 #ifdef DEBUG_ETH
 	UART1Puts(">> readEthBuffer");
@@ -234,29 +238,99 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 			UART1PutBuf(buf);
 #endif
 		}
+#define MSG_READ_SIZE 40
+
+		//Set the reception socket to non-blocking
+		if (fcntl(sockfd, F_SETFL, O_NONBLOCK) < 0) {
+			UART1Puts("ERROR Setting sockfd to non-blocking");
+			return;
+		}
+
+		/*
+		 //Set the min count for revieve ops to be our min_read size, don't want to wait for large
+		 //data volumes before we read data
+		 int min = MSG_READ_SIZE;
+		 setsockopt(clientfd, SOL_SOCKET, SO_RCVLOWAT, &min, sizeof(min));
+		 */
 		UART1Puts("Server received accept\r\n");
 		ethServerSetup = 1;
 	}
+	struct timespec er;
+	rtems_clock_get_uptime(&er);
 
-	char buffer[256];
-	memset(&buffer, 0, sizeof(buffer));
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+	FD_ZERO(&working);
+	FD_SET(clientfd, &working);
+	int rc = select(clientfd + 1, &working, NULL, NULL, &timeout);
+	if (rc < 0) {
+		UART1Puts("Select() failed\r\n");
+		return;
+	}
+	if (rc == 0) {
+		//UART1Puts("Select() returned with 0\r\n");
+	}
+	if (rc > 0) {
+		//UART1Puts("Select() returned with >0\r\n");
+	}
 
-	int numBytes = read(clientfd, buffer, 256);
+	if (FD_ISSET(clientfd, &working)) {
+		UART1Putc('1');
 
+		char buffer[MSG_READ_SIZE];
+		memset(buffer, 0, sizeof(buffer));
+
+		int numBytes = read(clientfd, buffer, MSG_READ_SIZE);
+
+		/*
+		 //This is for non-blocking Rx which was not working
+		 if (errno == EWOULDBLOCK) {
+		 return;
+		 }
+		 */
+
+		if (numBytes <= 0) {
+			return;
+		}
+		UART1Putc('2');
+		int var;
+		for (var = 0; var < numBytes; ++var) {
+			uint8_t ch = buffer[var];
+			parse_pprz(t, ch);
+		}
+	} else
+		UART1Putc('0');
+
+#if 1
+	struct timespec ex;
+	rtems_clock_get_uptime(&ex);
+
+	long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+	long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
 	char buf[256];
+	buf[0] = '\0';
+	sprintf(buf, " diff %ld ||\r\n", finish - begin);
+	//sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\r\n", er.tv_sec,
+	//		er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+	UART1PutBuf(buf);
+#endif
+
+#ifdef USE_CIRC_BUF
+	char buf[MSG_READ_SIZE];
 	buf[0] = '\0';
 	int p;
 	int len;
-//	for (p = 0; p < numBytes; p++) {
-//		buf[0] = '\0';
-//		sprintf(buf, "%X ", buffer[p]);
-//		UART1PutBuf(buf);
-//	}
+	for (p = 0; p < numBytes; p++) {
+		buf[0] = '\0';
+		sprintf(buf, "%X ", buffer[p]);
+		UART1PutBuf(buf);
+	}
 	ringBusS_putBlock(&ethBufRx, (uint8_t*) buffer, numBytes);
 	buf[0] = '\0';
 	sprintf(buf, "\r\nR %d B %d", numBytes, ethBufRx.count);
 	UART1PutBuf(buf);
 	UART1PutBuf("\r\n");
+#endif
 
 #ifdef DEBUG_ETH
 	struct timespec ex;
@@ -284,7 +358,7 @@ extern struct pprz_transport eth_tp;
 
 #define EthCheckAndParse(_trans) { \
 	readEthBuffer(&(_trans)); \
-	parseCircBuf(&(_trans)); \
+	/*parseCircBuf(&(_trans));*/ \
 	if (_trans.trans.msg_received) { \
 		eth_parse_payload(&(_trans)); \
 		_trans.trans.msg_received = FALSE; \

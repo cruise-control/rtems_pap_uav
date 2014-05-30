@@ -49,7 +49,7 @@
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
 									<listOptionValue builtIn="false" value="USE_LED"/>
 									<listOptionValue builtIn="false" value="PERIODIC_FREQUENCY=60"/>
-									<listOptionValue builtIn="false" value="TELEMETRY_FREQUENCY=60"/>
+									<listOptionValue builtIn="false" value="TELEMETRY_FREQUENCY=6"/>
 									<listOptionValue builtIn="false" value="USE_SYS_TIME"/>
 									<listOptionValue builtIn="false" value="INTER_MCU"/>
 									<listOptionValue builtIn="false" value="FBW"/>
