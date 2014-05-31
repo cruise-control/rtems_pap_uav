@@ -3,6 +3,9 @@
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="org.rtems.cdt.config.1842712804">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="org.rtems.cdt.config.1842712804" moduleId="org.eclipse.cdt.core.settings" name="DEBUG">
+				<macros>
+					<stringMacro name="MANAGERS" type="VALUE_TEXT" value="io event semaphore"/>
+				</macros>
 				<externalSettings/>
 				<extensions>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -87,16 +90,18 @@
 								<option id="gnu.c.link.option.libs.1626846178" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
-								<option id="gnu.c.link.option.ldflags.1012522512" name="Linker flags" superClass="gnu.c.link.option.ldflags" value="" valueType="string"/>
+								<option id="gnu.c.link.option.ldflags.1012522512" name="Linker flags" superClass="gnu.c.link.option.ldflags" value="-Wl,--defsym -Wl,HeapSize=0x80000" valueType="string"/>
+								<option id="gnu.c.link.option.userobjs.1977645591" name="Other objects" superClass="gnu.c.link.option.userobjs"/>
+								<option id="gnu.c.link.option.soname.2127674720" name="Shared object name (-Wl,-soname=)" superClass="gnu.c.link.option.soname" value="" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.2091229456" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool command="/opt/rtems-4.10/bin/sparc-rtems4.10-gcc" id="org.rtems.cdt.assembler.gcc.1887719239" name="RTEMS Assembler" superClass="org.rtems.cdt.assembler.gcc">
+							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-gcc" id="org.rtems.cdt.assembler.gcc.1887719239" name="RTEMS Assembler" superClass="org.rtems.cdt.assembler.gcc">
 								<inputType id="org.rtems.cdt.assembler.gcc.input.1252014550" superClass="org.rtems.cdt.assembler.gcc.input"/>
 							</tool>
-							<tool id="org.rtems.cdt.assembler.204558919" name="RTEMS Bare Assembler" superClass="org.rtems.cdt.assembler">
+							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-as" id="org.rtems.cdt.assembler.204558919" name="RTEMS Bare Assembler" superClass="org.rtems.cdt.assembler">
 								<inputType id="org.rtems.cdt.assembler.input.1285240565" superClass="org.rtems.cdt.assembler.input"/>
 							</tool>
 							<tool id="org.rtems.cdt.archiver.1730619733" name="RTEMS Archiver" superClass="org.rtems.cdt.archiver"/>

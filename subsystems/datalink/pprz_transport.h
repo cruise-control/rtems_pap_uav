@@ -201,7 +201,7 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		if (c != t->ck_b)
 			goto error;
 		t->trans.msg_received = TRUE;
-//#define ETH_RX_DEBUG
+#define ETH_RX_DEBUG
 #ifdef ETH_RX_DEBUG
 		static int counter = 0;
 		char buf[256];

@@ -171,13 +171,17 @@ static inline void parseCircBuf(struct pprz_transport* t) {
 	}
 }
 
+//void ethReadCallback(struct socket *so, caddr_t arg) {
+//	rtems_event_send(1, RTEMS_EVENT_17);
+//}
+
 static inline void readEthBuffer(struct pprz_transport* t) {
 	static int sockfd, clientfd, portno;
-	static fd_set read_set;
-	static struct sockaddr_in serv_addr, cli_addr;
+	static struct sockaddr_in serv_addr;
 	static int ethServerSetup = 0;
 	struct fd_set working;
 	struct timeval timeout;
+//	struct sockwakeup wakeup;
 
 	/*
 	 #ifdef DEBUG_ETH
@@ -252,6 +256,16 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 			return;
 		}
 
+		//Set the reception socket to non-blocking
+		if (fcntl(clientfd, F_SETFL, O_NONBLOCK) < 0) {
+			UART1Puts("ERROR Setting clientfd to non-blocking");
+			return;
+		}
+
+//		wakeup.sw_pfn = ethReadCallback;
+//		wakeup.sw_arg = (caddr_t) sockfd;
+//		setsockopt(sockfd, SOL_SOCKET, SO_RCVWAKEUP, &wakeup, sizeof(wakeup));
+
 		/*
 		 //Set the min count for revieve ops to be our min_read size, don't want to wait for large
 		 //data volumes before we read data
@@ -263,9 +277,9 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	}
 	struct timespec er;
 	rtems_clock_get_uptime(&er);
-
+#ifdef USE_SELECT_POLL
 	timeout.tv_sec = 0;
-	timeout.tv_usec = 0;
+	timeout.tv_usec = 10;
 	FD_ZERO(&working);
 	FD_SET(clientfd, &working);
 	int rc = select(clientfd + 1, &working, NULL, NULL, &timeout);
@@ -273,41 +287,57 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 		UART1Puts("Select() failed\r\n");
 		return;
 	}
-	if (rc == 0) {
-		//UART1Puts("Select() returned with 0\r\n");
-	}
 	if (rc > 0) {
 		//UART1Puts("Select() returned with >0\r\n");
-	}
 
-	if (FD_ISSET(clientfd, &working)) {
-		UART1Putc('1');
+		if (FD_ISSET(clientfd, &working)) {
+#endif
+	UART1Putc('1');
 
-		char buffer[MSG_READ_SIZE];
-		memset(buffer, 0, sizeof(buffer));
+	char buffer[MSG_READ_SIZE];
+	memset(buffer, 0, sizeof(buffer));
 
-		int numBytes = read(clientfd, buffer, MSG_READ_SIZE);
+	int numBytes = read(clientfd, buffer, MSG_READ_SIZE);
 
-		/*
-		 //This is for non-blocking Rx which was not working
-		 if (errno == EWOULDBLOCK) {
-		 return;
-		 }
-		 */
+	if (numBytes <= 0) {
 
-		if (numBytes <= 0) {
+		//This is for non-blocking Rx which was not working
+		if (errno == EWOULDBLOCK) {
+#if 0
+			UART1Putc('3');
+			struct timespec ex;
+			rtems_clock_get_uptime(&ex);
+
+			long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
+			long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
+			char buf[256];
+			buf[0] = '\0';
+			sprintf(buf, " diff %ld XX\r\n", finish - begin);
+			//sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ||\r\n", er.tv_sec,
+			//		er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
+			UART1PutBuf(buf);
+#endif
 			return;
 		}
-		UART1Putc('2');
-		int var;
-		for (var = 0; var < numBytes; ++var) {
-			uint8_t ch = buffer[var];
-			parse_pprz(t, ch);
-		}
-	} else
-		UART1Putc('0');
 
-#if 1
+		UART1Putc('4');
+		return;
+	}
+	UART1Putc('2');
+	int var;
+	for (var = 0; var < numBytes; ++var) {
+		uint8_t ch = buffer[var];
+		parse_pprz(t, ch);
+	}
+#ifdef USE_SELECT_POLL
+} else
+UART1Putc('0');
+} else if (rc == 0) {
+UART1Putc('0');
+}
+#endif
+
+#if 0
 	struct timespec ex;
 	rtems_clock_get_uptime(&ex);
 

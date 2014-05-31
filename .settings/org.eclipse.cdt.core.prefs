@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
 environment/project/org.rtems.cdt.config.1842712804=
+environment/project/org.rtems.cdt.config.1842712804/MANAGERS/delimiter=\:
+environment/project/org.rtems.cdt.config.1842712804/MANAGERS/operation=append
+environment/project/org.rtems.cdt.config.1842712804/MANAGERS/value=io semaphore event
 environment/project/org.rtems.cdt.config.1842712804/PATH/delimiter=\:
 environment/project/org.rtems.cdt.config.1842712804/PATH/operation=replace
 environment/project/org.rtems.cdt.config.1842712804/PATH/value=/opt/rtems-4.10/bin\:/usr/lib/lightdm/lightdm\:/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/usr/games
