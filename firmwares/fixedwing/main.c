@@ -79,18 +79,18 @@ rtems_task Init(rtems_task_argument ignored) {
 	//printf("end of init");
 	while (1) {
 
-#if DEBUG_TIMING_MAIN_LOOP > 0
-		dbgTstart(&mainLoop_dbgT);
-#endif
+//#if DEBUG_TIMING_MAIN_LOOP > 0
+//		dbgTstart(&mainLoop_dbgT);
+//#endif
 		update_bat(12.0);
 		Fbw(handle_periodic_tasks);
 		Ap(handle_periodic_tasks);
 		Fbw(event_task);
 		Ap(event_task);
 
-#if DEBUG_TIMING_MAIN_LOOP > 0
-		dbgTstop(&mainLoop_dbgT);
-#endif
+//#if DEBUG_TIMING_MAIN_LOOP > 0
+//		dbgTstop(&mainLoop_dbgT);
+//#endif
 
 	}
 #else

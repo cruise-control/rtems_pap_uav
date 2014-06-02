@@ -437,9 +437,11 @@ static inline void telecommand_task(void) {
 
 /** Run at PERIODIC_FREQUENCY (60Hz if not defined) */
 void sensors_task(void) {
+
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstart(&sensors_dbgT);
 #endif
+
 #if USE_IMU
 	imu_periodic();
 
