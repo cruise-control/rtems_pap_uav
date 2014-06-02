@@ -148,18 +148,18 @@ static inline void parseCircBuf(struct pprz_transport* t) {
 	if (ethBufRx.count < 10)
 		return;
 
-	for (iteration = 0; iteration < 10; iteration++) {
+	for (iteration = 0; iteration < 1; iteration++) {
 		//We can only parse a single message at a time
 		int var;
 		for (var = 0; var < ethBufRx.count; ++var) {
+			//If we have found a message, bail and process it
 			if (t->trans.msg_received)
 				break;
-//			if (ethBufRx.buf[ethBufRx.tail] == '\0') {
-//				break;
-//			}
+
 			uint8_t ch = ringBufS_get(&ethBufRx);
-			if (ch < 0)
-				return;
+			//Impossible code
+//			if (ch < 0)
+//				return;
 			parse_pprz(t, ch);
 		}
 
@@ -253,6 +253,9 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 			 #endif
 			 */
 		}
+		/* This must be less than the size of the smallest message, otherwise in the processing
+		 * of any given message, we could end up processing two in one cycle effectively loosing the first
+		 * */
 #define MSG_READ_SIZE 40
 
 		//Set the reception socket to non-blocking
@@ -289,21 +292,6 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 
 	struct timespec er;
 	rtems_clock_get_uptime(&er);
-#ifdef USE_SELECT_POLL
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 10;
-	FD_ZERO(&working);
-	FD_SET(clientfd, &working);
-	int rc = select(clientfd + 1, &working, NULL, NULL, &timeout);
-	if (rc < 0) {
-		UART1Puts("Select() failed\r\n");
-		return;
-	}
-	if (rc > 0) {
-		//UART1Puts("Select() returned with >0\r\n");
-
-		if (FD_ISSET(clientfd, &working)) {
-#endif
 
 	char buffer[MSG_READ_SIZE];
 	memset(buffer, 0, sizeof(buffer));
@@ -332,15 +320,17 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 
 		return;
 	}
+
+#define USE_CIRC_BUF
+#ifndef USE_CIRC_BUF
 	int var;
 	for (var = 0; var < numBytes; ++var) {
 		uint8_t ch = buffer[var];
 		parse_pprz(t, ch);
 	}
-#ifdef USE_SELECT_POLL
-} else
-} else if (rc == 0) {
-}
+
+#else
+	ringBusS_putBlock(&ethBufRx, (uint8_t*) buffer, numBytes);
 #endif
 
 #if 0
@@ -356,40 +346,6 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	//		er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
 	UART1PutBuf(buf);
 #endif
-
-	/*
-	 #ifdef USE_CIRC_BUF
-	 char buf[MSG_READ_SIZE];
-	 buf[0] = '\0';
-	 int p;
-	 int len;
-	 for (p = 0; p < numBytes; p++) {
-	 buf[0] = '\0';
-	 sprintf(buf, "%X ", buffer[p]);
-	 UART1PutBuf(buf);
-	 }
-	 ringBusS_putBlock(&ethBufRx, (uint8_t*) buffer, numBytes);
-	 buf[0] = '\0';
-	 sprintf(buf, "\r\nR %d B %d", numBytes, ethBufRx.count);
-	 UART1PutBuf(buf);
-	 UART1PutBuf("\r\n");
-	 #endif
-
-	 #ifdef DEBUG_ETH
-	 struct timespec ex;
-	 rtems_clock_get_uptime(&ex);
-
-	 long begin = er.tv_sec * 1000 * 1000 + er.tv_nsec / 1000;
-	 long finish = ex.tv_sec * 1000 * 1000 + ex.tv_nsec / 1000;
-	 char buf[256];
-	 buf[0] = '\0';
-	 sprintf(buf, " start [%ld %ld] end [%ld %ld] diff %ld ", er.tv_sec,
-	 er.tv_nsec, ex.tv_sec, ex.tv_nsec, finish - begin);
-	 UART1PutBuf(buf);
-	 UART1PutBuf(buffer);
-	 UART1Puts(" >>\r\n");
-	 #endif
-	 */
 	if (!ethServerSetup)
 		close();
 }
@@ -402,7 +358,7 @@ extern struct pprz_transport eth_tp;
 
 #define EthCheckAndParse(_trans) { \
 	readEthBuffer(&(_trans)); \
-	/*parseCircBuf(&(_trans));*/ \
+	parseCircBuf(&(_trans)); \
 	if (_trans.trans.msg_received) { \
 		eth_parse_payload(&(_trans)); \
 		_trans.trans.msg_received = FALSE; \

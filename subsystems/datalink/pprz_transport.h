@@ -200,13 +200,19 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		if (c != t->ck_b)
 			goto error;
 		t->trans.msg_received = TRUE;
-//#define ETH_RX_DEBUG
+#define ETH_RX_DEBUG
 #ifdef ETH_RX_DEBUG
+		//Only print the data on every 100th message
 		static int counter = 0;
-		char buf[256];
-		buf[0] = '\0';
-		sprintf(buf, "new Msg %d \r\n",counter++);
-		UART1PutBuf(buf);
+		if (counter++ % 200 == 0) {
+			char buf[256];
+			buf[0] = "\0";
+			struct timespec tmr;
+			rtems_clock_get_uptime(&tmr);
+			sprintf(buf, " %ld.%ld Msg %d\r\n", tmr.tv_sec, tmr.tv_nsec,
+					counter);
+			UART1PutBuf(buf);
+		}
 #endif
 		goto restart;
 	default:

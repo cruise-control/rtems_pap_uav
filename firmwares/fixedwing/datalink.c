@@ -192,24 +192,42 @@ void dl_parse_msg(void) {
 		double time = DL_HITL_GPS_COMMON_time(dl_buffer);
 		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
 		sim_update_sv();
-//		sprintf(buf, "DL_HITL_GPS_COMMON %f,%f,%f,%f,%f,%f,%f\r\n", lat, lon,
-//				alt, course, gspeed, climb, time);
-//		UART1PutBuf(buf);
+#ifdef DEBUG_DL_HITL_GPS_COMMON
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_HITL_GPS_COMMON %f,%f,%f,%f,%f,%f,%f\r\n", lat, lon,
+				alt, course, gspeed, climb, time);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_HITL_IR_AHRS) {
 		//double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);
 		double roll = DL_HITL_IR_AHRS_roll(dl_buffer);
 		double pitch = DL_HITL_IR_AHRS_pitch(dl_buffer);
-		double yaw = DL_HITL_IR_AHRS_yaw(dl_buffer);
+		double yaw = DL_HITL_IR_AHRS_yaw(dl_buffer); //This is giving loose values compared to input data
 		double p = DL_HITL_IR_AHRS_p(dl_buffer);
 		double q = DL_HITL_IR_AHRS_q(dl_buffer);
 		double r = DL_HITL_IR_AHRS_r(dl_buffer);
+
 		// copy to AHRS
 		provide_attitude_and_rates(roll, pitch, yaw, p, q, r);
-//		sprintf(buf, "DL_HITL_IR_AHRS %f,%f,%f,%f,%f,%f\r\n", roll, pitch, yaw,
-//				p, q, r);
-//		UART1PutBuf(buf);
+
 		// copy IR
 		set_ir(roll, pitch);
+
+#ifdef DEBUG_DL_HITL_IR_AHRS
+		//Only print the data on every 100th message
+		static int counter = 0;
+		if (counter++ % 100 == 0) {
+			char buf[256];
+			buf[0] = "\0";
+			struct timespec tmr;
+			rtems_clock_get_uptime(&tmr);
+			sprintf(buf, " %ld.%ld DL_HITL_IR_AHRS %f,%f,%f,%f,%f,%f\r\n",
+					tmr.tv_sec, tmr.tv_nsec, roll, pitch, yaw, p, q, r);
+			UART1PutBuf(buf);
+		}
+#endif
+
 	} else
 #endif
 #ifdef HITL

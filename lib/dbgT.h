@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+#define NO_OUTPUT 0
 #define DEBUG_TIMING_AUTOPILOT 1
 #define DEBUG_TIMING_MAIN_LOOP 1
 #define SENSOR_ID 1
@@ -21,7 +22,7 @@
 #define MAIN_LOOP_ID 6
 #define DEBUG_ID 10
 #define SENSOR_ID 1
-#define ITERATIONS 200
+#define ITERATIONS 500
 
 typedef struct {
 	struct timespec start;

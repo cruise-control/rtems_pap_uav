@@ -53,13 +53,14 @@ void dbgTstop(ts_dbgT* t) {
 }
 
 void dbgTdump(ts_dbgT* t) {
-	//long begin = t->start.tv_sec * 1000 * 1000 + t->start.tv_nsec / 1000;
-	//long finish = t->finish.tv_sec * 1000 * 1000 + t->finish.tv_nsec / 1000;
+#if NO_OUTPUT > 0
+#else
 	char buf[256];
 	buf[0] = '\0';
 	sprintf(buf, "$_%d,%ld,%ld,%ld,%ld,%ld,%d\r\n", t->id, t->counter,
 			t->start.tv_sec, t->start.tv_nsec, t->finish.tv_sec,
 			t->finish.tv_nsec, ITERATIONS);
 	UART1Puts(buf);
+#endif
 }
 

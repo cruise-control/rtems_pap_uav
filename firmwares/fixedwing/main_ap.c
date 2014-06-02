@@ -214,18 +214,18 @@ void init_ap(void) {
 
 	/**** start timers for periodic functions *****/
 	sensors_tid = sys_time_register_timer(1. / PERIODIC_FREQUENCY, NULL);
-	rtems_barrier_wait(rtems_task_self(), 100);
+	rtems_barrier_wait(rtems_task_self(), 1);
 	navigation_tid = sys_time_register_timer(1. / NAVIGATION_FREQUENCY, NULL);
-	rtems_barrier_wait(rtems_task_self(), 100);
+	rtems_barrier_wait(rtems_task_self(), 2);
 	attitude_tid = sys_time_register_timer(1. / CONTROL_FREQUENCY, NULL);
-	rtems_barrier_wait(rtems_task_self(), 100);
+	rtems_barrier_wait(rtems_task_self(), 3);
 	modules_tid = sys_time_register_timer(1. / MODULES_FREQUENCY, NULL);
-	rtems_barrier_wait(rtems_task_self(), 100);
+	rtems_barrier_wait(rtems_task_self(), 4);
 	telemetry_tid = sys_time_register_timer(1. / TELEMETRY_FREQUENCY, NULL);
-	rtems_barrier_wait(rtems_task_self(), 100);
+	rtems_barrier_wait(rtems_task_self(), 5);
 	monitor_tid = sys_time_register_timer(1.0, NULL);
-	rtems_barrier_wait(rtems_task_self(), 100);
-	debug_tid = sys_time_register_timer(1. / 100, NULL);
+	rtems_barrier_wait(rtems_task_self(), 6);
+//	debug_tid = sys_time_register_timer(1. / 100, NULL);
 	UART1Puts("Just registered all ap timers\r\n");
 
 	/** - start interrupt task */
@@ -262,7 +262,7 @@ void handle_periodic_tasks_ap(void) {
 		dbgTinit(&monitor_dbgT, MONITOR_ID);
 		dbgTinit(&telemetry_dbgT, TELEMETRY_ID);
 		dbgTinit(&attitude_dbgT, ATTITUDE_ID);
-		dbgTinit(&debug_dbgT, DEBUG_ID);
+//		dbgTinit(&debug_dbgT, DEBUG_ID);
 		init = 1;
 	}
 #endif
@@ -289,10 +289,10 @@ void handle_periodic_tasks_ap(void) {
 		LED_PERIODIC();
 	}
 
-	if (sys_time_check_and_ack_timer(debug_tid)) {
-		dbgTstart(&debug_dbgT);
-		dbgTstop(&debug_dbgT);
-	}
+//	if (sys_time_check_and_ack_timer(debug_tid)) {
+//		dbgTstart(&debug_dbgT);
+//		dbgTstop(&debug_dbgT);
+//	}
 
 }
 /******************** Interaction with FBW *****************************/
