@@ -13,7 +13,7 @@
 #include "std.h"
 #include "system_time_config.h"
 #ifndef SYS_TIME_NB_TIMER
-#define SYS_TIME_NB_TIMER 8
+#define SYS_TIME_NB_TIMER 10
 #endif
 
 /**

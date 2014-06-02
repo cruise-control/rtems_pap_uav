@@ -35,6 +35,7 @@
 #include "firmwares/fixedwing/main_ap.h"
 #include "mcu.h"
 #include "mcu_periph/sys_time.h"
+#include "../../lib/dbgT.h"
 /*
  #include "link_mcu_spi.h"
  */
@@ -127,6 +128,16 @@ static inline void on_baro_abs_event( void );
 static inline void on_baro_dif_event( void );
 #endif
 
+#if DEBUG_TIMING_AUTOPILOT > 0
+ts_dbgT sensors_dbgT;
+ts_dbgT navigation_dbgT;
+ts_dbgT attitude_dbgT;
+ts_dbgT modules_dbgT;
+ts_dbgT monitor_dbgT;
+ts_dbgT telemetry_dbgT;
+ts_dbgT debug_dbgT;
+#endif
+
 // what version is this ????
 static const uint16_t version = 1;
 
@@ -147,6 +158,7 @@ tid_t sensors_tid;     ///< id for sensors_task() timer
 tid_t attitude_tid;    ///< id for attitude_loop() timer
 tid_t navigation_tid;  ///< id for navigation_task() timer
 tid_t monitor_tid;     ///< id for monitor_task() timer
+tid_t debug_tid;     ///< id for monitor_task() timer
 
 void init_ap(void) {
 #ifndef SINGLE_MCU /** init done in main_fbw in single MCU */
@@ -202,11 +214,19 @@ void init_ap(void) {
 
 	/**** start timers for periodic functions *****/
 	sensors_tid = sys_time_register_timer(1. / PERIODIC_FREQUENCY, NULL);
+	rtems_barrier_wait(rtems_task_self(), 100);
 	navigation_tid = sys_time_register_timer(1. / NAVIGATION_FREQUENCY, NULL);
+	rtems_barrier_wait(rtems_task_self(), 100);
 	attitude_tid = sys_time_register_timer(1. / CONTROL_FREQUENCY, NULL);
+	rtems_barrier_wait(rtems_task_self(), 100);
 	modules_tid = sys_time_register_timer(1. / MODULES_FREQUENCY, NULL);
+	rtems_barrier_wait(rtems_task_self(), 100);
 	telemetry_tid = sys_time_register_timer(1. / TELEMETRY_FREQUENCY, NULL);
+	rtems_barrier_wait(rtems_task_self(), 100);
 	monitor_tid = sys_time_register_timer(1.0, NULL);
+	rtems_barrier_wait(rtems_task_self(), 100);
+	debug_tid = sys_time_register_timer(1. / 100, NULL);
+	UART1Puts("Just registered all ap timers\r\n");
 
 	/** - start interrupt task */
 	mcu_int_enable();
@@ -233,6 +253,19 @@ void init_ap(void) {
 }
 
 void handle_periodic_tasks_ap(void) {
+#if DEBUG_TIMING_AUTOPILOT > 0
+	//Initialise and assign known ID's to each
+	static int init = 0;
+	if (!init) {
+		dbgTinit(&sensors_dbgT, SENSOR_ID);
+		dbgTinit(&navigation_dbgT, NAVIGATION_ID);
+		dbgTinit(&monitor_dbgT, MONITOR_ID);
+		dbgTinit(&telemetry_dbgT, TELEMETRY_ID);
+		dbgTinit(&attitude_dbgT, ATTITUDE_ID);
+		dbgTinit(&debug_dbgT, DEBUG_ID);
+		init = 1;
+	}
+#endif
 
 	if (sys_time_check_and_ack_timer(sensors_tid))
 		sensors_task();
@@ -254,6 +287,11 @@ void handle_periodic_tasks_ap(void) {
 	if (sys_time_check_and_ack_timer(telemetry_tid)) {
 		reporting_task();
 		LED_PERIODIC();
+	}
+
+	if (sys_time_check_and_ack_timer(debug_tid)) {
+		dbgTstart(&debug_dbgT);
+		dbgTstop(&debug_dbgT);
 	}
 
 }
@@ -399,6 +437,9 @@ static inline void telecommand_task(void) {
 
 /** Run at PERIODIC_FREQUENCY (60Hz if not defined) */
 void sensors_task(void) {
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstart(&sensors_dbgT);
+#endif
 #if USE_IMU
 	imu_periodic();
 
@@ -418,6 +459,11 @@ void sensors_task(void) {
 #endif
 
 	ins_periodic();
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstop(&sensors_dbgT);
+#endif
+
 }
 
 #ifdef FAILSAFE_DELAY_WITHOUT_GPS
@@ -428,6 +474,11 @@ void sensors_task(void) {
  *  Compute desired_course
  */
 void navigation_task(void) {
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstart(&navigation_dbgT);
+#endif
+
 #if defined FAILSAFE_DELAY_WITHOUT_GPS
 	/** This section is used for the failsafe of GPS */
 	static uint8_t last_pprz_mode;
@@ -488,6 +539,11 @@ void navigation_task(void) {
 		// climb_loop(); //4Hz
 	}
 	energy += ((float) current) / 3600.0f * 0.25f; // mAh = mA * dt (4Hz -> hours)
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstop(&navigation_dbgT);
+#endif
+
 }
 
 #ifdef AHRS_TRIGGERED_ATTITUDE_LOOP
@@ -495,6 +551,10 @@ volatile uint8_t new_ins_attitude = 0;
 #endif
 
 void attitude_loop(void) {
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstart(&attitude_dbgT);
+#endif
 
 #if USE_INFRARED
 	ahrs_update_infrared();
@@ -541,6 +601,10 @@ void attitude_loop(void) {
 	inter_mcu_received_ap = TRUE;
 #endif
 
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstop(&attitude_dbgT);
+#endif
+
 }
 /** Maximum time allowed for low battery level before going into kill mode */
 #define LOW_BATTERY_DELAY 5
@@ -555,6 +619,11 @@ void attitude_loop(void) {
 
 /** monitor stuff run at 1Hz */
 void monitor_task(void) {
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstart(&monitor_dbgT);
+#endif
+
 	if (autopilot_flight_time)
 		autopilot_flight_time++;
 #if defined DATALINK || defined SITL
@@ -580,6 +649,10 @@ void monitor_task(void) {
 #ifdef USE_GPIO
 	GpioUpdate1();
 #endif
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstop(&monitor_dbgT);
+#endif
 }
 
 /**
@@ -587,6 +660,11 @@ void monitor_task(void) {
  * Called at 60Hz.
  */
 void reporting_task(void) {
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstart(&telemetry_dbgT);
+#endif
+
 	static uint8_t boot = TRUE;
 
 	/** initialisation phase during boot */
@@ -597,11 +675,12 @@ void reporting_task(void) {
 	/** then report periodicly */
 	else {
 		PeriodicSendAp(DefaultChannel, DefaultDevice);
-//		char buf[256];
-//		buf[0] = '\0';
-//		sprintf(buf, "PeriodicSendAp\n");
-//		UART1PutBuf(buf);
 	}
+
+#if DEBUG_TIMING_AUTOPILOT > 0
+	dbgTstop(&telemetry_dbgT);
+#endif
+
 }
 
 /*********** EVENT ***********************************************************/

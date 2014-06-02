@@ -85,62 +85,6 @@ void generic_parse_msg(void) {
 
 }
 
-///* Sai: */
-//#ifndef NO_ETHERNET
-//void eth_parse_msg(void) {
-//
-//	uint8_t msg_id = IdOfMsg(eth_buffer);
-////	#if 0 // not ready yet
-////	  uint8_t sender_id = SenderIdOfMsg(eth_buffer);
-////
-////	  /* parse telemetry messages coming from other AC */
-////	  if (sender_id != 0) {
-////	    switch (msg_id) {
-////	#ifdef TCAS
-////	      case DL_TCAS_RA:
-////	        {
-////	          if (DL_TCAS_RESOLVE_ac_id(eth_buffer) == AC_ID && SenderIdOfMsg(eth_buffer) != AC_ID) {
-////	            uint8_t ac_id_conflict = SenderIdOfMsg(eth_buffer);
-////	            tcas_acs_status[the_acs_id[ac_id_conflict]].resolve = DL_TCAS_RA_resolve(eth_buffer);
-////	          }
-////	        }
-////	#endif
-////	    }
-////	    return;
-////	  }
-////	#endif
-//
-//	/* Sai: Code that will be executed when a simulator message is arrived on autopilot */
-//
-//#ifdef SHITL
-//	if (msg_id == DL_HITL_GPS_COMMON) {
-//		double lat = DL_HITL_GPS_COMMON_lat(eth_buffer);
-//		double lon = DL_HITL_GPS_COMMON_lon(eth_buffer);
-//		double alt = DL_HITL_GPS_COMMON_alt(eth_buffer);
-//		double course = DL_HITL_GPS_COMMON_course(eth_buffer);
-//		double gspeed = DL_HITL_GPS_COMMON_gspeed(eth_buffer);
-//		double climb = DL_HITL_GPS_COMMON_climb(eth_buffer);
-//		double time = DL_HITL_GPS_COMMON_time(eth_buffer);
-//		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
-//		sim_update_sv();
-//	} else if (msg_id == DL_HITL_IR_AHRS) {
-//		double roll = DL_HITL_IR_AHRS_ir_id(eth_buffer);
-//		double pitch = DL_HITL_IR_AHRS_pitch(eth_buffer);
-//		double yaw = DL_HITL_IR_AHRS_yaw(eth_buffer);
-//		double p = DL_HITL_IR_AHRS_p(eth_buffer);
-//		double q = DL_HITL_IR_AHRS_q(eth_buffer);
-//		double r = DL_HITL_IR_AHRS_r(eth_buffer);
-//		// copy to AHRS
-//		provide_attitude_and_rates(roll, pitch, yaw, p, q, r);
-//
-//		// copy IR
-//		set_ir(roll, pitch);
-//		}
-//#endif
-//
-//}
-//#endif
-
 void dl_parse_msg(void) {
 	datalink_time = 0;
 	uint8_t msg_id = IdOfMsg(dl_buffer);
@@ -252,7 +196,8 @@ void dl_parse_msg(void) {
 //				alt, course, gspeed, climb, time);
 //		UART1PutBuf(buf);
 	} else if (msg_id == DL_HITL_IR_AHRS) {
-		double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);
+		//double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);
+		double roll = DL_HITL_IR_AHRS_roll(dl_buffer);
 		double pitch = DL_HITL_IR_AHRS_pitch(dl_buffer);
 		double yaw = DL_HITL_IR_AHRS_yaw(dl_buffer);
 		double p = DL_HITL_IR_AHRS_p(dl_buffer);

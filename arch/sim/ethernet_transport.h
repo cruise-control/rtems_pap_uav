@@ -176,6 +176,11 @@ static inline void parseCircBuf(struct pprz_transport* t) {
 //}
 
 static inline void readEthBuffer(struct pprz_transport* t) {
+
+#ifdef NO_ETHERNET
+	return;
+#endif
+
 	static int sockfd, clientfd, portno;
 	static struct sockaddr_in serv_addr;
 	static int ethServerSetup = 0;
@@ -275,6 +280,13 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 		UART1Puts("Server received accept\r\n");
 		ethServerSetup = 1;
 	}
+
+	//Allow the connection to happen but return
+//#define DEBUG_NO_ETHERNET_RX
+#ifdef DEBUG_NO_ETHERNET_RX
+	return;
+#endif
+
 	struct timespec er;
 	rtems_clock_get_uptime(&er);
 #ifdef USE_SELECT_POLL
@@ -292,7 +304,6 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 
 		if (FD_ISSET(clientfd, &working)) {
 #endif
-	UART1Putc('1');
 
 	char buffer[MSG_READ_SIZE];
 	memset(buffer, 0, sizeof(buffer));
@@ -304,7 +315,6 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 		//This is for non-blocking Rx which was not working
 		if (errno == EWOULDBLOCK) {
 #if 0
-			UART1Putc('3');
 			struct timespec ex;
 			rtems_clock_get_uptime(&ex);
 
@@ -320,10 +330,8 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 			return;
 		}
 
-		UART1Putc('4');
 		return;
 	}
-	UART1Putc('2');
 	int var;
 	for (var = 0; var < numBytes; ++var) {
 		uint8_t ch = buffer[var];
@@ -331,9 +339,7 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 	}
 #ifdef USE_SELECT_POLL
 } else
-UART1Putc('0');
 } else if (rc == 0) {
-UART1Putc('0');
 }
 #endif
 

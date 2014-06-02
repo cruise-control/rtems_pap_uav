@@ -47,13 +47,7 @@
 #include "subsystems/electrical.h"
 #include "inter_mcu.h"
 
-//Sai: Macros for ETHERNET communication.
-// In PERIODIC_SEND_COMMANDS(), replaced _trans with CommChannel
-#ifndef NO_ETHERNET
-#define CommChannel Ethernet
-#else
 #define CommChannel DOWNLINK_TRANSPORT
-#endif
 
 #ifndef DOWNLINK_DEVICE
 #define DOWNLINK_DEVICE DOWNLINK_FBW_DEVICE

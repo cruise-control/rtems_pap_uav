@@ -30,6 +30,7 @@
 #include <drvmgr/drvmgr.h>
 #include <system.h>
 #include <rtems/termiostypes.h>
+#include "../../lib/dbgT.h"
 
 /*set the uart resource as input driven and set this resource when uart get initialised.*/
 struct drvmgr_key grlib_drv_res_apbuart0[] = { { "mode", KEY_TYPE_INT,
@@ -61,40 +62,36 @@ DRIVER_AMBAPP_GAISLER_APBUART_ID, 0, &grlib_drv_res_apbuart0[0] },
 #else
 #define Ap(f)
 #endif
+
+#if DEBUG_TIMING_MAIN_LOOP>0
+ts_dbgT mainLoop_dbgT;
+#endif
+
 rtems_task Init(rtems_task_argument ignored) {
-	long counter = 0;
+
+#if DEBUG_TIMING_MAIN_LOOP > 0
+	dbgTinit(&mainLoop_dbgT, MAIN_LOOP_ID);
+#endif
+
 #ifndef SERIO_TESTING
 	Fbw(init);
 	Ap(init);
 	//printf("end of init");
 	while (1) {
+
+#if DEBUG_TIMING_MAIN_LOOP > 0
+		dbgTstart(&mainLoop_dbgT);
+#endif
 		update_bat(12.0);
 		Fbw(handle_periodic_tasks);
 		Ap(handle_periodic_tasks);
 		Fbw(event_task);
 		Ap(event_task);
-		if (counter++ % 1000 == 0) {
-			static int firstRun = 1;
-			static struct timespec cur;
-			static struct timespec prev;
 
-			if (firstRun) {
-				rtems_clock_get_uptime(&prev);
-				firstRun = 0;
-			}
+#if DEBUG_TIMING_MAIN_LOOP > 0
+		dbgTstop(&mainLoop_dbgT);
+#endif
 
-			rtems_clock_get_uptime(&cur);
-
-			long begin = prev.tv_sec * 1000 * 1000 + prev.tv_nsec / 1000;
-			long finish = cur.tv_sec * 1000 * 1000 + cur.tv_nsec / 1000;
-			char buf[256];
-			buf[0] = '\0';
-			double freq = 1000.0 / ((finish - begin) * 1000 * 1000);
-			sprintf(buf, "%d diff %ld freq %f \r\n", counter, (finish - begin),
-					freq);
-			UART1PutBuf(buf);
-			prev = cur;
-		}
 	}
 #else
 	UART1Init();

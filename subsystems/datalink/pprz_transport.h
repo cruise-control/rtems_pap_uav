@@ -56,7 +56,6 @@
 //#include <sys/ioctl.h>
 #include <sys/sockio.h>
 
-
 /* PPRZ Transport
  * downlink macros
  */
@@ -169,7 +168,7 @@ extern struct pprz_transport pprz_tp;
 static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 	switch (t->status) {
 	case UNINIT:
-		if (c == STX){
+		if (c == STX) {
 			t->status++;
 		}
 		break;
@@ -188,7 +187,7 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		t->ck_a += c;
 		t->ck_b += t->ck_a;
 		t->payload_idx++;
-		if (t->payload_idx == t->trans.payload_len){
+		if (t->payload_idx == t->trans.payload_len) {
 			t->status++;
 		}
 		break;
@@ -201,7 +200,7 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		if (c != t->ck_b)
 			goto error;
 		t->trans.msg_received = TRUE;
-#define ETH_RX_DEBUG
+//#define ETH_RX_DEBUG
 #ifdef ETH_RX_DEBUG
 		static int counter = 0;
 		char buf[256];
@@ -220,10 +219,10 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 }
 
 static inline void pprz_parse_payload(struct pprz_transport * t) {
-  uint8_t i;
-  for(i = 0; i < t->trans.payload_len; i++)
-    dl_buffer[i] = t->trans.payload[i];
-  dl_msg_available = TRUE;
+	uint8_t i;
+	for (i = 0; i < t->trans.payload_len; i++)
+		dl_buffer[i] = t->trans.payload[i];
+	dl_msg_available = TRUE;
 }
 
 #define PprzBuffer(_dev) TransportLink(_dev,ChAvailable())

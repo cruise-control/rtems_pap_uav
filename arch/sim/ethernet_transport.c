@@ -30,6 +30,9 @@ struct sockaddr_in send_addr;
 #undef DEBUG_ETH
 #endif
 void ethernet_send_msg(int length) {
+#ifdef NO_ETHERNET
+	return;
+#endif
 
 	/*
 	 * TODO Fix the problem in Serial_pap later. This for now
@@ -70,6 +73,11 @@ void ethernet_send_msg(int length) {
 		obtainedSocket = 1;
 	}
 
+//#define DEBUG_NO_ETHERNET_TX
+#ifdef DEBUG_NO_ETHERNET_TX
+	return;
+#endif
+
 #ifdef DEBUG_ETH
 	struct timespec er;
 	UART1Puts(">> ethernet_send_msg");
@@ -85,7 +93,7 @@ void ethernet_send_msg(int length) {
 
 	if (num_bytes != txLength) {
 		//TODO If this happens, check the connection and determine if we should reconnect
-		UART1Puts("Could not send all the bytes in one single packet");
+		//UART1Puts("Could not send all the bytes in one single packet");
 	}
 	//Dumb but it'll work
 	if (!obtainedSocket)

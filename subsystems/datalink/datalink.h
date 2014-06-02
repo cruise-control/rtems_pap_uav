@@ -49,28 +49,12 @@
 #define UDP 3
 
 EXTERN bool_t dl_msg_available;
-///** Sai: */
-//#ifndef NO_ETHERNET
-//EXTERN bool_t eth_msg_available;
-//#endif
 
 /** Flag provided to control calls to ::dl_parse_msg. NOT used in this module*/
 
 EXTERN uint16_t datalink_time;
 
 #define MSG_SIZE 128
-///** Sai: */
-//#ifndef NO_ETHERNET
-//EXTERN uint8_t eth_buffer[MSG_SIZE]  __attribute__ ((aligned));
-//EXTERN void eth_parse_msg(void);
-///** Check for eth message and parse */
-//#define EthernetParse() {   \
-//	if (eth_msg_available) {      \
-//	  eth_parse_msg();      \
-//	  eth_msg_available = FALSE;  \
-//	  }                            \
-//  }
-//#endif
 
 EXTERN void dl_parse_msg(void);
 /** Should be called when chars are available in dl_buffer */
