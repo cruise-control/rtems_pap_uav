@@ -42,6 +42,7 @@
 
 #include "std.h"
 #include "dl_protocol.h"
+#include "arch/sim/nps_sim.h"
 
 /** Datalink kinds */
 #define PPRZ 1

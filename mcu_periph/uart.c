@@ -130,16 +130,20 @@ static void uart_init(int dev_index) {
 	tm.c_cc[VMIN] = 1;
 
 	/*set initial baud rate*/
-	cfsetispeed(&tm, 38400);
+	cfsetispeed(&tm, B230400);
+	cfsetospeed(&tm, B230400);
 
 	/*set and flush*/
-	if (tcsetattr(fd, TCSADRAIN, &tm) < 0) {
+	if (tcsetattr(fd, TCSANOW, &tm) < 0) {
 #ifdef _DEBUG
 		printf("\nError:couldn't  set attr for uart%d\n",dev_index);
 #endif
 		close(fd);
 		return;
 	}
+
+	tcflush(fd, TCIOFLUSH);
+
 	//create the binary semaphore for syncronization.
 	semaphore_name = rtems_build_name(uart_dev_arry[dev_index].uart_name[0],
 			uart_dev_arry[dev_index].uart_name[1],
@@ -250,11 +254,13 @@ static uint8_t uart_getch(int dev_index) {
 	rtems_semaphore_release(sem_id);
 	return data;
 }
+
 static void uart_setbaudrate(int dev_index, uint32_t baudrate,
 		bool_t hw_Ctrl_flow) {
 	int fd;
 	struct termios tm;
 	rtems_id sem_id;
+
 	if (!ISUARTOPENED(dev_index)) {
 		return;
 	}
@@ -264,14 +270,14 @@ static void uart_setbaudrate(int dev_index, uint32_t baudrate,
 
 	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
 #ifdef _DEBUG
-		printf("\nUART%d is already opened\n",dev_index);
+		printf("\nUART is already opened\n");
 #endif
 		return;
 	}
 
 	if (tcgetattr(fd, &tm) < 0) {
 #ifdef _DEBUG
-		printf("\nError:couldn't  get attr for uart%d\n",dev_index);
+		printf("\nError:couldn't  get attr for uart\n");
 #endif
 		rtems_semaphore_release(sem_id);
 		return;
@@ -280,7 +286,7 @@ static void uart_setbaudrate(int dev_index, uint32_t baudrate,
 	if (cfsetospeed(&tm, baudrate) != 0) {
 
 #ifdef _DEBUG
-		printf("\nError:couldn't  set baud rate for uart%d\n",dev_index);
+		printf("\nError: cfsetospeed couldn't  set baud rate for uart\n");
 #endif
 		rtems_semaphore_release(sem_id);
 		return;
@@ -288,14 +294,34 @@ static void uart_setbaudrate(int dev_index, uint32_t baudrate,
 
 	if (tcsetattr(fd, TCSANOW, &tm) < 0) {
 #ifdef _DEBUG
-		printf("\nError:couldn't  set attr for uart%d\n",dev_index);
+		printf("\nError: tcsetattr couldn't  set attr for uart\n");
 #endif
 		rtems_semaphore_release(sem_id);
 		return;
 	}
+
+	/*set initial baud rate*/
+	if (cfsetispeed(&tm, baudrate) != 0) {
+#ifdef _DEBUG
+		printf("\nError: cfsetispeed couldn't  set baud for uart\n");
+#endif
+		rtems_semaphore_release(sem_id);
+		return;
+	}
+
+	/*set and flush*/
+	if (tcsetattr(fd, TCSANOW, &tm) < 0) {
+#ifdef _DEBUG
+		printf("\nError: tcsetattr couldn't  set attr for uart\n");
+#endif
+		close(fd);
+		return;
+	}
+
 	rtems_semaphore_release(sem_id);
 	return;
 }
+
 static bool_t uart_txrunning(int dev_index) {
 	bool_t result = true;
 	(void) dev_index;
@@ -384,23 +410,29 @@ void UART1Init(void) {
 bool_t UART1CheckFreeSpace(uint8_t len) {
 	return uart_checkfreespace(1, len);
 }
-
+#define UART1_EXTRA_DEBUG
 void UART1PutBuf(char *dta) {
+#ifdef UART1_EXTRA_DEBUG
 	while (*dta != '\0') {
 		UART1Putc(*dta);
 		dta++;
 	}
+#endif
 }
 
 void UART1Putc(uint8_t dta) {
+#ifdef UART1_EXTRA_DEBUG
 	return uart_transmit(1, dta);
+#endif
 }
 
 void UART1Puts(const char * dta) {
+#ifdef UART1_EXTRA_DEBUG
 	while (*dta != '\0') {
 		UART1Putc(*dta);
 		dta++;
 	}
+#endif
 
 }
 

@@ -27,6 +27,9 @@
 #define DL_BOOZ_NAV_STICK 150
 #define DL_EXTERNAL_FILTER_SOLUTION 151
 #define DL_ROTORCRAFT_CAM_STICK 152
+#define DL_GPS_INT 155
+#define DL_AHRS_LTP 156
+#define DL_AHRS_ECEF 157
 #define DL_HITL_GPS_COMMON 171
 #define DL_HITL_IR_AHRS 172
 #define DL_MSG_datalink_NB 28
@@ -569,6 +572,41 @@
 #define DL_HITL_GPS_COMMON_gspeed(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+36)|((uint64_t)*((uint8_t*)_payload+36+1))<<8|((uint64_t)*((uint8_t*)_payload+36+2))<<16|((uint64_t)*((uint8_t*)_payload+36+3))<<24|((uint64_t)*((uint8_t*)_payload+36+4))<<32|((uint64_t)*((uint8_t*)_payload+36+5))<<40|((uint64_t)*((uint8_t*)_payload+36+6))<<48|((uint64_t)*((uint8_t*)_payload+36+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
 #define DL_HITL_GPS_COMMON_climb(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+44)|((uint64_t)*((uint8_t*)_payload+44+1))<<8|((uint64_t)*((uint8_t*)_payload+44+2))<<16|((uint64_t)*((uint8_t*)_payload+44+3))<<24|((uint64_t)*((uint8_t*)_payload+44+4))<<32|((uint64_t)*((uint8_t*)_payload+44+5))<<40|((uint64_t)*((uint8_t*)_payload+44+6))<<48|((uint64_t)*((uint8_t*)_payload+44+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
 #define DL_HITL_GPS_COMMON_time(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+52)|((uint64_t)*((uint8_t*)_payload+52+1))<<8|((uint64_t)*((uint8_t*)_payload+52+2))<<16|((uint64_t)*((uint8_t*)_payload+52+3))<<24|((uint64_t)*((uint8_t*)_payload+52+4))<<32|((uint64_t)*((uint8_t*)_payload+52+5))<<40|((uint64_t)*((uint8_t*)_payload+52+6))<<48|((uint64_t)*((uint8_t*)_payload+52+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+
+#define DL_GPS_INT_gps_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_GPS_INT_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_GPS_INT_ecef_x(_payload) ((int32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
+#define DL_GPS_INT_ecef_y(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24))
+#define DL_GPS_INT_ecef_z(_payload) ((int32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24))
+#define DL_GPS_INT_lat(_payload) ((int32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24))
+#define DL_GPS_INT_lon(_payload) ((int32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24))
+#define DL_GPS_INT_alt(_payload) ((int32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24))
+#define DL_GPS_INT_hmsl(_payload) ((int32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24))
+#define DL_GPS_INT_ecef_xd(_payload) ((int32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24))
+#define DL_GPS_INT_ecef_yd(_payload) ((int32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24))
+#define DL_GPS_INT_ecef_zd(_payload) ((int32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24))
+#define DL_GPS_INT_pacc(_payload) ((int32_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8|((uint32_t)*((uint8_t*)_payload+44+2))<<16|((uint32_t)*((uint8_t*)_payload+44+3))<<24))
+#define DL_GPS_INT_sacc(_payload) ((int32_t)(*((uint8_t*)_payload+48)|*((uint8_t*)_payload+48+1)<<8|((uint32_t)*((uint8_t*)_payload+48+2))<<16|((uint32_t)*((uint8_t*)_payload+48+3))<<24))
+#define DL_GPS_INT_tow(_payload) ((uint32_t)(*((uint8_t*)_payload+52)|*((uint8_t*)_payload+52+1)<<8|((uint32_t)*((uint8_t*)_payload+52+2))<<16|((uint32_t)*((uint8_t*)_payload+52+3))<<24))
+#define DL_GPS_INT_pdop(_payload) ((uint16_t)(*((uint8_t*)_payload+56)|*((uint8_t*)_payload+56+1)<<8))
+#define DL_GPS_INT_numsv(_payload) ((uint8_t)(*((uint8_t*)_payload+58)))
+#define DL_GPS_INT_fix(_payload) ((uint8_t)(*((uint8_t*)_payload+59)))
+
+
+#define DL_AHRS_ECEF_ir_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_AHRS_ECEF_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_AHRS_ECEF_p(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+4)|((uint64_t)*((uint8_t*)_payload+4+1))<<8|((uint64_t)*((uint8_t*)_payload+4+2))<<16|((uint64_t)*((uint8_t*)_payload+4+3))<<24|((uint64_t)*((uint8_t*)_payload+4+4))<<32|((uint64_t)*((uint8_t*)_payload+4+5))<<40|((uint64_t)*((uint8_t*)_payload+4+6))<<48|((uint64_t)*((uint8_t*)_payload+4+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_AHRS_ECEF_q(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+12)|((uint64_t)*((uint8_t*)_payload+12+1))<<8|((uint64_t)*((uint8_t*)_payload+12+2))<<16|((uint64_t)*((uint8_t*)_payload+12+3))<<24|((uint64_t)*((uint8_t*)_payload+12+4))<<32|((uint64_t)*((uint8_t*)_payload+12+5))<<40|((uint64_t)*((uint8_t*)_payload+12+6))<<48|((uint64_t)*((uint8_t*)_payload+12+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_AHRS_ECEF_r(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+20)|((uint64_t)*((uint8_t*)_payload+20+1))<<8|((uint64_t)*((uint8_t*)_payload+20+2))<<16|((uint64_t)*((uint8_t*)_payload+20+3))<<24|((uint64_t)*((uint8_t*)_payload+20+4))<<32|((uint64_t)*((uint8_t*)_payload+20+5))<<40|((uint64_t)*((uint8_t*)_payload+20+6))<<48|((uint64_t)*((uint8_t*)_payload+20+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+
+#define DL_AHRS_LTP_ir_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_AHRS_LTP_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_AHRS_LTP_qi(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+4)|((uint64_t)*((uint8_t*)_payload+4+1))<<8|((uint64_t)*((uint8_t*)_payload+4+2))<<16|((uint64_t)*((uint8_t*)_payload+4+3))<<24|((uint64_t)*((uint8_t*)_payload+4+4))<<32|((uint64_t)*((uint8_t*)_payload+4+5))<<40|((uint64_t)*((uint8_t*)_payload+4+6))<<48|((uint64_t)*((uint8_t*)_payload+4+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_AHRS_LTP_qx(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+12)|((uint64_t)*((uint8_t*)_payload+12+1))<<8|((uint64_t)*((uint8_t*)_payload+12+2))<<16|((uint64_t)*((uint8_t*)_payload+12+3))<<24|((uint64_t)*((uint8_t*)_payload+12+4))<<32|((uint64_t)*((uint8_t*)_payload+12+5))<<40|((uint64_t)*((uint8_t*)_payload+12+6))<<48|((uint64_t)*((uint8_t*)_payload+12+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_AHRS_LTP_qy(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+20)|((uint64_t)*((uint8_t*)_payload+20+1))<<8|((uint64_t)*((uint8_t*)_payload+20+2))<<16|((uint64_t)*((uint8_t*)_payload+20+3))<<24|((uint64_t)*((uint8_t*)_payload+20+4))<<32|((uint64_t)*((uint8_t*)_payload+20+5))<<40|((uint64_t)*((uint8_t*)_payload+20+6))<<48|((uint64_t)*((uint8_t*)_payload+20+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_AHRS_LTP_qz(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+28)|((uint64_t)*((uint8_t*)_payload+28+1))<<8|((uint64_t)*((uint8_t*)_payload+28+2))<<16|((uint64_t)*((uint8_t*)_payload+28+3))<<24|((uint64_t)*((uint8_t*)_payload+28+4))<<32|((uint64_t)*((uint8_t*)_payload+28+5))<<40|((uint64_t)*((uint8_t*)_payload+28+6))<<48|((uint64_t)*((uint8_t*)_payload+28+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+
+
 
 #define DL_HITL_IR_AHRS_ir_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_HITL_IR_AHRS_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))

@@ -199,6 +199,40 @@ void dl_parse_msg(void) {
 				alt, course, gspeed, climb, time);
 		UART1PutBuf(buf);
 #endif
+	} else if (msg_id == DL_GPS_INT) {
+		int32_t ecef_x = DL_GPS_INT_ecef_x(dl_buffer);
+		int32_t ecef_y = DL_GPS_INT_ecef_y(dl_buffer);
+		int32_t ecef_z = DL_GPS_INT_ecef_z(dl_buffer);
+		int32_t lat = DL_GPS_INT_lat(dl_buffer);
+		int32_t lon = DL_GPS_INT_lon(dl_buffer);
+		int32_t alt = DL_GPS_INT_alt(dl_buffer);
+		int32_t hsml = DL_GPS_INT_hmsl(dl_buffer);
+		int32_t ecef_xd = DL_GPS_INT_ecef_xd(dl_buffer);
+		int32_t ecef_yd = DL_GPS_INT_ecef_yd(dl_buffer);
+		int32_t ecef_zd = DL_GPS_INT_ecef_zd(dl_buffer);
+		int32_t pacc = DL_GPS_INT_pacc(dl_buffer);
+		int32_t sacc = DL_GPS_INT_sacc(dl_buffer);
+		int32_t tow = DL_GPS_INT_tow(dl_buffer);
+		uint16_t pdop = DL_GPS_INT_pdop(dl_buffer);
+		uint8_t numsv = DL_GPS_INT_numsv(dl_buffer);
+		uint8_t fix = DL_GPS_INT_fix(dl_buffer);
+		gps_feed_value(ecef_x, ecef_y, ecef_z, ecef_xd, ecef_yd, ecef_zd, lat,
+				lon, alt, hsml, pacc, sacc, tow);
+		sim_update_sv();
+
+	} else if (msg_id == DL_AHRS_ECEF) {
+		double p = DL_AHRS_ECEF_p(dl_buffer);
+		double q = DL_AHRS_ECEF_q(dl_buffer);
+		double r = DL_AHRS_ECEF_r(dl_buffer);
+		sim_overwrite_ahrs_ecef(p, q, r);
+		//TODO Process this data now
+	} else if (msg_id == DL_AHRS_LTP) {
+		double qi = DL_AHRS_LTP_qi(dl_buffer);
+		double qx = DL_AHRS_LTP_qx(dl_buffer);
+		double qy = DL_AHRS_LTP_qy(dl_buffer);
+		double qz = DL_AHRS_LTP_qz(dl_buffer);
+		sim_overwrite_ahrs_ltp(qi, qx, qy, qz);
+		//TODO Process this data now
 	} else if (msg_id == DL_HITL_IR_AHRS) {
 		//double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);
 		double roll = DL_HITL_IR_AHRS_roll(dl_buffer);

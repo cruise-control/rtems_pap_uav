@@ -76,6 +76,7 @@ rtems_task Init(rtems_task_argument ignored) {
 #ifndef SERIO_TESTING
 	Fbw(init);
 	Ap(init);
+	UART1SetBaudrate(115200);
 	//printf("end of init");
 	while (1) {
 
