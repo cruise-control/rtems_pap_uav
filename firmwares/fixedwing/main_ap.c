@@ -555,6 +555,8 @@ volatile uint8_t new_ins_attitude = 0;
 
 void attitude_loop(void) {
 
+	dbgGpioSet(GPIO_PORT_B);
+
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstart(&attitude_dbgT);
 #endif
@@ -607,6 +609,8 @@ void attitude_loop(void) {
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstop(&attitude_dbgT);
 #endif
+
+	dbgGpioClear(GPIO_PORT_B);
 }
 /** Maximum time allowed for low battery level before going into kill mode */
 #define LOW_BATTERY_DELAY 5
@@ -720,7 +724,6 @@ void event_task_ap(void) {
 //#else
 	//TODO IS opening a socket connection every main loop expensive with RTEMS?
 	//Probably, slow down the data link access
-
 	DatalinkEvent();
 
 //#endif

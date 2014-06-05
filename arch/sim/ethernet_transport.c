@@ -62,7 +62,7 @@ void ethernet_send_msg(int length) {
 		}
 		memset(&send_addr, '0', sizeof(send_addr));
 		send_addr.sin_family = AF_INET;
-		send_addr.sin_addr.s_addr = inet_addr("10.42.0.3");
+		send_addr.sin_addr.s_addr = inet_addr("10.42.0.1");
 		send_addr.sin_port = htons(sendPort);
 
 		int status = connect(send_fd, &send_addr, sizeof(send_addr));
