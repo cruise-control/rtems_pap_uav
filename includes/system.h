@@ -43,6 +43,9 @@
 #ifdef USE_UART1
 #	define	CONFIGURE_DRIVER_AMBAPP_GAISLER_APBUART
 #endif
+#ifdef USE_RTEMS_GPIO
+#	define CONFIGURE_DRIVER_AMBAPP_GAISLER_GRGPIO  /* GRGPIO driver */
+#endif
 #include <drvmgr/drvmgr_confdefs.h>
 
 #endif /* SYSTEM_H_ */

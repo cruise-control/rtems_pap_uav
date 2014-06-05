@@ -27,6 +27,60 @@
 #include "../../mcu_periph/uart.h"
 #include "../../lib/ring_buf.h"
 
+#ifdef USE_RTEMS_GPIO
+#include <gpiolib.h>
+#define GPIO_PORT_A (0)
+#define GPIO_PORT_B (1)
+void* portA;
+void* portB;
+#endif
+
+void dbgGpioInit() {
+#ifdef USE_RTEMS_GPIO
+
+	if (gpiolib_initialize()) {
+		UART1Putc("Failed to initialize gpio library\r\n");
+	}
+	gpiolib_show(-1, NULL);
+	portA = gpiolib_open(GPIO_PORT_A);
+	portB = gpiolib_open(GPIO_PORT_B);
+	if (portA == NULL) {
+		UART1Putc("Failed to open the gpio portA\r\n");
+	}
+	if (portB == NULL) {
+		UART1Putc("Failed to open the gpio portB\r\n");
+	}
+	gpiolib_set(portA, 1, 0);
+	gpiolib_set(portB, 1, 0);
+#endif
+}
+
+void dbgGpioSet(int chan) {
+	switch (chan) {
+	case GPIO_PORT_A:
+		gpiolib_set(portA, 1, 1);
+		break;
+	case GPIO_PORT_B:
+		gpiolib_set(portB, 1, 1);
+		break;
+	default:
+		break;
+	}
+}
+
+void dbgGpioClear(int chan) {
+	switch (chan) {
+	case GPIO_PORT_A:
+		gpiolib_set(portA, 1, 0);
+		break;
+	case GPIO_PORT_B:
+		gpiolib_set(portB, 1, 0);
+		break;
+	default:
+		break;
+	}
+}
+
 void dbgTinit(ts_dbgT* t, int id) {
 	t->counter = 0;
 	t->id = id;

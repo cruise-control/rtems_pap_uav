@@ -33,6 +33,7 @@ void UART1PutBuf(char *dta);
 void UART1Putc(uint8_t dta);
 void UART1Puts(const char * dta);
 void UART1Transmit(uint8_t _x);
+void UART1TransmitBlock(char *data, int len);
 inline void UART1SendMessage();
 bool_t UART1ChAvailable(void);
 uint8_t UART1Getch(void);

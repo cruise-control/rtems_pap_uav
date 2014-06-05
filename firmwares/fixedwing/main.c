@@ -73,32 +73,30 @@ rtems_task Init(rtems_task_argument ignored) {
 	dbgTinit(&mainLoop_dbgT, MAIN_LOOP_ID);
 #endif
 
-#ifndef SERIO_TESTING
 	Fbw(init);
 	Ap(init);
-	UART1SetBaudrate(115200);
-	//printf("end of init");
-	while (1) {
 
+	dbgGpioInit();
+
+	uint16_t value = 0;
+	while (1) {
+		dbgGpioSet(GPIO_PORT_A);
 //#if DEBUG_TIMING_MAIN_LOOP > 0
 //		dbgTstart(&mainLoop_dbgT);
 //#endif
+
 		update_bat(12.0);
 		Fbw(handle_periodic_tasks);
 		Ap(handle_periodic_tasks);
 		Fbw(event_task);
 		Ap(event_task);
 
+		dbgGpioClear(GPIO_PORT_A);
 //#if DEBUG_TIMING_MAIN_LOOP > 0
 //		dbgTstop(&mainLoop_dbgT);
 //#endif
 
 	}
-#else
-	UART1Init();
-	while(1) {
-		Ap(event_task);
-	}
-#endif
+
 	return;
 }

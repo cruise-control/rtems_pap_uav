@@ -231,8 +231,11 @@ static inline void pprz_parse_payload(struct pprz_transport * t) {
 	dl_msg_available = TRUE;
 }
 
+//Using if instead of while ensures that with queued up data the main loop will still process
+//however, if the main loop runs slower than the numer of incoming bytes we will not be able to
+//keep up pace and data will get backlogged (and the simulation will be slower)
 #define PprzBuffer(_dev) TransportLink(_dev,ChAvailable())
-#define ReadPprzBuffer(_dev,_trans) { while (TransportLink(_dev,ChAvailable())&&!(_trans.trans.msg_received)) parse_pprz(&(_trans),TransportLink(_dev,Getch())); }
+#define ReadPprzBuffer(_dev,_trans) { /*while*/if (TransportLink(_dev,ChAvailable())&&!(_trans.trans.msg_received)) parse_pprz(&(_trans),TransportLink(_dev,Getch())); }
 #define PprzCheckAndParse(_dev,_trans) {  \
   if (PprzBuffer(_dev)) {                 \
     ReadPprzBuffer(_dev,_trans);          \

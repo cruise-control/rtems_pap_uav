@@ -50,6 +50,7 @@
 
 #ifdef SHITL
 #include "arch/sim/jsbsim_hw.h"
+#include "lib/dbgT.h"
 #endif
 
 #include "subsystems/navigation/common_nav.h"
@@ -183,6 +184,7 @@ void dl_parse_msg(void) {
 #endif
 #ifdef SHITL
 	if (msg_id == DL_HITL_GPS_COMMON) {
+		dbgGpioSet(GPIO_PORT_B);
 		double lat = DL_HITL_GPS_COMMON_lat(dl_buffer);
 		double lon = DL_HITL_GPS_COMMON_lon(dl_buffer);
 		double alt = DL_HITL_GPS_COMMON_alt(dl_buffer);
@@ -192,6 +194,7 @@ void dl_parse_msg(void) {
 		double time = DL_HITL_GPS_COMMON_time(dl_buffer);
 		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
 		sim_update_sv();
+		dbgGpioClear(GPIO_PORT_B);
 #ifdef DEBUG_DL_HITL_GPS_COMMON
 		char buf[256];
 		buf[0] = "\0";

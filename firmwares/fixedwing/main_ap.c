@@ -253,6 +253,7 @@ void init_ap(void) {
 }
 
 void handle_periodic_tasks_ap(void) {
+
 #if DEBUG_TIMING_AUTOPILOT > 0
 	//Initialise and assign known ID's to each
 	static int init = 0;
@@ -606,7 +607,6 @@ void attitude_loop(void) {
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstop(&attitude_dbgT);
 #endif
-
 }
 /** Maximum time allowed for low battery level before going into kill mode */
 #define LOW_BATTERY_DELAY 5
@@ -655,6 +655,7 @@ void monitor_task(void) {
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstop(&monitor_dbgT);
 #endif
+
 }
 
 /**
@@ -719,8 +720,8 @@ void event_task_ap(void) {
 //#else
 	//TODO IS opening a socket connection every main loop expensive with RTEMS?
 	//Probably, slow down the data link access
-	DatalinkEvent()
-	;
+
+	DatalinkEvent();
 
 //#endif
 

@@ -8,9 +8,6 @@ extern char *plen;
 #define IVY_END   0x7F
 /*IVY_START + LEN_BUFFER + IVY_END */
 
-
-
-
 #define IvyTransportCheckFreeSpace(_dev,_) TRUE
 #define IvyTransportSizeOf(_dev, _payload) (_payload)
 #define IvyTransportPut1Byte(_dev,_x)  { \
@@ -31,12 +28,17 @@ extern char *plen;
 #define IvyTransportTrailer(_dev) {		\
   IvyTransportPut1Byte(_dev,'\0');		\
   IvyTransportPut1Byte(_dev,IVY_END);		\
+  UART1TransmitBlock(ivy_buf,*plen); \
+}
+
+/*
   uint8_t _i=0;					\
   while(_i<*plen) {				\
   IvyTransportByte(_dev,ivy_buf[_i]);		\
   _i++;						\
   }						\
   }
+*/
 
 #define IvyTransportPutUint8(_dev,x) {		\
     int bytes= sprintf(ivy_p, "%u ", x);	\

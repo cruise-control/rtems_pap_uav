@@ -66,8 +66,8 @@ static uart_dev_info_t uart_dev_arry[MAX_UART_DEV_CNT] = { { "/dev/console_a", {
  * 3.If more than one task want to use the same UART at the same time access to device will
  * be syncrionised.
  */
-#define TX_BUFFER_LEN					 1024
-#define RX_BUFFER_LEN					 1024
+#define TX_BUFFER_LEN					 1024*2
+#define RX_BUFFER_LEN					 1024*2
 #define ISUARTOPENED(dev_index)          (uart_dev_arry[dev_index].fd != -1) ? TRUE : FALSE
 #define ISVALIDUARTINDEX(dev_index)      (((dev_index >=0) && (dev_index < MAX_UART_DEV_CNT)) ? TRUE : FALSE)
 
@@ -79,6 +79,7 @@ static uint8_t uart_getch(int dev_index);
 static bool_t uart_txrunning(int dev_index);
 static void uart_setbaudrate(int dev_index, uint32_t baudrate,
 		bool_t hw_Ctrl_flow);
+static void uart_transmit_block(int dev_index, uint8_t *data, int length);
 
 /*
  * The current driver which is being used for the UART is based upon termios.
@@ -98,7 +99,7 @@ static void uart_init(int dev_index) {
 	}
 
 	/*Before opening the UART set the size of the receiver and transmitter buffer.*/
-	rtems_termios_bufsize(256, RX_BUFFER_LEN, TX_BUFFER_LEN);
+	rtems_termios_bufsize(256 * 2, RX_BUFFER_LEN, TX_BUFFER_LEN);
 
 	fd = open(uart_dev_arry[dev_index].uart_name, O_RDWR);
 	if (fd < 0) {
@@ -170,6 +171,34 @@ static void uart_init(int dev_index) {
 	uart_dev_arry[dev_index].byteAvailable = 0;
 	uart_dev_arry[dev_index].fd = fd;
 	uart_dev_arry[dev_index].semaphore_id = sem_id;
+	return;
+}
+
+static void uart_transmit_block(int dev_index, uint8_t *data, int length) {
+	int fd;
+	size_t bytes;
+	rtems_id sem_id;
+	if (!ISUARTOPENED(dev_index)) {
+		return;
+	}
+
+	fd = uart_dev_arry[dev_index].fd;
+	sem_id = uart_dev_arry[dev_index].semaphore_id;
+
+	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
+#ifdef _DEBUG
+		printf("\nUART%d is already opened\n",dev_index);
+#endif
+		return;
+	}
+	bytes = write(fd, data, length);
+	if (bytes < 0) {
+		rtems_semaphore_release(sem_id);
+#ifdef _DEBUG
+		printf("Error in writing data to UART %d",dev_index);
+#endif
+	}
+	rtems_semaphore_release(sem_id);
 	return;
 }
 
@@ -436,6 +465,9 @@ void UART1Puts(const char * dta) {
 
 }
 
+void UART1TransmitBlock(char *data, int len) {
+	return uart_transmit_block(1, (uint8_t*) data, len);
+}
 void UART1Transmit(uint8_t data) {
 	return uart_transmit(1, data);
 }

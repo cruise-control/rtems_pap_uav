@@ -41,6 +41,7 @@
 								<option id="org.rtems.cdt.tool.gcc.option.b.540189051" name="Search paths (-B)" superClass="org.rtems.cdt.tool.gcc.option.b"/>
 								<option id="org.rtems.cdt.tool.gcc.option.d.40729312" name="Defined symbols (-D)" superClass="org.rtems.cdt.tool.gcc.option.d" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="AGR_CLIMB"/>
+									<listOptionValue builtIn="false" value="USE_RTEMS_GPIO"/>
 									<listOptionValue builtIn="false" value="USE_UART1"/>
 									<listOptionValue builtIn="false" value="LOITER_TRIM"/>
 									<listOptionValue builtIn="false" value="BOARD_CONFIG=\&quot;boards/pc_sim.h\&quot;"/>
