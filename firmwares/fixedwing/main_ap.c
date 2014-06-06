@@ -30,6 +30,8 @@
 
 #define MODULES_C
 
+#define ABI_C
+
 #include <math.h>
 
 #include "firmwares/fixedwing/main_ap.h"
@@ -52,8 +54,10 @@
 #if USE_AHRS_ALIGNER
 #include "subsystems/ahrs/ahrs_aligner.h"
 #endif
-#if USE_BAROMETER
+#include "subsystems/air_data.h"
+#if USE_BARO_BOARD
 #include "subsystems/sensors/baro.h"
+PRINT_CONFIG_MSG_VALUE("USE_BARO_BOARD is TRUE, reading onboard baro: ", BARO_BOARD)
 #endif
 #include "subsystems/ins.h"
 
@@ -62,7 +66,7 @@
 #include "firmwares/fixedwing/autopilot.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
 #include CTRL_TYPE_H
-#include "subsystems/nav.h"
+#include "firmwares/fixedwing/nav.h"
 #include "generated/flight_plan.h"
 #ifdef TRAFFIC_INFO
 #include "subsystems/navigation/traffic_info.h"
@@ -83,9 +87,28 @@
 #if defined RADIO_CONTROL || defined RADIO_CONTROL_AUTO1
 #include "rc_settings.h"
 #endif
+#include "subsystems/abi.h"
 
 #include "gpio.h"
 #include "led.h"
+#include "subsystems/imu/imu_nps.h"
+
+#ifdef USE_NPS
+#include "nps_autopilot.h"
+#endif
+
+/* Default trim commands for roll, pitch and yaw */
+#ifndef COMMAND_ROLL_TRIM
+#define COMMAND_ROLL_TRIM 0
+#endif
+
+#ifndef COMMAND_PITCH_TRIM
+#define COMMAND_PITCH_TRIM 0
+#endif
+
+#ifndef COMMAND_YAW_TRIM
+#define COMMAND_YAW_TRIM 0
+#endif
 
 /* if PRINT_CONFIG is defined, print some config options */
 PRINT_CONFIG_VAR(PERIODIC_FREQUENCY)PRINT_CONFIG_VAR(NAVIGATION_FREQUENCY)PRINT_CONFIG_VAR(
@@ -100,6 +123,7 @@ PRINT_CONFIG_VAR(TELEMETRY_FREQUENCY)
 #define MODULES_FREQUENCY 60
 #endif
 PRINT_CONFIG_VAR(MODULES_FREQUENCY)
+
 
 #if USE_AHRS && USE_IMU
 
@@ -116,6 +140,15 @@ static inline void on_gyro_event( void );
 static inline void on_accel_event( void );
 static inline void on_mag_event( void );
 volatile uint8_t ahrs_timeout_counter = 0;
+
+//FIXME not the correct place
+static void send_fliter_status(void) {
+  uint8_t mde = 3;
+  if (ahrs.status == AHRS_UNINIT) mde = 2;
+  if (ahrs_timeout_counter > 10) mde = 5;
+  uint16_t val = 0;
+  DOWNLINK_SEND_STATE_FILTER_STATUS(DefaultChannel, DefaultDevice, &mde, &val);
+}
 
 #endif // USE_AHRS && USE_IMU
 
@@ -165,7 +198,11 @@ void init_ap(void) {
 	mcu_init();
 #endif /* SINGLE_MCU */
 
-	/************* Sensors initialization ***************/
+  /****** initialize and reset state interface ********/
+
+  stateInit();
+
+  /************* Sensors initialization ***************/
 #if USE_GPS
 	gps_init();
 #endif
@@ -175,7 +212,10 @@ void init_ap(void) {
 #endif
 
 #if USE_IMU
-	imu_init();
+  imu_init();
+#if USE_IMU_FLOAT
+  imu_float_init();
+#endif
 #endif
 
 #if USE_AHRS_ALIGNER
@@ -186,13 +226,16 @@ void init_ap(void) {
 	ahrs_init();
 #endif
 
-#if USE_BAROMETER
-	baro_init();
+#if USE_AHRS && USE_IMU
+  register_periodic_telemetry(DefaultPeriodic, "STATE_FILTER_STATUS", send_fliter_status);
 #endif
 
-	ins_init();
+//  air_data_init();
+#if USE_BARO_BOARD
+  baro_init();
+#endif
 
-	stateInit();
+  ins_init();
 
 	/************* Links initialization ***************/
 #if defined MCU_SPI_LINK || defined MCU_UART_LINK
@@ -250,7 +293,15 @@ void init_ap(void) {
 #ifdef TRAFFIC_INFO
 	traffic_info_init();
 #endif
+
+  /* set initial trim values.
+   * these are passed to fbw via inter_mcu.
+   */
+  ap_state->command_roll_trim = COMMAND_ROLL_TRIM;
+  ap_state->command_pitch_trim = COMMAND_PITCH_TRIM;
+  ap_state->command_yaw_trim = COMMAND_YAW_TRIM;
 }
+
 
 void handle_periodic_tasks_ap(void) {
 
@@ -420,8 +471,10 @@ static inline void telecommand_task(void) {
 	mcu1_ppm_cpt = fbw_state->ppm_cpt;
 #endif // RADIO_CONTROL
 
-	vsupply = fbw_state->vsupply;
-	current = fbw_state->current;
+
+  vsupply = fbw_state->vsupply;
+  current = fbw_state->current;
+  energy = fbw_state->energy;
 
 #ifdef RADIO_CONTROL
 	if (!autopilot_flight_time) {
@@ -470,7 +523,7 @@ void sensors_task(void) {
 }
 
 #ifdef FAILSAFE_DELAY_WITHOUT_GPS
-#define GpsTimeoutError (sys_time.nb_sec - gps.last_fix_time > FAILSAFE_DELAY_WITHOUT_GPS)
+#define GpsTimeoutError (sys_time.nb_sec - gps.last_3dfix_time > FAILSAFE_DELAY_WITHOUT_GPS)
 #endif
 
 /**

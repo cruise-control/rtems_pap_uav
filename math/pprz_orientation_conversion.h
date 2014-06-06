@@ -57,8 +57,8 @@
 #ifndef PPRZ_ORIENTATION_CONVERSION_H
 #define PPRZ_ORIENTATION_CONVERSION_H
 
-#include "pprz_algebra_int.h"
-#include "pprz_algebra_float.h"
+#include "math/pprz_algebra_int.h"
+#include "math/pprz_algebra_float.h"
 
 #include "std.h"
 

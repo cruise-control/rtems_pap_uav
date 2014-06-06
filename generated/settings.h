@@ -1,4 +1,4 @@
-/* This file has been generated from /home/manish/paprazzi-git/paparazzi/var/Microjet/settings_modules.xml /home/manish/paprazzi-git/paparazzi/conf/settings/estimation/infrared.xml /home/manish/paprazzi-git/paparazzi/conf/settings/control/ctl_basic.xml /home/manish/paprazzi-git/paparazzi/conf/settings/fixedwing_basic.xml /home/manish/paprazzi-git/paparazzi/var/Microjet/settings_telemetry.xml */
+/* This file has been generated from /home/j3/paparazzi/var/aircrafts/Microjet_LisaM/settings_modules.xml /home/j3/paparazzi/conf/settings/estimation/ins_neutrals.xml /home/j3/paparazzi/conf/settings/control/ctl_dash_loiter_trim.xml /home/j3/paparazzi/conf/settings/control/ctl_basic.xml /home/j3/paparazzi/conf/settings/fixedwing_basic.xml /home/j3/paparazzi/var/aircrafts/Microjet_LisaM/settings_telemetry.xml */
 /* Please DO NOT EDIT */
 
 #ifndef SETTINGS_H
@@ -8,15 +8,69 @@
 }
 
 #include "autopilot.h"
+#include "firmwares/fixedwing/nav.h"
 #include "guidance/guidance_v.h"
 #include "inter_mcu.h"
 #include "stabilization/stabilization_attitude.h"
+#include "subsystems/ahrs.h"
 #include "subsystems/gps.h"
-#include "subsystems/nav.h"
-#include "subsystems/sensors/infrared.h"
 #include "generated/modules.h"
 #include "generated/periodic_telemetry.h"
 
+#define SETTINGS { \
+ { "telemetry_mode_Ap" }, \
+ { "telemetry_mode_Fbw" }, \
+ { "flight_altitude" }, \
+ { "nav_course" }, \
+ { "nav_shift" }, \
+ { "autopilot_flight_time" }, \
+ { "nav_radius" }, \
+ { "pprz_mode" }, \
+ { "launch" }, \
+ { "kill_throttle" }, \
+ { "gps.reset" }, \
+ { "ap_state->command_roll_trim" }, \
+ { "ap_state->command_pitch_trim" }, \
+ { "ap_state->command_yaw_trim" }, \
+ { "h_ctl_roll_pgain" }, \
+ { "h_ctl_roll_max_setpoint" }, \
+ { "h_ctl_pitch_pgain" }, \
+ { "h_ctl_pitch_dgain" }, \
+ { "h_ctl_elevator_of_roll" }, \
+ { "h_ctl_aileron_of_throttle" }, \
+ { "h_ctl_roll_attitude_gain" }, \
+ { "h_ctl_roll_rate_gain" }, \
+ { "v_ctl_altitude_pgain" }, \
+ { "v_ctl_auto_throttle_cruise_throttle" }, \
+ { "v_ctl_auto_throttle_pgain" }, \
+ { "v_ctl_auto_throttle_igain" }, \
+ { "v_ctl_auto_throttle_dgain" }, \
+ { "v_ctl_auto_throttle_climb_throttle_increment" }, \
+ { "v_ctl_auto_throttle_pitch_of_vz_pgain" }, \
+ { "v_ctl_auto_throttle_pitch_of_vz_dgain" }, \
+ { "v_ctl_auto_pitch_pgain" }, \
+ { "v_ctl_auto_pitch_igain" }, \
+ { "h_ctl_course_pgain" }, \
+ { "h_ctl_course_dgain" }, \
+ { "h_ctl_course_pre_bank_correction" }, \
+ { "nav_glide_pitch_trim" }, \
+ { "h_ctl_roll_slew" }, \
+ { "nav_radius" }, \
+ { "nav_course" }, \
+ { "nav_mode" }, \
+ { "nav_climb" }, \
+ { "fp_pitch" }, \
+ { "nav_shift" }, \
+ { "nav_ground_speed_setpoint" }, \
+ { "nav_ground_speed_pgain" }, \
+ { "nav_survey_shift" }, \
+ { "v_ctl_auto_throttle_dash_trim" }, \
+ { "v_ctl_auto_throttle_loiter_trim" }, \
+ { "ins_roll_neutral" }, \
+ { "ins_pitch_neutral" }, \
+ { "digital_cam_servo_servo_cam_ctrl_periodic_status" }, \
+};
+#define NB_SETTING 51
 #define DlSetting(_idx, _value) { \
   switch (_idx) { \
     case 0: telemetry_mode_Ap = _value; break;\
@@ -65,24 +119,18 @@
     case 43: nav_ground_speed_setpoint = _value; break;\
     case 44: nav_ground_speed_pgain = _value; break;\
     case 45: nav_survey_shift = _value; break;\
-    case 46: infrared.roll_neutral = _value; break;\
-    case 47: infrared.pitch_neutral = _value; break;\
-    case 48: infrared.lateral_correction = _value; break;\
-    case 49: infrared.longitudinal_correction = _value; break;\
-    case 50: infrared.vertical_correction = _value; break;\
-    case 51: infrared.correction_left = _value; break;\
-    case 52: infrared.correction_right = _value; break;\
-    case 53: infrared.correction_up = _value; break;\
-    case 54: infrared.correction_down = _value; break;\
-    case 55: openlog_periodic_2Hz_openlog_status = _value; break;\
-    case 56: digital_cam_servo_servo_cam_ctrl_periodic_status = _value; break;\
+    case 46: v_ctl_auto_throttle_dash_trim = _value; break;\
+    case 47: v_ctl_auto_throttle_loiter_trim = _value; break;\
+    case 48: ins_roll_neutral = _value; break;\
+    case 49: ins_pitch_neutral = _value; break;\
+    case 50: digital_cam_servo_servo_cam_ctrl_periodic_status = _value; break;\
     default: break;\
   }\
 }
 #define PeriodicSendDlValue(_trans, _dev) { \
   static uint8_t i;\
   float var;\
-  if (i >= 57) i = 0;\
+  if (i >= 51) i = 0;\
   switch (i) { \
     case 0: var = telemetry_mode_Ap; break;\
     case 1: var = telemetry_mode_Fbw; break;\
@@ -130,17 +178,11 @@
     case 43: var = nav_ground_speed_setpoint; break;\
     case 44: var = nav_ground_speed_pgain; break;\
     case 45: var = nav_survey_shift; break;\
-    case 46: var = infrared.roll_neutral; break;\
-    case 47: var = infrared.pitch_neutral; break;\
-    case 48: var = infrared.lateral_correction; break;\
-    case 49: var = infrared.longitudinal_correction; break;\
-    case 50: var = infrared.vertical_correction; break;\
-    case 51: var = infrared.correction_left; break;\
-    case 52: var = infrared.correction_right; break;\
-    case 53: var = infrared.correction_up; break;\
-    case 54: var = infrared.correction_down; break;\
-    case 55: var = openlog_periodic_2Hz_openlog_status; break;\
-    case 56: var = digital_cam_servo_servo_cam_ctrl_periodic_status; break;\
+    case 46: var = v_ctl_auto_throttle_dash_trim; break;\
+    case 47: var = v_ctl_auto_throttle_loiter_trim; break;\
+    case 48: var = ins_roll_neutral; break;\
+    case 49: var = ins_pitch_neutral; break;\
+    case 50: var = digital_cam_servo_servo_cam_ctrl_periodic_status; break;\
     default: var = 0.; break;\
   }\
   DOWNLINK_SEND_DL_VALUE(_trans, _dev, &i, &var);\
@@ -194,17 +236,11 @@ static inline float settings_get_value(uint8_t i) {
     case 43: return nav_ground_speed_setpoint;
     case 44: return nav_ground_speed_pgain;
     case 45: return nav_survey_shift;
-    case 46: return infrared.roll_neutral;
-    case 47: return infrared.pitch_neutral;
-    case 48: return infrared.lateral_correction;
-    case 49: return infrared.longitudinal_correction;
-    case 50: return infrared.vertical_correction;
-    case 51: return infrared.correction_left;
-    case 52: return infrared.correction_right;
-    case 53: return infrared.correction_up;
-    case 54: return infrared.correction_down;
-    case 55: return openlog_periodic_2Hz_openlog_status;
-    case 56: return digital_cam_servo_servo_cam_ctrl_periodic_status;
+    case 46: return v_ctl_auto_throttle_dash_trim;
+    case 47: return v_ctl_auto_throttle_loiter_trim;
+    case 48: return ins_roll_neutral;
+    case 49: return ins_pitch_neutral;
+    case 50: return digital_cam_servo_servo_cam_ctrl_periodic_status;
     default: return 0.;
     }
   }

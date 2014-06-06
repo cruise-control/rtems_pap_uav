@@ -7,7 +7,6 @@
 #include "std.h"
 #include "generated/airframe.h"
 
-
 /* Macros for Ap process */
 #ifdef PERIODIC_C_AP
 #ifndef TELEMETRY_MODE_AP

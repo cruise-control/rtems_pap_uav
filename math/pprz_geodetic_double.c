@@ -138,7 +138,7 @@ double gc_of_gd_lat_d(double gd_lat, double hmsl) {
 }
 
 
-#include "pprz_geodetic_utm.h"
+#include "math/pprz_geodetic_utm.h"
 
 static inline double isometric_latitude_d(double phi, double e) {
   return log (tan (M_PI_4 + phi / 2.0)) - e / 2.0 * log((1.0 + e * sin(phi)) / (1.0 - e * sin(phi)));

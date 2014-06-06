@@ -1,4 +1,4 @@
-/* This file has been generated from /home/manish/paprazzi-git/paparazzi/conf/airframes/examples/microjet.xml */
+/* This file has been generated from /home/j3/paparazzi/conf/airframes/examples/microjet_lisa_m.xml */
 /* Please DO NOT EDIT */
 
 #ifndef MODULES_H
@@ -9,54 +9,54 @@
 #define MODULES_START 2
 #define MODULES_STOP  3
 
+#define MODULES_FREQUENCY 60
+
 #ifdef MODULES_C
 #define EXTERN_MODULES
 #else
 #define EXTERN_MODULES extern
 #endif
 #include "std.h"
-#include "openlog/openlog.h"
-#include "sensors/infrared_adc.h"
+#include "nav/nav_bungee_takeoff.h"
+#include "nav/nav_line.h"
+#include "nav/nav_line_border.h"
+#include "nav/nav_line_osam.h"
+#include "nav/nav_flower.h"
+#include "nav/nav_smooth.h"
+#include "nav/nav_survey_polygon.h"
+#include "nav/nav_survey_poly_osam.h"
+#include "nav/nav_vertical_raster.h"
 #include "digital_cam/servo_cam_ctrl.h"
 
-#define PERIODIC_2HZ_OPENLOG_PERIOD 0.500000
-#define PERIODIC_2HZ_OPENLOG_FREQ 2.000000
-#define INFRARED_ADC_UPDATE_PERIOD 0.016667
-#define INFRARED_ADC_UPDATE_FREQ 60.000000
 #define SERVO_CAM_CTRL_PERIODIC_PERIOD 0.250000
 #define SERVO_CAM_CTRL_PERIODIC_FREQ 4.000000
 
-EXTERN_MODULES uint8_t openlog_periodic_2Hz_openlog_status;
 EXTERN_MODULES uint8_t digital_cam_servo_servo_cam_ctrl_periodic_status;
 
 #ifdef MODULES_C
 
 static inline void modules_init(void) {
-  init_openlog();
-  openlog_periodic_2Hz_openlog_status = MODULES_START;
-  infrared_adc_init();
   servo_cam_ctrl_init();
   digital_cam_servo_servo_cam_ctrl_periodic_status = MODULES_START;
 }
 
 static inline void modules_periodic_task(void) {
-  static uint8_t i1; i1++; if (i1>=1) i1=0;
   static uint8_t i15; i15++; if (i15>=15) i15=0;
-  static uint8_t i30; i30++; if (i30>=30) i30=0;
 
-  if (openlog_periodic_2Hz_openlog_status == MODULES_START) { ; openlog_periodic_2Hz_openlog_status = MODULES_RUN; }
-  if (openlog_periodic_2Hz_openlog_status == MODULES_STOP) { ; openlog_periodic_2Hz_openlog_status = MODULES_IDLE; }
+
+
+
+
+
+
+
 
 
   if (digital_cam_servo_servo_cam_ctrl_periodic_status == MODULES_START) { ; digital_cam_servo_servo_cam_ctrl_periodic_status = MODULES_RUN; }
   if (digital_cam_servo_servo_cam_ctrl_periodic_status == MODULES_STOP) { ; digital_cam_servo_servo_cam_ctrl_periodic_status = MODULES_IDLE; }
 
-  infrared_adc_update();
   if (i15 == 0 && digital_cam_servo_servo_cam_ctrl_periodic_status == MODULES_RUN) {
     servo_cam_ctrl_periodic();
-  }
-  if (i30 == 7 && openlog_periodic_2Hz_openlog_status == MODULES_RUN) {
-    periodic_2Hz_openlog();
   }
 }
 

@@ -30,7 +30,7 @@
 #include "std.h"
 #include "led.h"
 #include "state.h"
-#include "subsystems/nav.h"
+#include "firmwares/fixedwing/nav.h"
 #include "generated/airframe.h"
 #include CTRL_TYPE_H
 #include "firmwares/fixedwing/autopilot.h"
@@ -64,7 +64,7 @@ float  h_ctl_pitch_dgain;
 pprz_t h_ctl_elevator_setpoint;
 
 #ifdef USE_AOA
-  uint8_t h_ctl_pitch_mode;
+uint8_t h_ctl_pitch_mode;
 #endif
 
 /* inner loop pre-command */
@@ -110,6 +110,14 @@ float h_ctl_roll_rate_gain;
 
 #ifdef AGR_CLIMB
 static float nav_ratio;
+#endif
+
+#if PERIODIC_TELEMETRY
+#include "subsystems/datalink/telemetry.h"
+
+static void send_calibration(void) {
+  DOWNLINK_SEND_CALIBRATION(DefaultChannel, DefaultDevice,  &v_ctl_auto_throttle_sum_err, &v_ctl_auto_throttle_submode);
+}
 #endif
 
 void h_ctl_init( void ) {
@@ -165,7 +173,11 @@ void h_ctl_init( void ) {
 #endif
 
 #ifdef AGR_CLIMB
-nav_ratio=0;
+  nav_ratio=0;
+#endif
+
+#if PERIODIC_TELEMETRY
+  register_periodic_telemetry(DefaultPeriodic, "CALIBRATION", send_calibration);
 #endif
 }
 
@@ -186,11 +198,11 @@ void h_ctl_course_loop ( void ) {
   float advance = cos(err) * (*stateGetHorizontalSpeedNorm_f()) / reference_advance;
 
   if (
-       (advance < 1.)  &&                          // Path speed is small
-       ((*stateGetHorizontalSpeedNorm_f()) < reference_advance)  // Small path speed is due to wind (small groundspeed)
-     )
+      (advance < 1.)  &&                          // Path speed is small
+      ((*stateGetHorizontalSpeedNorm_f()) < reference_advance)  // Small path speed is due to wind (small groundspeed)
+      )
   {
-/*
+    /*
     // rough crabangle approximation
     float wind_mod = sqrt(wind_east*wind_east + wind_north*wind_north);
     float wind_dir = atan2(wind_east,wind_north);
@@ -203,7 +215,7 @@ void h_ctl_course_loop ( void ) {
     float crab = sin(wind_dir-estimator_psi) * atan2(wind_mod,NOMINAL_AIRSPEED);
     //crab = estimator_hspeed_mod - estimator_psi;
     NormRadAngle(crab);
-*/
+    */
 
     // Heading error
     float herr = stateGetNedToBodyEulers_f()->psi - h_ctl_course_setpoint; //+crab);
@@ -227,14 +239,14 @@ void h_ctl_course_loop ( void ) {
     //  last_err = err;
     //h_ctl_course_heading_mode = 1;
   }
-/*  else
-  {
-    // Reset differentiator when switching mode
-    if (h_ctl_course_heading_mode == 1)
+  /*  else
+      {
+      // Reset differentiator when switching mode
+      if (h_ctl_course_heading_mode == 1)
       last_err = err;
-    h_ctl_course_heading_mode = 0;
-  }
-*/
+      h_ctl_course_heading_mode = 0;
+      }
+  */
 #endif //STRONG_WIND
 
   float d_err = err - last_err;
@@ -314,7 +326,7 @@ void h_ctl_attitude_loop ( void ) {
 inline static void h_ctl_roll_loop( void ) {
   float err = stateGetNedToBodyEulers_f()->phi - h_ctl_roll_setpoint;
   struct FloatRates* body_rate = stateGetBodyRates_f();
-#ifdef SITL || SHITL //TODO What is this for?
+#ifdef SITL
   static float last_err = 0;
   body_rate->p = (err - last_err)/(1/60.);
   last_err = err;
@@ -423,22 +435,22 @@ inline static void h_ctl_pitch_loop( void ) {
 
   h_ctl_pitch_loop_setpoint =  h_ctl_pitch_setpoint + h_ctl_elevator_of_roll / h_ctl_pitch_pgain * fabs(att->phi);
 
-	float err = 0;
+  float err = 0;
 
 #ifdef USE_AOA
-	switch (h_ctl_pitch_mode){
-		case H_CTL_PITCH_MODE_THETA:
-			err = att->theta - h_ctl_pitch_loop_setpoint;
-		break;
-		case H_CTL_PITCH_MODE_AOA:
-			err = (*stateGetAngleOfAttack_f()) - h_ctl_pitch_loop_setpoint;
-		break;
-		default:
-			err = att->theta - h_ctl_pitch_loop_setpoint;
-		break;
-	}
+  switch (h_ctl_pitch_mode){
+    case H_CTL_PITCH_MODE_THETA:
+      err = att->theta - h_ctl_pitch_loop_setpoint;
+      break;
+    case H_CTL_PITCH_MODE_AOA:
+      err = (*stateGetAngleOfAttack_f()) - h_ctl_pitch_loop_setpoint;
+      break;
+    default:
+      err = att->theta - h_ctl_pitch_loop_setpoint;
+      break;
+  }
 #else //NO_AOA
-	err = att->theta - h_ctl_pitch_loop_setpoint;
+  err = att->theta - h_ctl_pitch_loop_setpoint;
 #endif
 
 

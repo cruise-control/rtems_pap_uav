@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2005  Pascal Brisset, Antoine Drouin
+ * Copyright (C) 2011 ENAC - Gautier Hattenberger
  *
  * This file is part of paparazzi.
  *
@@ -20,16 +20,16 @@
  */
 
 /**
- * @file subsystems/navigation/discsurvey.h
+ * @file subsystems/abi.h
  *
+ * Main include for ABI (AirBorneInterface).
+ * @todo explain how to use ABI
  */
 
-#ifndef DISCSURVEY_H
-#define DISCSURVEY_H
+#ifndef ABI_H
+#define ABI_H
 
-#include "std.h"
+//SC Could not find this file
+//#include "abi_messages.h"
 
-extern bool_t disc_survey_init( float grid );
-extern bool_t disc_survey(uint8_t c, float radius);
-
-#endif /* DISCSURVEY_H */
+#endif /* ABI_H */

@@ -66,8 +66,8 @@ static uart_dev_info_t uart_dev_arry[MAX_UART_DEV_CNT] = { { "/dev/console_a", {
  * 3.If more than one task want to use the same UART at the same time access to device will
  * be syncrionised.
  */
-#define TX_BUFFER_LEN					 1024*2
-#define RX_BUFFER_LEN					 1024*2
+#define TX_BUFFER_LEN					 1024
+#define RX_BUFFER_LEN					 1024
 #define ISUARTOPENED(dev_index)          (uart_dev_arry[dev_index].fd != -1) ? TRUE : FALSE
 #define ISVALIDUARTINDEX(dev_index)      (((dev_index >=0) && (dev_index < MAX_UART_DEV_CNT)) ? TRUE : FALSE)
 
@@ -99,7 +99,7 @@ static void uart_init(int dev_index) {
 	}
 
 	/*Before opening the UART set the size of the receiver and transmitter buffer.*/
-	rtems_termios_bufsize(256 * 2, RX_BUFFER_LEN, TX_BUFFER_LEN);
+	rtems_termios_bufsize(256, RX_BUFFER_LEN, TX_BUFFER_LEN);
 
 	fd = open(uart_dev_arry[dev_index].uart_name, O_RDWR);
 	if (fd < 0) {

@@ -131,22 +131,23 @@ uint8_t dc_circle(float interval, float start) {
 
 /* shoot on survey */
 uint8_t dc_survey(float interval, float x, float y) {
-  dc_autoshoot = DC_AUTOSHOOT_SURVEY;
-  dc_gps_count = 0;
-  dc_gps_dist = interval;
-
-  if (x == DC_IGNORE && y == DC_IGNORE) {
-    dc_gps_x = stateGetPositionEnu_f()->x;
-    dc_gps_y = stateGetPositionEnu_f()->y;
-  } else if (y == DC_IGNORE) {
-    dc_gps_x = waypoints[(uint8_t)x].x;
-    dc_gps_y = waypoints[(uint8_t)x].y;
-  } else {
-    dc_gps_x = x;
-    dc_gps_y = y;
-  }
-  dc_gps_next_dist = 0;
-  dc_info();
+	//SC
+//  dc_autoshoot = DC_AUTOSHOOT_SURVEY;
+//  dc_gps_count = 0;
+//  dc_gps_dist = interval;
+//
+//  if (x == DC_IGNORE && y == DC_IGNORE) {
+//    dc_gps_x = stateGetPositionEnu_f()->x;
+//    dc_gps_y = stateGetPositionEnu_f()->y;
+//  } else if (y == DC_IGNORE) {
+//    dc_gps_x = waypoints[(uint8_t)x].x;
+//    dc_gps_y = waypoints[(uint8_t)x].y;
+//  } else {
+//    dc_gps_x = x;
+//    dc_gps_y = y;
+//  }
+//  dc_gps_next_dist = 0;
+//  dc_info();
   return 0;
 }
 

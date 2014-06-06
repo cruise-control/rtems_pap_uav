@@ -43,7 +43,7 @@
 #define DOWNLINK_DEVICE DOWNLINK_AP_DEVICE
 #endif
 #include "subsystems/datalink/downlink.h"
-#include "subsystems/nav.h"
+#include "firmwares/fixedwing/nav.h"
 
 #include "messages.h"
 #include "generated/periodic_telemetry.h"

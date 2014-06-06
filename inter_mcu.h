@@ -46,6 +46,10 @@
 #include "firmwares/fixedwing/main_fbw.h"
 
 #ifndef SINGLE_MCU
+// If radio_control defines
+#ifdef RADIO_CONTROL_NB_CHANNEL
+#undef RADIO_CONTROL_NB_CHANNEL
+#endif
 #include "generated/radio.h"
 #define RADIO_CONTROL_NB_CHANNEL RADIO_CTL_NB
 #endif
@@ -60,6 +64,7 @@ struct fbw_state {
   uint8_t nb_err;
   uint16_t vsupply; ///< 1e-1 V
   int32_t current;  ///< milliAmps
+  float energy;     ///< mAh
 };
 
 struct ap_state {
@@ -123,6 +128,7 @@ static inline void inter_mcu_fill_fbw_state (void) {
 
   fbw_state->vsupply = electrical.vsupply;
   fbw_state->current = electrical.current;
+  fbw_state->energy = electrical.energy;
 #if defined SINGLE_MCU
   /**Directly set the flag indicating to AP that shared buffer is available*/
   inter_mcu_received_fbw = TRUE;

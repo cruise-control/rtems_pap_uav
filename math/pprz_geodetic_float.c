@@ -218,7 +218,7 @@ void ecef_of_lla_f(struct EcefCoor_f* out, struct LlaCoor_f* in) {
 
 
 
-#include "pprz_geodetic_utm.h"
+#include "math/pprz_geodetic_utm.h"
 
 struct complex { float re; float im; };
 #define CScal(k, z) { z.re *= k;  z.im *= k; }

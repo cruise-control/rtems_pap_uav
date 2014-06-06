@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007  Anton Kochevar, ENAC
+ * Copyright (C) 2008-2009 Antoine Drouin <poinix@gmail.com>
  *
  * This file is part of paparazzi.
  *
@@ -20,17 +20,34 @@
  */
 
 /**
- * @file subsystems/navigation/nav_line.h
+ * @file subsystems/ahrs/ahrs_aligner.h
  *
- * Fixedwing navigation along a line with nice U-turns.
+ * Interface to align the AHRS via low-passed measurements at startup.
+ *
  */
 
-#ifndef NAV_LINE_H
-#define NAV_LINE_H
+#ifndef AHRS_ALIGNER_H
+#define AHRS_ALIGNER_H
 
 #include "std.h"
+#include "math/pprz_algebra_int.h"
 
-extern bool_t nav_line_init( void );
-extern bool_t nav_line(uint8_t wp1, uint8_t wp2, float radius);
+#define AHRS_ALIGNER_UNINIT  0
+#define AHRS_ALIGNER_RUNNING 1
+#define AHRS_ALIGNER_LOCKED  2
 
-#endif /* NAV_LINE_H */
+struct AhrsAligner {
+  struct Int32Rates lp_gyro;
+  struct Int32Vect3 lp_accel;
+  struct Int32Vect3 lp_mag;
+  int32_t           noise;
+  int32_t           low_noise_cnt;
+  uint8_t           status;
+};
+
+extern struct AhrsAligner ahrs_aligner;
+
+extern void ahrs_aligner_init(void);
+extern void ahrs_aligner_run(void);
+
+#endif /* AHRS_ALIGNER_H */

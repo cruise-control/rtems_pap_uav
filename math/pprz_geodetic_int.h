@@ -50,8 +50,6 @@ struct EcefCoor_i {
 
 /**
  * @brief vector in Latitude, Longitude and Altitude
- * @details Units lat,lon: radians*1e7
- * Unit alt: centimeters above MSL
  */
 struct LlaCoor_i {
   int32_t lon; ///< in radians*1e7
@@ -99,12 +97,15 @@ struct LtpDef_i {
   int32_t hmsl;                  ///< Height above mean sea level in mm
 };
 
+extern void ltp_of_ecef_rmat_from_lla_i(struct Int32Mat33* ltp_of_ecef, struct LlaCoor_i* lla);
 extern void ltp_def_from_ecef_i(struct LtpDef_i* def, struct EcefCoor_i* ecef);
 extern void ltp_def_from_lla_i(struct LtpDef_i* def, struct LlaCoor_i* lla);
 extern void lla_of_ecef_i(struct LlaCoor_i* out, struct EcefCoor_i* in);
 extern void ecef_of_lla_i(struct EcefCoor_i* out, struct LlaCoor_i* in);
 extern void enu_of_ecef_point_i(struct EnuCoor_i* enu, struct LtpDef_i* def, struct EcefCoor_i* ecef);
 extern void ned_of_ecef_point_i(struct NedCoor_i* ned, struct LtpDef_i* def, struct EcefCoor_i* ecef);
+extern void enu_of_ecef_pos_i(struct EnuCoor_i* enu, struct LtpDef_i* def, struct EcefCoor_i* ecef);
+extern void ned_of_ecef_pos_i(struct NedCoor_i* ned, struct LtpDef_i* def, struct EcefCoor_i* ecef);
 extern void enu_of_ecef_vect_i(struct EnuCoor_i* enu, struct LtpDef_i* def, struct EcefCoor_i* ecef);
 extern void ned_of_ecef_vect_i(struct NedCoor_i* ned, struct LtpDef_i* def, struct EcefCoor_i* ecef);
 extern void enu_of_lla_point_i(struct EnuCoor_i* enu, struct LtpDef_i* def, struct LlaCoor_i* lla);
@@ -113,6 +114,8 @@ extern void enu_of_lla_vect_i(struct EnuCoor_i* enu, struct LtpDef_i* def, struc
 extern void ned_of_lla_vect_i(struct NedCoor_i* ned, struct LtpDef_i* def, struct LlaCoor_i* lla);
 extern void ecef_of_enu_point_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, struct EnuCoor_i* enu);
 extern void ecef_of_ned_point_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, struct NedCoor_i* ned);
+extern void ecef_of_enu_pos_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, struct EnuCoor_i* enu);
+extern void ecef_of_ned_pos_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, struct NedCoor_i* ned);
 extern void ecef_of_enu_vect_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, struct EnuCoor_i* enu);
 extern void ecef_of_ned_vect_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, struct NedCoor_i* ned);
 
@@ -122,6 +125,8 @@ extern void ecef_of_ned_vect_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, st
 #define M_OF_MM(_mm) ((_mm)/1e3)
 #define EM7RAD_OF_RAD(_r) ((_r)*1e7)
 #define RAD_OF_EM7RAD(_r) ((_r)/1e7)
+
+#define HIGH_RES_TRIG_FRAC  20
 
 #define VECT3_ENU_OF_NED(_o, _i) {		\
     (_o).x = (_i).y;                    \
@@ -179,5 +184,29 @@ extern void ecef_of_ned_vect_i(struct EcefCoor_i* ecef, struct LtpDef_i* def, st
   }
 
 #define INT32_VECT2_NED_OF_ENU(_o, _i) INT32_VECT2_ENU_OF_NED(_o,_i)
+
+#define HIGH_RES_RMAT_BFP_OF_REAL(_ei, _ef) {                 \
+    (_ei).m[0] = BFP_OF_REAL((_ef).m[0], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[1] = BFP_OF_REAL((_ef).m[1], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[2] = BFP_OF_REAL((_ef).m[2], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[3] = BFP_OF_REAL((_ef).m[3], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[4] = BFP_OF_REAL((_ef).m[4], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[5] = BFP_OF_REAL((_ef).m[5], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[6] = BFP_OF_REAL((_ef).m[6], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[7] = BFP_OF_REAL((_ef).m[7], HIGH_RES_TRIG_FRAC); \
+    (_ei).m[8] = BFP_OF_REAL((_ef).m[8], HIGH_RES_TRIG_FRAC); \
+  }
+
+#define HIGH_RES_RMAT_FLOAT_OF_BFP(_ef, _ei) {                 \
+    (_ef).m[0] = FLOAT_OF_BFP((_ei).m[0], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[1] = FLOAT_OF_BFP((_ei).m[1], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[2] = FLOAT_OF_BFP((_ei).m[2], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[3] = FLOAT_OF_BFP((_ei).m[3], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[4] = FLOAT_OF_BFP((_ei).m[4], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[5] = FLOAT_OF_BFP((_ei).m[5], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[6] = FLOAT_OF_BFP((_ei).m[6], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[7] = FLOAT_OF_BFP((_ei).m[7], HIGH_RES_TRIG_FRAC); \
+    (_ef).m[8] = FLOAT_OF_BFP((_ei).m[8], HIGH_RES_TRIG_FRAC); \
+  }
 
 #endif /* PPRZ_GEODETIC_INT_H */
