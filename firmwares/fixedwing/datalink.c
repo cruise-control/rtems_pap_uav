@@ -82,10 +82,6 @@ uint8_t joystick_block;
 #define SenderIdOfMsg(x) (x[0])
 #define IdOfMsg(x) (x[1])
 
-void generic_parse_msg(void) {
-
-}
-
 void dl_parse_msg(void) {
 	datalink_time = 0;
 	uint8_t msg_id = IdOfMsg(dl_buffer);

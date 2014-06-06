@@ -55,10 +55,8 @@
 									<listOptionValue builtIn="false" value="LOITER_TRIM"/>
 									<listOptionValue builtIn="false" value="BOARD_CONFIG=\&quot;boards/pc_sim.h\&quot;"/>
 									<listOptionValue builtIn="false" value="PERIPHERALS_AUTO_INIT"/>
-									<listOptionValue builtIn="false" value="FIRMWARE=FIXEDWING"/>
 									<listOptionValue builtIn="false" value="WIND_INFO"/>
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
-									<listOptionValue builtIn="false" value="USE_LED"/>
 									<listOptionValue builtIn="false" value="PERIODIC_FREQUENCY=60"/>
 									<listOptionValue builtIn="false" value="TELEMETRY_FREQUENCY=60"/>
 									<listOptionValue builtIn="false" value="USE_SYS_TIME"/>
@@ -79,7 +77,6 @@
 									<listOptionValue builtIn="false" value="USE_AHRS"/>
 									<listOptionValue builtIn="false" value="USE_GPS"/>
 									<listOptionValue builtIn="false" value="NAV"/>
-									<listOptionValue builtIn="false" value="USE_INFRARED_TELEMETRY"/>
 									<listOptionValue builtIn="false" value="DC_SHUTTER_SERVO=COMMAND_SHUTTER"/>
 									<listOptionValue builtIn="false" value="DIGITAL_CAM"/>
 									<listOptionValue builtIn="false" value="SENSOR_SYNC_SEND=1"/>

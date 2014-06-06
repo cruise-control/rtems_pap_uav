@@ -16,9 +16,23 @@
 #define DL_DGPS_RAW 13
 #define DL_GET_SETTING 16
 #define DL_TCAS_RESOLVE 17
+#define DL_MISSION_GOTO_WP 20
+#define DL_MISSION_GOTO_WP_LLA 21
+#define DL_MISSION_CIRCLE 22
+#define DL_MISSION_CIRCLE_LLA 23
+#define DL_MISSION_SEGMENT 24
+#define DL_MISSION_SEGMENT_LLA 25
+#define DL_MISSION_PATH 26
+#define DL_MISSION_PATH_LLA 27
+#define DL_MISSION_SURVEY 28
+#define DL_MISSION_SURVEY_LLA 29
+#define DL_GOTO_MISSION 30
+#define DL_NEXT_MISSION 31
+#define DL_END_MISSION 32
 #define DL_WINDTURBINE_STATUS 50
 #define DL_RC_3CH 51
 #define DL_RC_4CH 52
+#define DL_REMOTE_GPS 55
 #define DL_KITE_COMMAND 96
 #define DL_PAYLOAD_COMMAND 97
 #define DL_SET_ACTUATOR 100
@@ -37,21 +51,30 @@
 #define DL_NPS_SENSORS_ACCEL 162
 #define DL_HITL_GPS_COMMON 171
 #define DL_HITL_IR_AHRS 172
-#define DL_MSG_datalink_NB 28
+#define DL_MSG_datalink_NB 40
 
 #define MSG_datalink_LENGTHS {0,(2+0+2+4+4+4+4+2+2+1),(2+0+1+1+4+4+4),(2+0+1+1+4+4+4),(2+0+1+1+4),(2+0+1+1),(2+0+1+1+1+1+nb_ubx_payload*1),(2+0+2+2+2+1),(2+0),(2+0+1+1+4+4+4),(2+0+1+1+1),(2+0+1+1+1+1),(2+0+1+1+nb_commands*1),(2+0+1+1+1+nb_rtcm*1),0,0,(2+0+1+1),(2+0+1+1+1),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,(2+0+1+1+4+4),(2+0+1+1+1),(2+0+1+1+1+1+1+1),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,(2+0+2+2),(2+0+1+1+nb_command*1),0,0,(2+0+2+1+1),(2+0+2+2+2+2),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,(2+0+1+1+4+4+4+4+1),(2+0+1+1+1+1+1),(2+0+1+1+4+4+4+4),(2+0+1+1+1),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,(2+0+1+1+8+8+8+8+8+8+8),(2+0+1+1+8+8+8+8+8+8),}
 
 /*
  Size for non variable messages
- 58 : HITL_GPS_COMMON
- 50 : HITL_IR_AHRS
- 23 : ACINFO
- 19 : BOOZ2_FMS_COMMAND
- 18 : EXTERNAL_FILTER_SOLUTION
- 14 : MOVE_WP
- 14 : WIND_INFO
- 14 : FORMATION_SLOT
- 10 : WINDTURBINE_STATUS
+51 : MISSION_PATH
+51 : MISSION_PATH_LLA
+50 : REMOTE_GPS
+26 : MISSION_SEGMENT
+26 : MISSION_SEGMENT_LLA
+26 : MISSION_SURVEY
+26 : MISSION_SURVEY_LLA
+23 : ACINFO
+22 : MISSION_CIRCLE
+22 : MISSION_CIRCLE_LLA
+19 : BOOZ2_FMS_COMMAND
+18 : MISSION_GOTO_WP
+18 : MISSION_GOTO_WP_LLA
+18 : EXTERNAL_FILTER_SOLUTION
+14 : MOVE_WP
+14 : WIND_INFO
+14 : FORMATION_SLOT
+10 : WINDTURBINE_STATUS
  8 : CSC_SERVO_CMD
  7 : HITL_INFRARED
  6 : SETTING
@@ -66,6 +89,9 @@
  3 : ROTORCRAFT_CAM_STICK
  2 : BLOCK
  2 : GET_SETTING
+ 2 : GOTO_MISSION
+ 1 : NEXT_MISSION
+ 1 : END_MISSION
  0 : HITL_UBX
  0 : PING
  0 : COMMANDS_RAW
@@ -260,6 +286,215 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
+#define DOWNLINK_SEND_MISSION_GOTO_WP(_trans, _dev, ac_id, insert, wp_east, wp_north, wp_alt, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_GOTO_WP", DL_MISSION_GOTO_WP, 0+1+1+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wp_east)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wp_north)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wp_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_GOTO_WP_LLA(_trans, _dev, ac_id, insert, wp_lat, wp_lon, wp_alt, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_GOTO_WP_LLA", DL_MISSION_GOTO_WP_LLA, 0+1+1+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wp_lat)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wp_lon)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wp_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_CIRCLE(_trans, _dev, ac_id, insert, center_east, center_north, center_alt, radius, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_CIRCLE", DL_MISSION_CIRCLE, 0+1+1+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (center_east)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (center_north)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (center_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (radius)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_CIRCLE_LLA(_trans, _dev, ac_id, insert, center_lat, center_lon, center_alt, radius, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_CIRCLE_LLA", DL_MISSION_CIRCLE_LLA, 0+1+1+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (center_lat)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (center_lon)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (center_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (radius)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_SEGMENT(_trans, _dev, ac_id, insert, segment_east_1, segment_north_1, segment_east_2, segment_north_2, segment_alt, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_SEGMENT", DL_MISSION_SEGMENT, 0+1+1+4+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_east_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_north_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_east_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_north_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_SEGMENT_LLA(_trans, _dev, ac_id, insert, segment_lat_1, segment_lon_1, segment_lat_2, segment_lon_2, segment_alt, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_SEGMENT_LLA", DL_MISSION_SEGMENT_LLA, 0+1+1+4+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_lat_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_lon_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_lat_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_lon_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (segment_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_PATH(_trans, _dev, ac_id, insert, point_east_1, point_north_1, point_east_2, point_north_2, point_east_3, point_north_3, point_east_4, point_north_4, point_east_5, point_north_5, path_alt, duration, nb){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4+1)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_PATH", DL_MISSION_PATH, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4+1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_east_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_north_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_east_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_north_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_east_3)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_north_3)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_east_4)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_north_4)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_east_5)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_north_5)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (path_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (nb)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_PATH_LLA(_trans, _dev, ac_id, insert, point_lat_1, point_lon_1, point_lat_2, point_lon_2, point_lat_3, point_lon_3, point_lat_4, point_lon_4, point_lat_5, point_lon_5, path_alt, duration, nb){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4+1)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_PATH_LLA", DL_MISSION_PATH_LLA, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4+1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lat_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lon_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lat_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lon_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lat_3)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lon_3)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lat_4)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lon_4)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lat_5)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (point_lon_5)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (path_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (nb)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_SURVEY(_trans, _dev, ac_id, insert, survey_east_1, survey_north_1, survey_east_2, survey_north_2, survey_alt, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_SURVEY", DL_MISSION_SURVEY, 0+1+1+4+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_east_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_north_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_east_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_north_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_SURVEY_LLA(_trans, _dev, ac_id, insert, survey_lat_1, survey_lon_1, survey_lat_2, survey_lon_2, survey_alt, duration){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_SURVEY_LLA", DL_MISSION_SURVEY_LLA, 0+1+1+4+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (insert)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_lat_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_lon_1)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_lat_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_lon_2)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (survey_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (duration)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_GOTO_MISSION(_trans, _dev, ac_id, mission_id){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1)); \
+	  DownlinkStartMessage(_trans, _dev, "GOTO_MISSION", DL_GOTO_MISSION, 0+1+1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (mission_id)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_NEXT_MISSION(_trans, _dev, ac_id){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1)); \
+	  DownlinkStartMessage(_trans, _dev, "NEXT_MISSION", DL_NEXT_MISSION, 0+1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_END_MISSION(_trans, _dev, ac_id){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1)); \
+	  DownlinkStartMessage(_trans, _dev, "END_MISSION", DL_END_MISSION, 0+1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
 #define DOWNLINK_SEND_WINDTURBINE_STATUS(_trans, _dev, ac_id, tb_id, sync_itow, cycle_time){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4)); \
@@ -295,6 +530,29 @@
 	  DownlinkPutInt8ByAddr(_trans, _dev, (roll)); \
 	  DownlinkPutInt8ByAddr(_trans, _dev, (pitch)); \
 	  DownlinkPutInt8ByAddr(_trans, _dev, (yaw)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_REMOTE_GPS(_trans, _dev, ac_id, numsv, ecef_x, ecef_y, ecef_z, lat, lon, alt, hmsl, ecef_xd, ecef_yd, ecef_zd, tow, course){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "REMOTE_GPS", DL_REMOTE_GPS, 0+1+1+4+4+4+4+4+4+4+4+4+4+4+4) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (ac_id)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (numsv)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ecef_x)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ecef_y)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ecef_z)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (lat)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (lon)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (alt)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (hmsl)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ecef_xd)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ecef_yd)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ecef_zd)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (tow)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (course)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -478,6 +736,7 @@
 #define DL_HITL_INFRARED_top(_payload) ((int16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
 #define DL_HITL_INFRARED_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+8)))
 
+
 #define DL_FORMATION_SLOT_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_FORMATION_SLOT_mode(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
 #define DL_FORMATION_SLOT_slot_east(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
@@ -509,6 +768,111 @@
 #define DL_TCAS_RESOLVE_ac_id_conflict(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
 #define DL_TCAS_RESOLVE_resolve(_payload) ((uint8_t)(*((uint8_t*)_payload+4)))
 
+#define DL_MISSION_GOTO_WP_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_GOTO_WP_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_GOTO_WP_wp_east(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_GOTO_WP_wp_north(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_GOTO_WP_wp_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_GOTO_WP_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+
+#define DL_MISSION_GOTO_WP_LLA_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_GOTO_WP_LLA_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_GOTO_WP_LLA_wp_lat(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_GOTO_WP_LLA_wp_lon(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_GOTO_WP_LLA_wp_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_GOTO_WP_LLA_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+
+#define DL_MISSION_CIRCLE_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_CIRCLE_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_CIRCLE_center_east(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_center_north(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_center_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_radius(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+
+#define DL_MISSION_CIRCLE_LLA_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_CIRCLE_LLA_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_CIRCLE_LLA_center_lat(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_LLA_center_lon(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_LLA_center_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_LLA_radius(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_CIRCLE_LLA_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+
+#define DL_MISSION_SEGMENT_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_SEGMENT_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_SEGMENT_segment_east_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_segment_north_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_segment_east_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_segment_north_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_segment_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+
+#define DL_MISSION_SEGMENT_LLA_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_SEGMENT_LLA_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_SEGMENT_LLA_segment_lat_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_LLA_segment_lon_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_LLA_segment_lat_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_LLA_segment_lon_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_LLA_segment_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MISSION_SEGMENT_LLA_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+
+#define DL_MISSION_PATH_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_PATH_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_PATH_point_east_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_north_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_east_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_north_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_east_3(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_north_3(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_east_4(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_north_4(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_east_5(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_point_north_5(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_path_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8|((uint32_t)*((uint8_t*)_payload+44+2))<<16|((uint32_t)*((uint8_t*)_payload+44+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+48)|*((uint8_t*)_payload+48+1)<<8|((uint32_t)*((uint8_t*)_payload+48+2))<<16|((uint32_t)*((uint8_t*)_payload+48+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_nb(_payload) ((uint8_t)(*((uint8_t*)_payload+52)))
+
+#define DL_MISSION_PATH_LLA_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_PATH_LLA_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_PATH_LLA_point_lat_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lon_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lat_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lon_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lat_3(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lon_3(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lat_4(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lon_4(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lat_5(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_point_lon_5(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_path_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8|((uint32_t)*((uint8_t*)_payload+44+2))<<16|((uint32_t)*((uint8_t*)_payload+44+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+48)|*((uint8_t*)_payload+48+1)<<8|((uint32_t)*((uint8_t*)_payload+48+2))<<16|((uint32_t)*((uint8_t*)_payload+48+3))<<24); _f.f; }))
+#define DL_MISSION_PATH_LLA_nb(_payload) ((uint8_t)(*((uint8_t*)_payload+52)))
+
+#define DL_MISSION_SURVEY_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_SURVEY_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_SURVEY_survey_east_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_survey_north_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_survey_east_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_survey_north_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_survey_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+
+#define DL_MISSION_SURVEY_LLA_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_MISSION_SURVEY_LLA_insert(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_MISSION_SURVEY_LLA_survey_lat_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_LLA_survey_lon_1(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_LLA_survey_lat_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_LLA_survey_lon_2(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_LLA_survey_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MISSION_SURVEY_LLA_duration(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+
+#define DL_GOTO_MISSION_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_GOTO_MISSION_mission_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+
+#define DL_NEXT_MISSION_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+
+#define DL_END_MISSION_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+
 #define DL_WINDTURBINE_STATUS_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_WINDTURBINE_STATUS_tb_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
 #define DL_WINDTURBINE_STATUS_sync_itow(_payload) ((uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
@@ -524,6 +888,21 @@
 #define DL_RC_4CH_roll(_payload) ((int8_t)(*((uint8_t*)_payload+5)))
 #define DL_RC_4CH_pitch(_payload) ((int8_t)(*((uint8_t*)_payload+6)))
 #define DL_RC_4CH_yaw(_payload) ((int8_t)(*((uint8_t*)_payload+7)))
+
+#define DL_REMOTE_GPS_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_REMOTE_GPS_numsv(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_REMOTE_GPS_ecef_x(_payload) ((int32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
+#define DL_REMOTE_GPS_ecef_y(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24))
+#define DL_REMOTE_GPS_ecef_z(_payload) ((int32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24))
+#define DL_REMOTE_GPS_lat(_payload) ((int32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24))
+#define DL_REMOTE_GPS_lon(_payload) ((int32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24))
+#define DL_REMOTE_GPS_alt(_payload) ((int32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24))
+#define DL_REMOTE_GPS_hmsl(_payload) ((int32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24))
+#define DL_REMOTE_GPS_ecef_xd(_payload) ((int32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24))
+#define DL_REMOTE_GPS_ecef_yd(_payload) ((int32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24))
+#define DL_REMOTE_GPS_ecef_zd(_payload) ((int32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24))
+#define DL_REMOTE_GPS_tow(_payload) ((uint32_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8|((uint32_t)*((uint8_t*)_payload+44+2))<<16|((uint32_t)*((uint8_t*)_payload+44+3))<<24))
+#define DL_REMOTE_GPS_course(_payload) ((int32_t)(*((uint8_t*)_payload+48)|*((uint8_t*)_payload+48+1)<<8|((uint32_t)*((uint8_t*)_payload+48+2))<<16|((uint32_t)*((uint8_t*)_payload+48+3))<<24))
 
 #define DL_KITE_COMMAND_POWER(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
 #define DL_KITE_COMMAND_TURN(_payload) ((uint16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
