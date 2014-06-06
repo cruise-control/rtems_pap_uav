@@ -38,6 +38,18 @@ void imu_impl_init(void) {
 void imu_periodic(void) {
 }
 
+void imu_feed_accel(int32_t x, int32_t y, int32_t z){
+	VECT3_ASSIGN(imu.accel_unscaled, x, y, z);
+	  // set availability flags...
+	  imu_nps.accel_available = TRUE;
+}
+
+void imu_feed_gyro(int32_t x, int32_t y, int32_t z){
+	RATES_ASSIGN(imu.gyro_unscaled, x, y, z);
+
+	  // set availability flags...
+	  imu_nps.gyro_available = TRUE;
+}
 
 void imu_feed_gyro_accel(void) {
 

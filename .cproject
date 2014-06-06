@@ -21,7 +21,7 @@
 					<folderInfo id="org.rtems.cdt.config.1842712804." name="/" resourcePath="">
 						<toolChain id="org.rtems.cdt.config.toolchain.1606663555" name="RTEMS Toolchain" superClass="org.rtems.cdt.config.toolchain">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="org.rtems.cdt.target.778399243" name="RTEMS Target" osList="all" superClass="org.rtems.cdt.target"/>
-							<builder buildPath="${workspace_loc:/rtems_pap_uav/DEBUG}" id="org.rtems.cdt.builder.640944855" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.rtems.cdt.builder"/>
+							<builder buildPath="${workspace_loc:/rtems_pap_uav/DEBUG}" id="org.rtems.cdt.builder.640944855" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="org.rtems.cdt.builder"/>
 							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-gcc" id="org.rtems.cdt.compiler.c.1505954636" name="RTEMS C Compiler" superClass="org.rtems.cdt.compiler.c">
 								<option id="org.rtems.cdt.tool.gcc.option.glevel.1640716240" name="Debug level:" superClass="org.rtems.cdt.tool.gcc.option.glevel" value="org.rtems.cdt.tool.gcc.option.g3" valueType="enumerated"/>
 								<option id="org.rtems.cdt.tool.gcc.option.olevel.1608799924" name="Optimization level:" superClass="org.rtems.cdt.tool.gcc.option.olevel" value="org.rtems.cdt.tool.gcc.option.o0" valueType="enumerated"/>
@@ -44,7 +44,6 @@
 									<listOptionValue builtIn="false" value="PERIODIC_TELEMETRY"/>
 									<listOptionValue builtIn="false" value="AGR_CLIMB"/>
 									<listOptionValue builtIn="false" value="USE_BARO_BOARD=FALSE"/>
-									<listOptionValue builtIn="false" value="USE_ETH"/>
 									<listOptionValue builtIn="false" value="USE_IMU"/>
 									<listOptionValue builtIn="false" value="GPS_USE_LATLONG"/>
 									<listOptionValue builtIn="false" value="AHRS_UPDATE_FW_ESTIMATOR"/>
@@ -74,7 +73,7 @@
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_H=\&quot;subsystems/radio_control/ppm.h\&quot;"/>
 									<listOptionValue builtIn="false" value="SHITL"/>
 									<listOptionValue builtIn="false" value="DOWNLINK"/>
-									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=Ethernet"/>
+									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=IvyTransport"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
 									<listOptionValue builtIn="false" value="USE_AHRS"/>
@@ -84,11 +83,11 @@
 									<listOptionValue builtIn="false" value="DC_SHUTTER_SERVO=COMMAND_SHUTTER"/>
 									<listOptionValue builtIn="false" value="DIGITAL_CAM"/>
 									<listOptionValue builtIn="false" value="SENSOR_SYNC_SEND=1"/>
-									<listOptionValue builtIn="false" value="DATALINK=ETH"/>
+									<listOptionValue builtIn="false" value="DATALINK=PPRZ"/>
 									<listOptionValue builtIn="false" value="PPRZ_UART=UART1"/>
 									<listOptionValue builtIn="false" value="SINGLE_MCU"/>
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
-									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=Ethernet"/>
+									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=UART1"/>
 								</option>
 								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u"/>
 								<option id="org.rtems.cdt.tool.gcc.option.optimizationflags.700160298" name="Optimization flags:" superClass="org.rtems.cdt.tool.gcc.option.optimizationflags" value="" valueType="string"/>

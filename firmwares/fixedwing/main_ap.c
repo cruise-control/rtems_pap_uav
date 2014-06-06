@@ -391,6 +391,7 @@ static inline uint8_t mcu1_status_update(void) {
 	return FALSE;
 }
 
+
 /** Send back uncontrolled channels.
  */
 static inline void copy_from_to_fbw(void) {
@@ -605,8 +606,6 @@ volatile uint8_t new_ins_attitude = 0;
 
 void attitude_loop(void) {
 
-	dbgGpioSet(GPIO_PORT_B);
-
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstart(&attitude_dbgT);
 #endif
@@ -660,7 +659,6 @@ void attitude_loop(void) {
 	dbgTstop(&attitude_dbgT);
 #endif
 
-	dbgGpioClear(GPIO_PORT_B);
 }
 /** Maximum time allowed for low battery level before going into kill mode */
 #define LOW_BATTERY_DELAY 5
@@ -741,6 +739,7 @@ void reporting_task(void) {
 
 }
 
+
 /*********** EVENT ***********************************************************/
 #ifndef SERIO_TESTING
 void event_task_ap(void) {
@@ -764,8 +763,8 @@ void event_task_ap(void) {
 	GpsEvent(on_gps_solution);
 #endif /* USE_GPS */
 
-#if USE_BAROMETER
-	BaroEvent(on_baro_abs_event, on_baro_dif_event);
+#if USE_BARO_BOARD
+  BaroEvent();
 #endif
 
 	DatalinkEvent();

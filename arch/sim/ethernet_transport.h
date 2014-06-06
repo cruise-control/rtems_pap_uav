@@ -157,9 +157,7 @@ static inline void parseCircBuf(struct pprz_transport* t) {
 				break;
 
 			uint8_t ch = ringBufS_get(&ethBufRx);
-			//Impossible code
-//			if (ch < 0)
-//				return;
+
 			parse_pprz(t, ch);
 		}
 
@@ -317,7 +315,6 @@ static inline void readEthBuffer(struct pprz_transport* t) {
 #endif
 			return;
 		}
-
 		return;
 	}
 

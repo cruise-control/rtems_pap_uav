@@ -90,6 +90,8 @@ void dl_parse_msg(void) {
 	datalink_time = 0;
 	uint8_t msg_id = IdOfMsg(dl_buffer);
 
+	dbgGpioSet(GPIO_PORT_B);
+
 //	char buf[256];
 //	sprintf(buf, "dl_parse_msg %d\r\n", msg_id);
 //	UART1PutBuf(buf);
@@ -184,7 +186,7 @@ void dl_parse_msg(void) {
 #endif
 #ifdef SHITL
 	if (msg_id == DL_HITL_GPS_COMMON) {
-		dbgGpioSet(GPIO_PORT_B);
+
 		double lat = DL_HITL_GPS_COMMON_lat(dl_buffer);
 		double lon = DL_HITL_GPS_COMMON_lon(dl_buffer);
 		double alt = DL_HITL_GPS_COMMON_alt(dl_buffer);
@@ -194,7 +196,6 @@ void dl_parse_msg(void) {
 		double time = DL_HITL_GPS_COMMON_time(dl_buffer);
 		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
 		sim_update_sv();
-		dbgGpioClear(GPIO_PORT_B);
 #ifdef DEBUG_DL_HITL_GPS_COMMON
 		char buf[256];
 		buf[0] = "\0";
@@ -203,6 +204,7 @@ void dl_parse_msg(void) {
 		UART1PutBuf(buf);
 #endif
 	} else if (msg_id == DL_GPS_INT) {
+
 		int32_t ecef_x = DL_GPS_INT_ecef_x(dl_buffer);
 		int32_t ecef_y = DL_GPS_INT_ecef_y(dl_buffer);
 		int32_t ecef_z = DL_GPS_INT_ecef_z(dl_buffer);
@@ -222,37 +224,103 @@ void dl_parse_msg(void) {
 		gps_feed_value(ecef_x, ecef_y, ecef_z, ecef_xd, ecef_yd, ecef_zd, lat,
 				lon, alt, hsml, pacc, sacc, tow);
 		sim_update_sv();
+//#define DEBUG_DL_GPS_INT
+#ifdef DEBUG_DL_GPS_INT
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_GPS_INT %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\r\n",
+				ecef_x, ecef_y, ecef_z, ecef_xd, ecef_yd, ecef_zd, lat, lon,
+				alt, hsml, pacc, sacc, tow);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_AHRS_ECEF) {
 		double p = DL_AHRS_ECEF_p(dl_buffer);
 		double q = DL_AHRS_ECEF_q(dl_buffer);
 		double r = DL_AHRS_ECEF_r(dl_buffer);
 		sim_overwrite_ahrs_ecef(p, q, r);
-		//TODO Process this data now
+//#define DEBUG_DL_AHRS_ECEF
+#ifdef DEBUG_DL_AHRS_ECEF
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_AHRS_ECEF %f,%f,%f\r\n", p, q, r);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_AHRS_LTP) {
 		double qi = DL_AHRS_LTP_qi(dl_buffer);
 		double qx = DL_AHRS_LTP_qx(dl_buffer);
 		double qy = DL_AHRS_LTP_qy(dl_buffer);
 		double qz = DL_AHRS_LTP_qz(dl_buffer);
 		sim_overwrite_ahrs_ltp(qi, qx, qy, qz);
-		//TODO Process this data now
+//#define DEBUG_DL_AHRS_LTP
+#ifdef DEBUG_DL_AHRS_LTP
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_AHRS_ECEF %f,%f,%f,%f\r\n", qi, qx, qy, qz);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_INS_POS) {
 		//The stripping is correct, the naming is not
 		double x = DL_AHRS_ECEF_p(dl_buffer);
 		double y = DL_AHRS_ECEF_q(dl_buffer);
 		double z = DL_AHRS_ECEF_r(dl_buffer);
 		sim_overwrite_ins_ltpprz_pos(x, y, z);
+//#define DEBUG_DL_INS_POS
+#ifdef DEBUG_DL_INS_POS
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_INS_POS %f,%f,%f\r\n", x, y, z);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_INS_ECEF_VEL) {
 		//The stripping is correct, the naming is not
 		double x = DL_AHRS_ECEF_p(dl_buffer);
 		double y = DL_AHRS_ECEF_q(dl_buffer);
 		double z = DL_AHRS_ECEF_r(dl_buffer);
 		sim_overwrite_ins_ltpprz_ecef_vel(x, y, z);
+//#define DEBUG_DL_INS_ECEF_VEL
+#ifdef DEBUG_DL_INS_ECEF_VEL
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_INS_ECEF_VEL %f,%f,%f\r\n", x, y, z);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_INS_ECEF_ACCEL) {
 		//The stripping is correct, the naming is not
 		double x = DL_AHRS_ECEF_p(dl_buffer);
 		double y = DL_AHRS_ECEF_q(dl_buffer);
 		double z = DL_AHRS_ECEF_r(dl_buffer);
 		sim_overwrite_ins_ltpprz_ecef_accel(x, y, z);
+//#define DEBUG_DL_INS_ECEF_ACCEL
+#ifdef DEBUG_DL_INS_ECEF_ACCEL
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_INS_ECEF_ACCEL %f,%f,%f\r\n", x, y, z);
+		UART1PutBuf(buf);
+#endif
+	} else if (msg_id == DL_NPS_SENSORS_ACCEL) {
+		int32_t x = DL_NPS_SENSOR_XXX_X(dl_buffer);
+		int32_t y = DL_NPS_SENSOR_XXX_Y(dl_buffer);
+		int32_t z = DL_NPS_SENSOR_XXX_Z(dl_buffer);
+		imu_feed_accel(x, y, z);
+//#define DEBUG_DL_NPS_SENSORS_ACCEL
+#ifdef DEBUG_DL_NPS_SENSORS_ACCEL
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_INS_ECEF_ACCEL %f,%f,%f\r\n", x, y, z);
+		UART1PutBuf(buf);
+#endif
+	} else if (msg_id == DL_NPS_SENSORS_GYRO) {
+		int32_t x = DL_NPS_SENSOR_XXX_X(dl_buffer);
+		int32_t y = DL_NPS_SENSOR_XXX_Y(dl_buffer);
+		int32_t z = DL_NPS_SENSOR_XXX_Z(dl_buffer);
+		imu_feed_gyro(x, y, z);
+//#define DEBUG_DL_NPS_SENSORS_GYRO
+#ifdef DEBUG_DL_NPS_SENSORS_GYRO
+		char buf[256];
+		buf[0] = "\0";
+		sprintf(buf, "DL_INS_ECEF_GYRO %f,%f,%f\r\n", x, y, z);
+		UART1PutBuf(buf);
+#endif
 	} else if (msg_id == DL_HITL_IR_AHRS) {
 		//double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);
 		double roll = DL_HITL_IR_AHRS_roll(dl_buffer);
@@ -351,4 +419,6 @@ void dl_parse_msg(void) {
 		/* Parse modules datalink */
 		//  modules_parse_datalink(msg_id);
 	}
+
+	dbgGpioClear(GPIO_PORT_B);
 }

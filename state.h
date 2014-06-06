@@ -148,7 +148,7 @@ struct State {
   /**
    * Position in Latitude, Longitude and Altitude.
    * Units lat,lon: radians*1e7
-   * Units alt: centimeters above MSL
+   * Units alt: milimeters above reference ellipsoid
    */
   struct LlaCoor_i lla_pos_i;
 
@@ -196,7 +196,7 @@ struct State {
   /**
    * Position in Latitude, Longitude and Altitude.
    * Units lat,lon: radians
-   * Units alt: meters above MSL
+   * Units alt: meters above reference ellipsoid
    */
   struct LlaCoor_f lla_pos_f;
 
@@ -442,7 +442,7 @@ static inline void stateSetLocalOrigin_i(struct LtpDef_i* ltp_def) {
   /* convert to float */
   ECEF_FLOAT_OF_BFP(state.ned_origin_f.ecef, state.ned_origin_i.ecef);
   LLA_FLOAT_OF_BFP(state.ned_origin_f.lla, state.ned_origin_i.lla);
-  RMAT_FLOAT_OF_BFP(state.ned_origin_f.ltp_of_ecef, state.ned_origin_i.ltp_of_ecef);
+  HIGH_RES_RMAT_FLOAT_OF_BFP(state.ned_origin_f.ltp_of_ecef, state.ned_origin_i.ltp_of_ecef);
   state.ned_origin_f.hmsl = M_OF_MM(state.ned_origin_i.hmsl);
 
   /* clear bits for all local frame representations */
@@ -487,12 +487,12 @@ extern void stateCalcPositionLla_f(void);
 
 /// Test if local coordinates are valid.
 static inline bool_t stateIsLocalCoordinateValid(void) {
-  return ((state.ned_initialized_i || state.utm_initialized_f) && (state.pos_status & ~(POS_LOCAL_COORD)));
+  return ((state.ned_initialized_i || state.ned_initialized_f || state.utm_initialized_f) && (state.pos_status & (POS_LOCAL_COORD)));
 }
 
 /// Test if global coordinates are valid.
 static inline bool_t stateIsGlobalCoordinateValid(void) {
-  return ((state.pos_status & ~(POS_GLOBAL_COORD)) || stateIsLocalCoordinateValid());
+  return ((state.pos_status & (POS_GLOBAL_COORD)) || stateIsLocalCoordinateValid());
 }
 
 /************************ Set functions ****************************/
@@ -1156,7 +1156,7 @@ static inline void stateSetAirspeed_f(float* airspeed) {
   SetBit(state.wind_air_status, AIRSPEED_F);
 }
 
-/// Set angle of attack (float).
+/// Set angle of attack in radians (float).
 static inline void stateSetAngleOfAttack_f(float* aoa) {
   state.angle_of_attack_f = *aoa;
   /* clear bits for all AOA representations and only set the new one */
@@ -1164,7 +1164,7 @@ static inline void stateSetAngleOfAttack_f(float* aoa) {
   SetBit(state.wind_air_status, AOA_F);
 }
 
-/// Set angle of attack (float).
+/// Set sideslip angle in radians (float).
 static inline void stateSetSideslip_f(float* sideslip) {
   state.sideslip_f = *sideslip;
   /* clear bits for all sideslip representations and only set the new one */

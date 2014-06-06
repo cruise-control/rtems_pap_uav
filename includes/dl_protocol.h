@@ -33,6 +33,8 @@
 #define DL_INS_POS 158
 #define DL_INS_ECEF_VEL 159
 #define DL_INS_ECEF_ACCEL 160
+#define DL_NPS_SENSORS_GYRO 161
+#define DL_NPS_SENSORS_ACCEL 162
 #define DL_HITL_GPS_COMMON 171
 #define DL_HITL_IR_AHRS 172
 #define DL_MSG_datalink_NB 28
@@ -41,15 +43,15 @@
 
 /*
  Size for non variable messages
-58 : HITL_GPS_COMMON
-50 : HITL_IR_AHRS
-23 : ACINFO
-19 : BOOZ2_FMS_COMMAND
-18 : EXTERNAL_FILTER_SOLUTION
-14 : MOVE_WP
-14 : WIND_INFO
-14 : FORMATION_SLOT
-10 : WINDTURBINE_STATUS
+ 58 : HITL_GPS_COMMON
+ 50 : HITL_IR_AHRS
+ 23 : ACINFO
+ 19 : BOOZ2_FMS_COMMAND
+ 18 : EXTERNAL_FILTER_SOLUTION
+ 14 : MOVE_WP
+ 14 : WIND_INFO
+ 14 : FORMATION_SLOT
+ 10 : WINDTURBINE_STATUS
  8 : CSC_SERVO_CMD
  7 : HITL_INFRARED
  6 : SETTING
@@ -69,7 +71,7 @@
  0 : COMMANDS_RAW
  0 : DGPS_RAW
  0 : PAYLOAD_COMMAND
-*/
+ */
 #define DOWNLINK_SEND_ACINFO(_trans, _dev, course, utm_east, utm_north, alt, itow, speed, climb, ac_id){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+4+4+4+4+2+2+1))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+4+4+4+4+2+2+1)); \
@@ -437,7 +439,6 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-
 #define DL_ACINFO_course(_payload) ((int16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
 #define DL_ACINFO_utm_east(_payload) ((int32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
 #define DL_ACINFO_utm_north(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24))
@@ -476,7 +477,6 @@
 #define DL_HITL_INFRARED_pitch(_payload) ((int16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
 #define DL_HITL_INFRARED_top(_payload) ((int16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
 #define DL_HITL_INFRARED_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+8)))
-
 
 #define DL_FORMATION_SLOT_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_FORMATION_SLOT_mode(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
@@ -595,7 +595,6 @@
 #define DL_GPS_INT_numsv(_payload) ((uint8_t)(*((uint8_t*)_payload+58)))
 #define DL_GPS_INT_fix(_payload) ((uint8_t)(*((uint8_t*)_payload+59)))
 
-
 #define DL_AHRS_ECEF_ir_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_AHRS_ECEF_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
 #define DL_AHRS_ECEF_p(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+4)|((uint64_t)*((uint8_t*)_payload+4+1))<<8|((uint64_t)*((uint8_t*)_payload+4+2))<<16|((uint64_t)*((uint8_t*)_payload+4+3))<<24|((uint64_t)*((uint8_t*)_payload+4+4))<<32|((uint64_t)*((uint8_t*)_payload+4+5))<<40|((uint64_t)*((uint8_t*)_payload+4+6))<<48|((uint64_t)*((uint8_t*)_payload+4+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
@@ -609,7 +608,11 @@
 #define DL_AHRS_LTP_qy(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+20)|((uint64_t)*((uint8_t*)_payload+20+1))<<8|((uint64_t)*((uint8_t*)_payload+20+2))<<16|((uint64_t)*((uint8_t*)_payload+20+3))<<24|((uint64_t)*((uint8_t*)_payload+20+4))<<32|((uint64_t)*((uint8_t*)_payload+20+5))<<40|((uint64_t)*((uint8_t*)_payload+20+6))<<48|((uint64_t)*((uint8_t*)_payload+20+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
 #define DL_AHRS_LTP_qz(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+28)|((uint64_t)*((uint8_t*)_payload+28+1))<<8|((uint64_t)*((uint8_t*)_payload+28+2))<<16|((uint64_t)*((uint8_t*)_payload+28+3))<<24|((uint64_t)*((uint8_t*)_payload+28+4))<<32|((uint64_t)*((uint8_t*)_payload+28+5))<<40|((uint64_t)*((uint8_t*)_payload+28+6))<<48|((uint64_t)*((uint8_t*)_payload+28+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
 
-
+#define DL_NPS_SENSOR_XXX_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_NPS_SENSOR_XXX_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_NPS_SENSOR_XXX_X(_payload) ((int32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
+#define DL_NPS_SENSOR_XXX_Y(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24))
+#define DL_NPS_SENSOR_XXX_Z(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24))
 
 #define DL_HITL_IR_AHRS_ir_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_HITL_IR_AHRS_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
