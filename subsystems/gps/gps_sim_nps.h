@@ -8,7 +8,10 @@
 extern bool_t gps_available;
 extern bool_t gps_has_fix;
 
-extern void gps_feed_value();
+extern void gps_feed_value(int32_t ecef_pox_x, int32_t ecef_pox_y, int32_t ecef_pox_z,
+		int32_t ecef_vel_x, int32_t ecef_vel_y, int32_t ecef_vel_z,
+		int32_t lla_pos_lat, int32_t lla_pos_lon, int32_t lla_pos_alt,
+		int32_t hmsl, int32_t pacc, int32_t sacc, int32_t tow);
 
 extern void gps_impl_init();
 

@@ -31,7 +31,9 @@
 #include "inter_mcu.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
 
+#if defined RADIO_CALIB && defined RADIO_CONTROL_SETTINGS
 uint8_t rc_settings_mode = 0;
+#endif
 float slider_1_val, slider_2_val;
 
 #define ParamValInt16(param_init_val, param_travel, cur_pulse, init_pulse) \

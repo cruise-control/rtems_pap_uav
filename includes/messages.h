@@ -1,4 +1,4 @@
-/* Automatically generated from /home/manish/paprazzi-git/paparazzi/conf/messages.xml */
+/* Automatically generated from /home/j3/paparazzi/conf/messages.xml */
 /* Please DO NOT EDIT */
 /* Macros to send and receive messages of class telemetry */
 #ifdef DOWNLINK
@@ -70,11 +70,17 @@
 #define DL_AMSYS_AIRSPEED 66
 #define DL_FLIGHT_BENCHMARK 67
 #define DL_MPL3115_BARO 68
-#define DL_AOA_adc 69
+#define DL_AOA_ADC 69
 #define DL_XTEND_RSSI 70
 #define DL_LINK_STATUS 71
+#define DL_SUPERBITRF 72
+#define DL_GX3_INFO 73
+#define DL_EXPLAIN 74
+#define DL_VIDEO_TELEMETRY 75
 #define DL_VF_UPDATE 76
 #define DL_VF_PREDICT 77
+#define DL_INV_FILTER 78
+#define DL_MISSION_STATUS 79
 #define DL_CROSS_TRACK_ERROR 80
 #define DL_GENERIC_COM 81
 #define DL_FORMATION_SLOT_TM 82
@@ -142,7 +148,6 @@
 #define DL_VERT_LOOP 145
 #define DL_HOVER_LOOP 146
 #define DL_ROTORCRAFT_FP 147
-#define DL_BOOZ2_FMS_INFO 148
 #define DL_GUIDANCE_H_REF_INT 149
 #define DL_ROTORCRAFT_TUNE_HOVER 150
 #define DL_INS_Z 151
@@ -157,7 +162,6 @@
 #define DL_ROTORCRAFT_RADIO_CONTROL 160
 #define DL_VFF_EXTENDED 161
 #define DL_VFF 162
-#define DL_BOOZ2_TUNE_FF 163
 #define DL_HFF 164
 #define DL_HFF_DBG 165
 #define DL_HFF_GPS 166
@@ -207,9 +211,12 @@
 #define DL_IMU_PRESSURE 210
 #define DL_IMU_HS_GYRO 211
 #define DL_TEST_PASSTHROUGH_STATUS 212
+#define DL_TUNE_VERT 213
+#define DL_MF_DAQ_STATE 214
 #define DL_WEATHER 219
 #define DL_IMU_TURNTABLE 220
 #define DL_BARO_RAW 221
+#define DL_PERIODIC_TELEMETRY_ERR 226
 #define DL_TIME 227
 #define DL_AHRS_ARDRONE2 230
 #define DL_ROTORCRAFT_STATUS 231
@@ -218,6 +225,7 @@
 #define DL_OPTICFLOW 234
 #define DL_VISUALTARGET 235
 #define DL_SONAR 236
+#define DL_PAYLOAD_FLOAT 237
 #define DL_NPS_POS_LLH 238
 #define DL_NPS_RPMS 239
 #define DL_NPS_SPEED_POS 240
@@ -225,20 +233,17 @@
 #define DL_NPS_GYRO_BIAS 242
 #define DL_NPS_RANGE_METER 243
 #define DL_NPS_WIND 244
-#define DL_BOOZ_DEBUG_FOO 245
-#define DL_BOOZ_MAX1167_ERR 246
 #define DL_PPRZ_DEBUG 247
 #define DL_NPS_ACCEL_LTP 248
 #define DL_LOOSE_INS_GPS 249
 #define DL_AFL_COEFFS 250
-#define DL_BOOZ_ATT_REF_MODEL 251
-#define DL_BOOZ2_FF_ADAP 252
+#define DL_NPS_ATP_CMD 251
 #define DL_I2C_ERRORS 253
 #define DL_RDYB_TRAJECTORY 254
 #define DL_HENRY_GNSS 255
-#define DL_MSG_telemetry_NB 234
+#define DL_MSG_telemetry_NB 239
 
-#define MSG_telemetry_LENGTHS {0,(2+0+2),(2+0+1+nb_md5sum*1),(2+0),(2+0+2),(2+0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2),(2+0+4+4+4),(2+0+2+2+2+2+2),(2+0+1+4+4+2+4+2+2+2+4+1+1),(2+0+4+4+1),(2+0+1+1+4+4+4+4+1+1),(2+0+1+1+1+1+1+1),(2+0+2+2+2+2+1+2+2+2),(2+0+1+1+1),(2+0+4+1),(2+0+4+4),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+2+1),(2+0+2+2),(2+0+8+4),(2+0+2+2+2+2),(2+0+4+4+4),(2+0+4+4+4+4),(2+0+1+4+4+4+4+4+4+4),(2+0+1+4+1+4+4+4),(2+0+1+1+1+1+1+1+2),(2+0+1+nb_msg*1),(2+0+4+4+4+4),(2+0+1),(2+0+2+4+4+4+4+4+1),(2+0+1+2+2),(2+0+1+4),(2+0+1+4+4),(2+0+2+2+2+2+2+1),(2+0+2+4),(2+0+1+4+4+4+1),(2+0+1+1+1+1),(2+0+4+4+2+4),(2+0+2+2+2+2+2+2+2+2+2+2+2),(2+0+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4),(2+0+4+4+4),(2+0+4+2+4),(2+0+4+4+4+4),(2+0+2+2+2+2),(2+0+1+4+4+4),(2+0+1+4),(2+0+1+4+4+4),(2+0+1+1+4+4),(2+0+1+1+1),(2+0+1+nb_values*2),(2+0+2+2+2),(2+0+4+4+4+4),(2+0+2+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+1+1+1+1+4+2+1+1),(2+0+2+2+4),(2+0+2+2+4),(2+0+2+2+4+4+2+2),(2+0+4+4+4+2+2+2+2+4+1+1),(2+0+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+2+4+4),(2+0+2+4+4+4+2+4+4+4+4+4+4+4+2+1),(2+0+2+4+4+4+4+4+4),(2+0+2+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+2+4),(2+0+2+4),(2+0+2+1+1),(2+0+1+4+4+4+4+4+4+4+4),0,0,0,0,(2+0+4+4),(2+0+4),0,0,(2+0+4+4),(2+0+4+4+2+2+2+2+1+1+1+1+1+2),(2+0+1+1+4+4+4),(2+0+1+1+1),(2+0+4+4+4+4),(2+0+2+4+2+4),(2+0+2+4),(2+0+4+4+4),(2+0+4+2),(2+0+2+2+4+4),(2+0+2+2+2+2+1+nb_heat*1),(2+0+2+2+4+4),(2+0+4+4+4+4+4+4+4+1+1),(2+0+4+4+1+1),(2+0+4+4+4+4+4+4+2+1),(2+0+4+4+4+2),(2+0+2+4+4),(2+0+2+4),(2+0+2+4),(2+0+4+4),(2+0+1+1+nb_values*2),(2+0+1+nb_values*2),(2+0+1+nb_values*2),(2+0+1+1+1+2+4),(2+0+1+1+nb_values*2),(2+0+1+nb_values*2),(2+0+2+2+2+4+2+2+1+1),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+2+4+4+4+1+2+2+2+2+4),(2+0+1+1+1+nb_servo*2),(2+0+4),(2+0+4+4),(2+0+1+nb_values*1),(2+0+2+2+4+4),(2+0+4+4+4+4),(2+0+2+2+2+2+2+2+2+2),(2+0+2+2+2+2+2+2+2+2+2+2),(2+0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2),(2+0+1),(2+0+1+1),(2+0+1),(2+0+1+4),(2+0+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+2+2+2+2+2+2+2+2),(2+0+2+2+4+4),(2+0+2),(2+0+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+1),0,(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+2),(2+0+4),(2+0+4+4+4+4+4+4+4+4),(2+0+2+2+2+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+2),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+2+1+1),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+2+2+1+1+1),(2+0+2+2+2+2+2+2+1),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4),(2+0+2+2+2),(2+0+4+4+4),(2+0+2+2),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4),(2+0+2+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4),(2+0+4+4),(2+0+4+4+4+4),(2+0+4+4+4),(2+0+4+2+2+2+4+1),(2+0+4+4+4),(2+0+4),(2+0+4+4+4+4),(2+0+1+nb_raw_fault*2),(2+0+1+nb_speeds*2),(2+0+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+1+nb_busvolts*2),(2+0+4+4+4+4+4+4+4+1),(2+0+2+2+1+1+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+2+2+2),(2+0+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4+4+4),(2+0+4+4+4+4),(2+0+2+2+2+1),(2+0+4+4+4),(2+0+4),(2+0+1+1+nb_samples*4),(2+0+4+4+4+4+1),0,0,0,0,0,0,(2+0+4+4+4+4+4),(2+0+4),(2+0+4+4),0,0,0,0,0,(2+0+4),0,0,(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+1+1+1+1+1+1+1+1+1+2+2),(2+0+1+2),(2+0+1+2+2+4+4+1+4),(2+0+2+4),(2+0+2+2),(2+0+2+4),0,(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4),(2+0+4+4+4),(2+0+1),(2+0+1),(2+0+1+1),(2+0+4+4+4),(2+0+1+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4),(2+0+2+2+2+2+2+2+2+2+4+1),(2+0+4+4+4+4+4+4),(2+0+4+8+1+8+8+8+8+8+8+1+1+8+8+8),}
+#define MSG_telemetry_LENGTHS {0,(2+0+2),(2+0+1+nb_md5sum*1),(2+0),(2+0+2),(2+0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2+4),(2+0+4+4+4),(2+0+2+2+2+2+2),(2+0+1+4+4+2+4+2+2+2+4+1+1),(2+0+4+4+1),(2+0+1+1+4+4+4+4+1+1),(2+0+1+1+1+1+1+1),(2+0+2+2+2+2+1+2+2+2),(2+0+1+1+1),(2+0+4+1),(2+0+4+4),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+2+1),(2+0+2+2),(2+0+8+4),(2+0+2+2+2+2),(2+0+4+4+4),(2+0+4+4+4+4),(2+0+1+4+4+4+4+4+4+4),(2+0+1+4+1+4+4+4),(2+0+1+1+1+1+1+1+2),(2+0+1+nb_msg*1),(2+0+4+4+4+4),(2+0+1),(2+0+2+4+4+4+4+4+1),(2+0+1+2+2),(2+0+1+4),(2+0+1+4+4),(2+0+2+2+2+2+2+2+2+1),(2+0+2+4),(2+0+1+4+4+4+1),(2+0+1+1+1+1),(2+0+4+4+2+4),(2+0+2+2+2+2+2+2+2+2+2+2+2),(2+0+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4),(2+0+4+4+4),(2+0+4+2+4),(2+0+4+4+4+4),(2+0+2+2+2+2),(2+0+1+4+4+4),(2+0+1+4),(2+0+1+4+4+4),(2+0+1+1+4+4),(2+0+1+1+1),(2+0+1+nb_values*2),(2+0+2+2+2),(2+0+4+4+4+4),(2+0+2+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+1+1+1+1+4+2+1+1),(2+0+2+2+4),(2+0+2+2+4),(2+0+2+2+4+4+2+2),(2+0+4+4+4+2+2+2+2+4+1+1),(2+0+4+4+4+4+2+4+4+4+4+2),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+2+4+4),(2+0+2+4+4+4+2+4+4+4+4+4+4+4+2+1),(2+0+2+4+4+4+4+4+4),(2+0+2+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+2+4),(2+0+2+4),(2+0+2+1+1),(2+0+1+4+4+4+4+4+4+4+4),(2+0+1+1+4+4+4+4+4+4+4+4+4+4+1+nb_mfg_id*1),(2+0+4+4+4+2),(2+0+1+1+1+nb_string*1),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4),(2+0+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+1+nb_task_list*1),(2+0+4+4),(2+0+4+4+2+2+2+2+1+1+1+1+1+2),(2+0+1+1+4+4+4),(2+0+1+1+1),(2+0+4+4+4+4),(2+0+2+4+2+4),(2+0+2+4),(2+0+4+4+4),(2+0+4+2),(2+0+2+2+4+4),(2+0+2+2+2+2+1+nb_heat*1),(2+0+2+2+4+4),(2+0+4+4+4+4+4+4+4+1+1),(2+0+4+4+1+1),(2+0+4+4+4+4+4+4+2+1),(2+0+4+4+4+2),(2+0+2+4+4),(2+0+2+4),(2+0+2+4),(2+0+4+4),(2+0+1+1+nb_values*2),(2+0+1+nb_values*2),(2+0+1+nb_values*2),(2+0+1+1+1+2+4),(2+0+1+1+nb_values*2),(2+0+1+nb_values*2),(2+0+2+2+2+4+2+2+1+1),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+2+4+4+4+1+2+2+2+2+4),(2+0+1+1+1+nb_servo*2),(2+0+4),(2+0+4+4),(2+0+1+nb_values*1),(2+0+2+2+4+4),(2+0+4+4+4+4),(2+0+2+2+2+2+2+2+2+2),(2+0+2+2+2+2+2+2+2+2+2+2),(2+0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2),(2+0+1),(2+0+1+1),(2+0+1),(2+0+1+4),(2+0+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+2+2+2+2+2+2+2+2),(2+0+2+2+4+4),(2+0+2),(2+0+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+1),0,(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+2),0,(2+0+4+4+4+4+4+4+4+4),(2+0+2+2+2+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+2),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+2+1+1),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+2+2+1+1+1),(2+0+2+2+2+2+2+2+1),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),0,(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4),(2+0+2+2+2),(2+0+4+4),(2+0+2+2),(2+0+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4),(2+0+2+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4),(2+0+4+4),(2+0+4+4+4+4),(2+0+4+4+4),(2+0+4+2+2+2+4+1),(2+0+4+4+4),(2+0+4),(2+0+4+4+4+4),(2+0+1+nb_raw_fault*2),(2+0+1+nb_speeds*2),(2+0+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+1+nb_busvolts*2),(2+0+4+4+4+4+4+4+4+1),(2+0+2+2+1+1+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+2+2+2),(2+0+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4),(2+0+4+4+4+4+4),(2+0+4+4+4+4),(2+0+2+2+2+1),(2+0+4+4+4),(2+0+4),(2+0+1+1+nb_samples*4),(2+0+4+4+4+4+1),(2+0+4+4+4+4),(2+0+2+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4),0,0,0,0,(2+0+4+4+4+4+4),(2+0+4),(2+0+4+4),0,0,0,0,(2+0+1+1+1),(2+0+4),0,0,(2+0+4+4+4+4+4+4+4+4+4+4+4+4+4),(2+0+4+1+1+1+1+1+1+1+1+1+2+2),(2+0+1+2),(2+0+1+2+2+4+4+1+4),(2+0+2+4),(2+0+2+2),(2+0+2+4),(2+0+1+nb_values*4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+4+4+4+4+4+4),(2+0+4+4+4),(2+0+4),(2+0+4+4+4),0,0,(2+0+1+1),(2+0+4+4+4),(2+0+1+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+8+4+4+4),(2+0+4+4+4+4+4+4+4+4+4),(2+0+2+2+2+2),0,(2+0+2+2+2+2+2+2+2+2+2+4+1),(2+0+4+4+4+4+4+4),(2+0+4+8+1+8+8+8+8+8+8+1+1+8+8+8),}
 
 /*
  Size for non variable messages
@@ -246,14 +251,16 @@
 96 : STAB_ATTITUDE_FLOAT
 87 : HENRY_GNSS
 84 : STAB_ATTITUDE_INT
-84 : HOVER_LOOP
 76 : RATE_LOOP
 74 : XSENS
 72 : AHRS_RMAT_INT
+70 : MF_DAQ_STATE
+68 : INV_FILTER
+68 : HOVER_LOOP
+64 : ARDRONE_NAVDATA
 64 : TURB_PRESSURE_RAW
 64 : TURB_PRESSURE_VOLTAGE
 64 : AHRS_LKF
-60 : ARDRONE_NAVDATA
 60 : FILTER
 60 : VERT_LOOP
 60 : AHRS_LKF_DEBUG
@@ -266,24 +273,26 @@
 48 : STAB_ATTITUDE_REF_FLOAT
 48 : AHRS_DEBUG_QUAT
 47 : DC_INFO
-46 : ROTORCRAFT_TUNE_HOVER
 40 : SOLAR_RADIATION
 40 : EKF7_XHAT
 40 : EKF7_P_DIAG
 40 : VANE_SENSOR
 38 : EKF7_Y
+36 : H_CTL_A
+36 : AHRS_QUAT_INT
 36 : RMAT_DEBUG
 36 : CONTROLLER_GAINS
 36 : INS
 36 : NPS_POS_LLH
 36 : NPS_SPEED_POS
 36 : AFL_COEFFS
+34 : ROTORCRAFT_TUNE_HOVER
 33 : LINK_STATUS
 33 : FILTER_ALIGNER
 32 : DESIRED
+32 : VIDEO_TELEMETRY
 32 : GUIDANCE_H_REF_INT
 32 : INS_REF
-32 : AHRS_QUAT_INT
 32 : HFF_DBG
 32 : AHRS_REF_QUAT
 30 : ANTENNA_DEBUG
@@ -311,12 +320,11 @@
 24 : NPS_SENSORS_SCALED
 24 : GPS_ERROR
 24 : NPS_RATE_ATTITUDE
-24 : BOOZ_ATT_REF_MODEL
 24 : RDYB_TRAJECTORY
 23 : RANGEFINDER
 23 : GENERIC_COM
+23 : I2C_ERRORS
 22 : BARO_BMP85_CALIB
-21 : I2C_ERRORS
 20 : NAVIGATION
 20 : BARO_BMP85
 20 : ATMOSPHERE_CHARGE
@@ -334,7 +342,6 @@
 16 : PRESSURE
 16 : AIRSPEED
 16 : PBN
-16 : H_CTL_A
 16 : BMP_STATUS
 16 : BETH
 16 : BETH_CONTROLLER_TWIST
@@ -346,11 +353,14 @@
 16 : CSC_CAN_MSG
 16 : FLA_DEBUG
 16 : IMU_MAG_CURRENT_CALIBRATION
+16 : TUNE_VERT
 16 : NPS_RPMS
 15 : BAT
+15 : SYS_MON
 15 : FLOW_AP_OTF
 14 : WP_MOVED
 14 : ENERGY
+14 : GX3_INFO
 14 : FORMATION_SLOT_TM
 14 : MOTOR_BENCH_STATIC
 13 : WP_MOVED_LLA
@@ -369,8 +379,6 @@
 12 : IMU_GYRO_SCALED
 12 : IMU_ACCEL_SCALED
 12 : IMU_MAG_SCALED
-12 : BOOZ2_TUNE_FF
-12 : INS_SONAR
 12 : AHRS_EULER
 12 : AHRS_MEASUREMENT_EULER
 12 : AHRS_GYRO_BIAS_INT
@@ -385,9 +393,7 @@
 12 : NPS_GYRO_BIAS
 12 : NPS_WIND
 12 : NPS_ACCEL_LTP
-12 : BOOZ2_FF_ADAP
 11 : GPS_SOL
-11 : SYS_MON
 10 : IR_SENSORS
 10 : BARO_MS5534A
 10 : WINDTURBINE_STATUS_
@@ -410,14 +416,16 @@
  8 : CROSS_TRACK_ERROR
  8 : SHT_I2C_SERIAL
  8 : MLX_SERIAL
+ 8 : INS_SONAR
  8 : CSC_CAN_DEBUG
  8 : BARO_RAW
+ 8 : NPS_ATP_CMD
  7 : ROTORCRAFT_NAV_STATUS
  7 : UART_ERRORS
  6 : PPRZ_MODE
  6 : MOTOR
  6 : DEBUG_IR_I2C
- 6 : AOA_adc
+ 6 : AOA_ADC
  6 : TMP_STATUS
  6 : SCP_STATUS
  6 : TEMT_STATUS
@@ -437,7 +445,6 @@
  4 : VF_PREDICT
  4 : BETH_CONTROLLER_SFB
  4 : TIMESTAMP
- 4 : BOOZ2_FMS_INFO
  4 : ROTORCRAFT_CAM
  4 : WT
  4 : LOADCELL
@@ -449,6 +456,7 @@
  3 : DEBUG_MCU_LINK
  3 : RC_3CH_
  3 : FORMATION_STATUS_TM
+ 3 : PERIODIC_TELEMETRY_ERR
  3 : STATE_FILTER_STATUS
  2 : BOOT
  2 : TAKEOFF
@@ -458,12 +466,13 @@
  1 : WC_RSSI
  1 : TCAS_TA
  1 : TCAS_RESOLVED
- 1 : BOOZ_DEBUG_FOO
- 1 : BOOZ_MAX1167_ERR
  0 : ALIVE
  0 : PONG
  0 : DEBUG
  0 : MPPT
+ 0 : SUPERBITRF
+ 0 : EXPLAIN
+ 0 : MISSION_STATUS
  0 : ENOSE_STATUS
  0 : PPM
  0 : RC
@@ -476,6 +485,7 @@
  0 : BLMC_SPEEDS
  0 : BLMC_BUSVOLTS
  0 : IMU_HS_GYRO
+ 0 : PAYLOAD_FLOAT
 */
 #define DOWNLINK_SEND_BOOT(_trans, _dev, version){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2))) {\
@@ -516,10 +526,10 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_ARDRONE_NAVDATA(_trans, _dev, taille, nu_trame, ax, ay, az, vx, vy, vz, temperature_acc, temperature_gyro, ultrasound, us_debut_echo, us_fin_echo, us_association_echo, us_distance_echo, us_curve_time, us_curve_value, us_curve_ref, nb_echo, sum_echo, gradient, flag_echo_ini, pressure, temperature_pressure, mx, my, mz, chksum){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2)); \
-	  DownlinkStartMessage(_trans, _dev, "ARDRONE_NAVDATA", DL_ARDRONE_NAVDATA, 0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2) \
+#define DOWNLINK_SEND_ARDRONE_NAVDATA(_trans, _dev, taille, nu_trame, ax, ay, az, vx, vy, vz, temperature_acc, temperature_gyro, ultrasound, us_debut_echo, us_fin_echo, us_association_echo, us_distance_echo, us_curve_time, us_curve_value, us_curve_ref, nb_echo, sum_echo, gradient, flag_echo_ini, pressure, temperature_pressure, mx, my, mz, chksum, checksum_errors){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2+4)); \
+	  DownlinkStartMessage(_trans, _dev, "ARDRONE_NAVDATA", DL_ARDRONE_NAVDATA, 0+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+4+2+2+4+2+2+2+2+2+4) \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (taille)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (nu_trame)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (ax)); \
@@ -543,11 +553,12 @@
 	  DownlinkPutInt16ByAddr(_trans, _dev, (gradient)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (flag_echo_ini)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (pressure)); \
-	  DownlinkPutInt16ByAddr(_trans, _dev, (temperature_pressure)); \
+	  DownlinkPutUint16ByAddr(_trans, _dev, (temperature_pressure)); \
 	  DownlinkPutInt16ByAddr(_trans, _dev, (mx)); \
 	  DownlinkPutInt16ByAddr(_trans, _dev, (my)); \
 	  DownlinkPutInt16ByAddr(_trans, _dev, (mz)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (chksum)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (checksum_errors)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -693,23 +704,7 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
-#ifdef OLD_MSG_FORMAT
-#define DOWNLINK_SEND_DESIRED(_trans, _dev, roll, pitch, course, x, y, altitude, climb, airspeed){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "DESIRED", DL_DESIRED, 0+4+4+4+4+4+4+4+4) \
-	  DownlinkPutFloatByAddr(_trans, _dev, (roll)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (pitch)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (course)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (x)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (y)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (altitude)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (climb)); \
-	  DownlinkEndMessage(_trans, _dev ) \
-	} else \
-	  DownlinkOverrun(_trans, _dev ); \
-}
-#else
+
 #define DOWNLINK_SEND_DESIRED(_trans, _dev, roll, pitch, course, x, y, altitude, climb, airspeed){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
@@ -726,8 +721,6 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
-#endif
-
 
 #define DOWNLINK_SEND_GPS_SOL(_trans, _dev, Pacc, Sacc, PDOP, numSV){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+2+1))) {\
@@ -934,11 +927,13 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_SYS_MON(_trans, _dev, periodic_time, periodic_cycle, periodic_cycle_min, periodic_cycle_max, event_number, cpu_load){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+1))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+1)); \
-	  DownlinkStartMessage(_trans, _dev, "SYS_MON", DL_SYS_MON, 0+2+2+2+2+2+1) \
+#define DOWNLINK_SEND_SYS_MON(_trans, _dev, periodic_time, periodic_time_min, periodic_time_max, periodic_cycle, periodic_cycle_min, periodic_cycle_max, event_number, cpu_load){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+1)); \
+	  DownlinkStartMessage(_trans, _dev, "SYS_MON", DL_SYS_MON, 0+2+2+2+2+2+2+2+1) \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (periodic_time)); \
+	  DownlinkPutUint16ByAddr(_trans, _dev, (periodic_time_min)); \
+	  DownlinkPutUint16ByAddr(_trans, _dev, (periodic_time_max)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (periodic_cycle)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (periodic_cycle_min)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (periodic_cycle_max)); \
@@ -1311,14 +1306,20 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_H_CTL_A(_trans, _dev, roll_sum_err, ref_roll_angle, pitch_sum_err, ref_pitch_angle){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "H_CTL_A", DL_H_CTL_A, 0+4+4+4+4) \
+#define DOWNLINK_SEND_H_CTL_A(_trans, _dev, roll_sum_err, roll_sp, roll_ref, phi, aileron_sp, pitch_sum_err, pitch_sp, pitch_ref, theta, elevator_sp){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+2+4+4+4+4+2))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+2+4+4+4+4+2)); \
+	  DownlinkStartMessage(_trans, _dev, "H_CTL_A", DL_H_CTL_A, 0+4+4+4+4+2+4+4+4+4+2) \
 	  DownlinkPutFloatByAddr(_trans, _dev, (roll_sum_err)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (ref_roll_angle)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (roll_sp)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (roll_ref)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (phi)); \
+	  DownlinkPutInt16ByAddr(_trans, _dev, (aileron_sp)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (pitch_sum_err)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (ref_pitch_angle)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (pitch_sp)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (pitch_ref)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (theta)); \
+	  DownlinkPutInt16ByAddr(_trans, _dev, (elevator_sp)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -1466,10 +1467,10 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_AOA_adc(_trans, _dev, adcVal, AOA){ \
+#define DOWNLINK_SEND_AOA_ADC(_trans, _dev, adcVal, AOA){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+4)); \
-	  DownlinkStartMessage(_trans, _dev, "AOA_adc", DL_AOA_adc, 0+2+4) \
+	  DownlinkStartMessage(_trans, _dev, "AOA_ADC", DL_AOA_ADC, 0+2+4) \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (adcVal)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (AOA)); \
 	  DownlinkEndMessage(_trans, _dev ) \
@@ -1507,6 +1508,70 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
+#define DOWNLINK_SEND_SUPERBITRF(_trans, _dev, status, cyrf_status, irq_count, rx_packet_count, tx_packet_count, transfer_timeouts, resync_count, uplink_count, rc_count, timing1, timing2, bind_mfg_id, nb_mfg_id, mfg_id){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+1+nb_mfg_id*1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+4+4+4+4+4+4+4+4+4+4+1+nb_mfg_id*1)); \
+	  DownlinkStartMessage(_trans, _dev, "SUPERBITRF", DL_SUPERBITRF, 0+1+1+4+4+4+4+4+4+4+4+4+4+1+nb_mfg_id*1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (status)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (cyrf_status)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (irq_count)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (rx_packet_count)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (tx_packet_count)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (transfer_timeouts)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (resync_count)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (uplink_count)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (rc_count)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (timing1)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (timing2)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (bind_mfg_id)); \
+	  DownlinkPutUint8Array(_trans, _dev, nb_mfg_id, mfg_id); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_GX3_INFO(_trans, _dev, GX3_freq, chksm_error, hdr_error, GX3_chksm){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+2))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+2)); \
+	  DownlinkStartMessage(_trans, _dev, "GX3_INFO", DL_GX3_INFO, 0+4+4+4+2) \
+	  DownlinkPutFloatByAddr(_trans, _dev, (GX3_freq)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (chksm_error)); \
+	  DownlinkPutUint32ByAddr(_trans, _dev, (hdr_error)); \
+	  DownlinkPutUint16ByAddr(_trans, _dev, (GX3_chksm)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_EXPLAIN(_trans, _dev, type, id, nb_string, string){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+1+nb_string*1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+1+nb_string*1)); \
+	  DownlinkStartMessage(_trans, _dev, "EXPLAIN", DL_EXPLAIN, 0+1+1+1+nb_string*1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (type)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (id)); \
+	  DownlinkPutUint8Array(_trans, _dev, nb_string, string); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_VIDEO_TELEMETRY(_trans, _dev, blob_x1, blob_y1, blob_x2, blob_y2, blob_x3, blob_y3, blob_x4, blob_y4){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "VIDEO_TELEMETRY", DL_VIDEO_TELEMETRY, 0+4+4+4+4+4+4+4+4) \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_x1)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_y1)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_x2)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_y2)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_x3)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_y3)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_x4)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (blob_y4)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
 #define DOWNLINK_SEND_VF_UPDATE(_trans, _dev, baro, range_meter){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4)); \
@@ -1523,6 +1588,43 @@
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4)); \
 	  DownlinkStartMessage(_trans, _dev, "VF_PREDICT", DL_VF_PREDICT, 0+4) \
 	  DownlinkPutFloatByAddr(_trans, _dev, (accel)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_INV_FILTER(_trans, _dev, quat, phi_inv, theta_inv, psi_inv, Vx_inv, Vy_inv, Vz_inv, Px_inv, Py_inv, Pz_inv, bias_phi, bias_theta, bias_psi, bias_as, bias_hb, meas_baro, meas_gps){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "INV_FILTER", DL_INV_FILTER, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4) \
+	  DownlinkPutFloatByAddr(_trans, _dev, (quat)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (phi_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (theta_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (psi_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (Vx_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (Vy_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (Vz_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (Px_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (Py_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (Pz_inv)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (bias_phi)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (bias_theta)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (bias_psi)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (bias_as)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (bias_hb)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (meas_baro)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (meas_gps)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MISSION_STATUS(_trans, _dev, remaining_time, nb_task_list, task_list){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+1+nb_task_list*1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+1+nb_task_list*1)); \
+	  DownlinkStartMessage(_trans, _dev, "MISSION_STATUS", DL_MISSION_STATUS, 0+4+1+nb_task_list*1) \
+	  DownlinkPutFloatByAddr(_trans, _dev, (remaining_time)); \
+	  DownlinkPutUint8Array(_trans, _dev, nb_task_list, task_list); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -2197,19 +2299,16 @@
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
-#ifdef OLD_MSG_FORMAT
-#define DOWNLINK_SEND_TIMESTAMP(_trans, _dev, timestamp){ }
-#else
+
 #define DOWNLINK_SEND_TIMESTAMP(_trans, _dev, timestamp){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4)); \
-	  DownlinkStartMessage(_trans, _dev, "TIMESTAMP", DL_TIMESTAMP, 0+4); \
+	  DownlinkStartMessage(_trans, _dev, "TIMESTAMP", DL_TIMESTAMP, 0+4) \
 	  DownlinkPutUint32ByAddr(_trans, _dev, (timestamp)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
-#endif
 
 #define DOWNLINK_SEND_STAB_ATTITUDE_FLOAT(_trans, _dev, est_p, est_q, est_r, est_phi, est_theta, est_psi, ref_phi, ref_theta, ref_psi, sum_err_phi, sum_err_theta, sum_err_psi, delta_a_fb, delta_e_fb, delta_r_fb, delta_a_ff, delta_e_ff, delta_r_ff, delta_a, delta_e, delta_r, est_p_d, est_q_d, est_r_d){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4))) {\
@@ -2505,10 +2604,10 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_HOVER_LOOP(_trans, _dev, sp_x, sp_y, est_x, est_y, est_xd, est_yd, est_xdd, est_ydd, err_x, err_y, err_xd, err_yd, err_sum_x, err_sum_y, err_nav_x, err_nav_y, cmd_x, cmd_y, cmd_phi, cmd_theta, cmd_psi){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "HOVER_LOOP", DL_HOVER_LOOP, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4) \
+#define DOWNLINK_SEND_HOVER_LOOP(_trans, _dev, sp_x, sp_y, est_x, est_y, est_xd, est_yd, est_xdd, est_ydd, err_x, err_y, err_xd, err_yd, err_sum_x, err_sum_y, cmd_x, cmd_y, cmd_heading){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "HOVER_LOOP", DL_HOVER_LOOP, 0+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4) \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (sp_x)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (sp_y)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (est_x)); \
@@ -2523,13 +2622,9 @@
 	  DownlinkPutInt32ByAddr(_trans, _dev, (err_yd)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (err_sum_x)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (err_sum_y)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (err_nav_x)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (err_nav_y)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_x)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_y)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_phi)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_theta)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_psi)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_heading)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -2559,16 +2654,6 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_BOOZ2_FMS_INFO(_trans, _dev, tbd){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4)); \
-	  DownlinkStartMessage(_trans, _dev, "BOOZ2_FMS_INFO", DL_BOOZ2_FMS_INFO, 0+4) \
-	  DownlinkPutFloatByAddr(_trans, _dev, (tbd)); \
-	  DownlinkEndMessage(_trans, _dev ) \
-	} else \
-	  DownlinkOverrun(_trans, _dev ); \
-}
-
 #define DOWNLINK_SEND_GUIDANCE_H_REF_INT(_trans, _dev, sp_x, ref_x, ref_xd, ref_xdd, sp_y, ref_y, ref_yd, ref_ydd){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
@@ -2586,10 +2671,10 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_ROTORCRAFT_TUNE_HOVER(_trans, _dev, rc_roll, rc_pitch, rc_yaw, cmd_roll, cmd_pitch, cmd_yaw, cmd_thrust, imu_phi, imu_theta, imu_psi, body_phi, body_theta, body_psi){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+4+4+4+4+4+4+4+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+4+4+4+4+4+4+4+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "ROTORCRAFT_TUNE_HOVER", DL_ROTORCRAFT_TUNE_HOVER, 0+2+2+2+4+4+4+4+4+4+4+4+4+4) \
+#define DOWNLINK_SEND_ROTORCRAFT_TUNE_HOVER(_trans, _dev, rc_roll, rc_pitch, rc_yaw, cmd_roll, cmd_pitch, cmd_yaw, cmd_thrust, body_phi, body_theta, body_psi){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "ROTORCRAFT_TUNE_HOVER", DL_ROTORCRAFT_TUNE_HOVER, 0+2+2+2+4+4+4+4+4+4+4) \
 	  DownlinkPutInt16ByAddr(_trans, _dev, (rc_roll)); \
 	  DownlinkPutInt16ByAddr(_trans, _dev, (rc_pitch)); \
 	  DownlinkPutInt16ByAddr(_trans, _dev, (rc_yaw)); \
@@ -2597,9 +2682,6 @@
 	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_pitch)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_yaw)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (cmd_thrust)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (imu_phi)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (imu_theta)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (imu_psi)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (body_phi)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (body_theta)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (body_psi)); \
@@ -2608,11 +2690,11 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_INS_Z(_trans, _dev, baro_alt, ins_z, ins_zd, ins_zdd){ \
+#define DOWNLINK_SEND_INS_Z(_trans, _dev, baro_z, ins_z, ins_zd, ins_zdd){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4)); \
 	  DownlinkStartMessage(_trans, _dev, "INS_Z", DL_INS_Z, 0+4+4+4+4) \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (baro_alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (baro_z)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (ins_z)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (ins_zd)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (ins_zdd)); \
@@ -2657,7 +2739,7 @@
 	  DownlinkPutInt32ByAddr(_trans, _dev, (lon0)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (alt0)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (hmsl0)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (baro_qfe)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (baro_qfe)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -2703,10 +2785,11 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_AHRS_QUAT_INT(_trans, _dev, imu_qi, imu_qx, imu_qy, imu_qz, body_qi, body_qx, body_qy, body_qz){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "AHRS_QUAT_INT", DL_AHRS_QUAT_INT, 0+4+4+4+4+4+4+4+4) \
+#define DOWNLINK_SEND_AHRS_QUAT_INT(_trans, _dev, weight, imu_qi, imu_qx, imu_qy, imu_qz, body_qi, body_qx, body_qy, body_qz){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "AHRS_QUAT_INT", DL_AHRS_QUAT_INT, 0+4+4+4+4+4+4+4+4+4) \
+	  DownlinkPutFloatByAddr(_trans, _dev, (weight)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (imu_qi)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (imu_qx)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (imu_qy)); \
@@ -2809,18 +2892,6 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_BOOZ2_TUNE_FF(_trans, _dev, fb_rms, dg, g){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "BOOZ2_TUNE_FF", DL_BOOZ2_TUNE_FF, 0+4+4+4) \
-	  DownlinkPutFloatByAddr(_trans, _dev, (fb_rms)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (dg)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (g)); \
-	  DownlinkEndMessage(_trans, _dev ) \
-	} else \
-	  DownlinkOverrun(_trans, _dev ); \
-}
-
 #define DOWNLINK_SEND_HFF(_trans, _dev, x, y, xd, yd, xdd, ydd){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4)); \
@@ -2836,14 +2907,14 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_HFF_DBG(_trans, _dev, x_measure, y_measure, yd_measure, xd_measure, Pxx, Pyy, Pxdxd, Pydyd){ \
+#define DOWNLINK_SEND_HFF_DBG(_trans, _dev, x_measure, y_measure, xd_measure, yd_measure, Pxx, Pyy, Pxdxd, Pydyd){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4+4+4)); \
 	  DownlinkStartMessage(_trans, _dev, "HFF_DBG", DL_HFF_DBG, 0+4+4+4+4+4+4+4+4) \
 	  DownlinkPutFloatByAddr(_trans, _dev, (x_measure)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (y_measure)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (yd_measure)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (xd_measure)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (yd_measure)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (Pxx)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (Pyy)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (Pxdxd)); \
@@ -2865,12 +2936,11 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_INS_SONAR(_trans, _dev, raw, scaled, var){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "INS_SONAR", DL_INS_SONAR, 0+4+4+4) \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (raw)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (scaled)); \
+#define DOWNLINK_SEND_INS_SONAR(_trans, _dev, distance, var){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "INS_SONAR", DL_INS_SONAR, 0+4+4) \
+	  DownlinkPutFloatByAddr(_trans, _dev, (distance)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (var)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
@@ -3523,6 +3593,46 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
+#define DOWNLINK_SEND_TUNE_VERT(_trans, _dev, z_sp, est_z, ref_z, ref_zd){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "TUNE_VERT", DL_TUNE_VERT, 0+4+4+4+4) \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (z_sp)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (est_z)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ref_z)); \
+	  DownlinkPutInt32ByAddr(_trans, _dev, (ref_zd)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_MF_DAQ_STATE(_trans, _dev, flight_time, p, q, r, phi, theta, psi, ax, ay, az, ve, vn, vu, lat, lon, alt, we, wn){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4)); \
+	  DownlinkStartMessage(_trans, _dev, "MF_DAQ_STATE", DL_MF_DAQ_STATE, 0+2+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4+4) \
+	  DownlinkPutUint16ByAddr(_trans, _dev, (flight_time)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (p)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (q)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (r)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (phi)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (theta)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (psi)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (ax)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (ay)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (az)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (ve)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (vn)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (vu)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (lat)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (lon)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (alt)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (we)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (wn)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
 #define DOWNLINK_SEND_WEATHER(_trans, _dev, p_amb, t_amb, windspeed, wind_from, humidity){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4)); \
@@ -3551,8 +3661,20 @@
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4)); \
 	  DownlinkStartMessage(_trans, _dev, "BARO_RAW", DL_BARO_RAW, 0+4+4) \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (abs)); \
-	  DownlinkPutInt32ByAddr(_trans, _dev, (diff)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (abs)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (diff)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_PERIODIC_TELEMETRY_ERR(_trans, _dev, process, mode, id){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1+1)); \
+	  DownlinkStartMessage(_trans, _dev, "PERIODIC_TELEMETRY_ERR", DL_PERIODIC_TELEMETRY_ERR, 0+1+1+1) \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (process)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (mode)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (id)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -3590,12 +3712,12 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_ROTORCRAFT_STATUS(_trans, _dev, link_imu_nb_err, blmc_nb_err, rc_status, frame_rate, gps_status, ap_mode, ap_in_flight, ap_motors_on, ap_h_mode, ap_v_mode, vsupply, cpu_time){ \
+#define DOWNLINK_SEND_ROTORCRAFT_STATUS(_trans, _dev, link_imu_nb_err, motor_nb_err, rc_status, frame_rate, gps_status, ap_mode, ap_in_flight, ap_motors_on, ap_h_mode, ap_v_mode, vsupply, cpu_time){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+1+1+1+1+1+1+1+1+1+2+2))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+1+1+1+1+1+1+1+1+1+2+2)); \
 	  DownlinkStartMessage(_trans, _dev, "ROTORCRAFT_STATUS", DL_ROTORCRAFT_STATUS, 0+4+1+1+1+1+1+1+1+1+1+2+2) \
 	  DownlinkPutUint32ByAddr(_trans, _dev, (link_imu_nb_err)); \
-	  DownlinkPutUint8ByAddr(_trans, _dev, (blmc_nb_err)); \
+	  DownlinkPutUint8ByAddr(_trans, _dev, (motor_nb_err)); \
 	  DownlinkPutUint8ByAddr(_trans, _dev, (rc_status)); \
 	  DownlinkPutUint8ByAddr(_trans, _dev, (frame_rate)); \
 	  DownlinkPutUint8ByAddr(_trans, _dev, (gps_status)); \
@@ -3666,6 +3788,16 @@
 	  DownlinkStartMessage(_trans, _dev, "SONAR", DL_SONAR, 0+2+4) \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (sonar_meas)); \
 	  DownlinkPutFloatByAddr(_trans, _dev, (sonar_distance)); \
+	  DownlinkEndMessage(_trans, _dev ) \
+	} else \
+	  DownlinkOverrun(_trans, _dev ); \
+}
+
+#define DOWNLINK_SEND_PAYLOAD_FLOAT(_trans, _dev, nb_values, values){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+nb_values*4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+nb_values*4)); \
+	  DownlinkStartMessage(_trans, _dev, "PAYLOAD_FLOAT", DL_PAYLOAD_FLOAT, 0+1+nb_values*4) \
+	  DownlinkPutFloatArray(_trans, _dev, nb_values, values); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -3769,26 +3901,6 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_BOOZ_DEBUG_FOO(_trans, _dev, ami_stat){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1)); \
-	  DownlinkStartMessage(_trans, _dev, "BOOZ_DEBUG_FOO", DL_BOOZ_DEBUG_FOO, 0+1) \
-	  DownlinkPutUint8ByAddr(_trans, _dev, (ami_stat)); \
-	  DownlinkEndMessage(_trans, _dev ) \
-	} else \
-	  DownlinkOverrun(_trans, _dev ); \
-}
-
-#define DOWNLINK_SEND_BOOZ_MAX1167_ERR(_trans, _dev, erno){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1)); \
-	  DownlinkStartMessage(_trans, _dev, "BOOZ_MAX1167_ERR", DL_BOOZ_MAX1167_ERR, 0+1) \
-	  DownlinkPutUint8ByAddr(_trans, _dev, (erno)); \
-	  DownlinkEndMessage(_trans, _dev ) \
-	} else \
-	  DownlinkOverrun(_trans, _dev ); \
-}
-
 #define DOWNLINK_SEND_PPRZ_DEBUG(_trans, _dev, module, errno){ \
 	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1))) {\
 	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+1+1)); \
@@ -3863,37 +3975,24 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_BOOZ_ATT_REF_MODEL(_trans, _dev, omega_p, zeta_p, omega_q, zeta_q, omega_r, zeta_r){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "BOOZ_ATT_REF_MODEL", DL_BOOZ_ATT_REF_MODEL, 0+4+4+4+4+4+4) \
-	  DownlinkPutFloatByAddr(_trans, _dev, (omega_p)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (zeta_p)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (omega_q)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (zeta_q)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (omega_r)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (zeta_r)); \
+#define DOWNLINK_SEND_NPS_ATP_CMD(_trans, _dev, yaw, roll, pitch, throttle){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2)); \
+	  DownlinkStartMessage(_trans, _dev, "NPS_ATP_CMD", DL_NPS_ATP_CMD, 0+2+2+2+2) \
+	  DownlinkPutInt16ByAddr(_trans, _dev, (yaw)); \
+	  DownlinkPutInt16ByAddr(_trans, _dev, (roll)); \
+	  DownlinkPutInt16ByAddr(_trans, _dev, (pitch)); \
+	  DownlinkPutInt16ByAddr(_trans, _dev, (throttle)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_BOOZ2_FF_ADAP(_trans, _dev, roll, pitch, yaw){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+4)); \
-	  DownlinkStartMessage(_trans, _dev, "BOOZ2_FF_ADAP", DL_BOOZ2_FF_ADAP, 0+4+4+4) \
-	  DownlinkPutFloatByAddr(_trans, _dev, (roll)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (pitch)); \
-	  DownlinkPutFloatByAddr(_trans, _dev, (yaw)); \
-	  DownlinkEndMessage(_trans, _dev ) \
-	} else \
-	  DownlinkOverrun(_trans, _dev ); \
-}
-
-#define DOWNLINK_SEND_I2C_ERRORS(_trans, _dev, acknowledge_failure_cnt, misplaced_start_or_stop_cnt, arbitration_lost_cnt, overrun_or_underrun_cnt, pec_error_in_reception_cnt, timeout_or_tlow_error_cnt, smbus_alert_cnt, unexpected_event_cnt, last_unexpected_event, bus_number){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+4+1))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+4+1)); \
-	  DownlinkStartMessage(_trans, _dev, "I2C_ERRORS", DL_I2C_ERRORS, 0+2+2+2+2+2+2+2+2+4+1) \
+#define DOWNLINK_SEND_I2C_ERRORS(_trans, _dev, queue_full_cnt, acknowledge_failure_cnt, misplaced_start_or_stop_cnt, arbitration_lost_cnt, overrun_or_underrun_cnt, pec_error_in_reception_cnt, timeout_or_tlow_error_cnt, smbus_alert_cnt, unexpected_event_cnt, last_unexpected_event, bus_number){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+2+4+1))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+2+2+2+2+2+2+2+2+2+4+1)); \
+	  DownlinkStartMessage(_trans, _dev, "I2C_ERRORS", DL_I2C_ERRORS, 0+2+2+2+2+2+2+2+2+2+4+1) \
+	  DownlinkPutUint16ByAddr(_trans, _dev, (queue_full_cnt)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (acknowledge_failure_cnt)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (misplaced_start_or_stop_cnt)); \
 	  DownlinkPutUint16ByAddr(_trans, _dev, (arbitration_lost_cnt)); \
@@ -3952,7 +4051,7 @@
 #define DOWNLINK_SEND_ALIVE(_trans, _dev, nb_md5sum, md5sum) {}
 #define DOWNLINK_SEND_PONG(_trans, _dev ) {}
 #define DOWNLINK_SEND_TAKEOFF(_trans, _dev, cpu_time) {}
-#define DOWNLINK_SEND_ARDRONE_NAVDATA(_trans, _dev, taille, nu_trame, ax, ay, az, vx, vy, vz, temperature_acc, temperature_gyro, ultrasound, us_debut_echo, us_fin_echo, us_association_echo, us_distance_echo, us_curve_time, us_curve_value, us_curve_ref, nb_echo, sum_echo, gradient, flag_echo_ini, pressure, temperature_pressure, mx, my, mz, chksum) {}
+#define DOWNLINK_SEND_ARDRONE_NAVDATA(_trans, _dev, taille, nu_trame, ax, ay, az, vx, vy, vz, temperature_acc, temperature_gyro, ultrasound, us_debut_echo, us_fin_echo, us_association_echo, us_distance_echo, us_curve_time, us_curve_value, us_curve_ref, nb_echo, sum_echo, gradient, flag_echo_ini, pressure, temperature_pressure, mx, my, mz, chksum, checksum_errors) {}
 #define DOWNLINK_SEND_ATTITUDE(_trans, _dev, phi, psi, theta) {}
 #define DOWNLINK_SEND_IR_SENSORS(_trans, _dev, ir1, ir2, longitudinal, lateral, vertical) {}
 #define DOWNLINK_SEND_GPS(_trans, _dev, mode, utm_east, utm_north, course, alt, speed, climb, week, itow, utm_zone, gps_nb_err) {}
@@ -3980,7 +4079,7 @@
 #define DOWNLINK_SEND_DOWNLINK(_trans, _dev, nb_ovrn, rate, nb_msgs) {}
 #define DOWNLINK_SEND_DL_VALUE(_trans, _dev, index, value) {}
 #define DOWNLINK_SEND_MARK(_trans, _dev, ac_id, lat, long) {}
-#define DOWNLINK_SEND_SYS_MON(_trans, _dev, periodic_time, periodic_cycle, periodic_cycle_min, periodic_cycle_max, event_number, cpu_load) {}
+#define DOWNLINK_SEND_SYS_MON(_trans, _dev, periodic_time, periodic_time_min, periodic_time_max, periodic_cycle, periodic_cycle_min, periodic_cycle_max, event_number, cpu_load) {}
 #define DOWNLINK_SEND_MOTOR(_trans, _dev, rpm, current) {}
 #define DOWNLINK_SEND_WP_MOVED(_trans, _dev, wp_id, utm_east, utm_north, alt, utm_zone) {}
 #define DOWNLINK_SEND_MKK(_trans, _dev, nr, rpm, current, temp) {}
@@ -4007,7 +4106,7 @@
 #define DOWNLINK_SEND_AIRSPEED_ETS(_trans, _dev, adc, offset, scaled) {}
 #define DOWNLINK_SEND_PBN(_trans, _dev, airspeed_adc, altitude_adc, airspeed, altitude, airspeed_offset, altitude_offset) {}
 #define DOWNLINK_SEND_GPS_LLA(_trans, _dev, lat, lon, alt, course, speed, climb, week, itow, mode, gps_nb_err) {}
-#define DOWNLINK_SEND_H_CTL_A(_trans, _dev, roll_sum_err, ref_roll_angle, pitch_sum_err, ref_pitch_angle) {}
+#define DOWNLINK_SEND_H_CTL_A(_trans, _dev, roll_sum_err, roll_sp, roll_ref, phi, aileron_sp, pitch_sum_err, pitch_sp, pitch_ref, theta, elevator_sp) {}
 #define DOWNLINK_SEND_TURB_PRESSURE_RAW(_trans, _dev, ch_0, ch_1, ch_2, ch_3, ch_4, ch_5, ch_6, ch_7, ch_8, ch_9, ch_10, ch_11, ch_12, ch_13, ch_14, ch_15) {}
 #define DOWNLINK_SEND_TURB_PRESSURE_VOLTAGE(_trans, _dev, ch_1_p, ch_1_t, ch_2_p, ch_2_t, ch_3_p, ch_3_t, ch_4_p, ch_4_t, ch_5_p, ch_5_t, ch_6_p, ch_6_t, ch_7_p, ch_7_t, gnd1, gnd2) {}
 #define DOWNLINK_SEND_CAM_POINT(_trans, _dev, cam_point_distance_from_home, cam_point_lat, cam_point_lon) {}
@@ -4016,11 +4115,17 @@
 #define DOWNLINK_SEND_AMSYS_AIRSPEED(_trans, _dev, asRaw, asPresure, asAirspeed, asAirsFilt, asTemp) {}
 #define DOWNLINK_SEND_FLIGHT_BENCHMARK(_trans, _dev, SE_As, SE_Alt, SE_Pos, Err_As, Err_Alt, Err_Pos) {}
 #define DOWNLINK_SEND_MPL3115_BARO(_trans, _dev, pressure, temp, alt) {}
-#define DOWNLINK_SEND_AOA_adc(_trans, _dev, adcVal, AOA) {}
+#define DOWNLINK_SEND_AOA_ADC(_trans, _dev, adcVal, AOA) {}
 #define DOWNLINK_SEND_XTEND_RSSI(_trans, _dev, datalink_time, rssi_fade_margin, duty) {}
 #define DOWNLINK_SEND_LINK_STATUS(_trans, _dev, link_id, time_since_last_msg, run_time, rx_bytes, rx_msgs, rx_err, rx_bytes_rate, rx_msgs_rate, ping_time) {}
+#define DOWNLINK_SEND_SUPERBITRF(_trans, _dev, status, cyrf_status, irq_count, rx_packet_count, tx_packet_count, transfer_timeouts, resync_count, uplink_count, rc_count, timing1, timing2, bind_mfg_id, nb_mfg_id, mfg_id) {}
+#define DOWNLINK_SEND_GX3_INFO(_trans, _dev, GX3_freq, chksm_error, hdr_error, GX3_chksm) {}
+#define DOWNLINK_SEND_EXPLAIN(_trans, _dev, type, id, nb_string, string) {}
+#define DOWNLINK_SEND_VIDEO_TELEMETRY(_trans, _dev, blob_x1, blob_y1, blob_x2, blob_y2, blob_x3, blob_y3, blob_x4, blob_y4) {}
 #define DOWNLINK_SEND_VF_UPDATE(_trans, _dev, baro, range_meter) {}
 #define DOWNLINK_SEND_VF_PREDICT(_trans, _dev, accel) {}
+#define DOWNLINK_SEND_INV_FILTER(_trans, _dev, quat, phi_inv, theta_inv, psi_inv, Vx_inv, Vy_inv, Vz_inv, Px_inv, Py_inv, Pz_inv, bias_phi, bias_theta, bias_psi, bias_as, bias_hb, meas_baro, meas_gps) {}
+#define DOWNLINK_SEND_MISSION_STATUS(_trans, _dev, remaining_time, nb_task_list, task_list) {}
 #define DOWNLINK_SEND_CROSS_TRACK_ERROR(_trans, _dev, cross_track_error, cte_int) {}
 #define DOWNLINK_SEND_GENERIC_COM(_trans, _dev, lat, lon, alt, gspeed, course, airspeed, vsupply, energy, throttle, ap_mode, nav_block, flight_time) {}
 #define DOWNLINK_SEND_FORMATION_SLOT_TM(_trans, _dev, ac_id, mode, slot_east, slot_north, slot_alt) {}
@@ -4086,28 +4191,26 @@
 #define DOWNLINK_SEND_ROTORCRAFT_CMD(_trans, _dev, cmd_roll, cmd_pitch, cmd_yaw, cmd_thrust) {}
 #define DOWNLINK_SEND_GUIDANCE_H_INT(_trans, _dev, sp_x, sp_y, ref_x, ref_y, est_x, est_y) {}
 #define DOWNLINK_SEND_VERT_LOOP(_trans, _dev, z_sp, zd_sp, est_z, est_zd, est_zdd, ref_z, ref_zd, ref_zdd, adp_inv_m, adp_cov, adp_meas, sum_err, ff_cmd, fb_cmd, delta_t) {}
-#define DOWNLINK_SEND_HOVER_LOOP(_trans, _dev, sp_x, sp_y, est_x, est_y, est_xd, est_yd, est_xdd, est_ydd, err_x, err_y, err_xd, err_yd, err_sum_x, err_sum_y, err_nav_x, err_nav_y, cmd_x, cmd_y, cmd_phi, cmd_theta, cmd_psi) {}
+#define DOWNLINK_SEND_HOVER_LOOP(_trans, _dev, sp_x, sp_y, est_x, est_y, est_xd, est_yd, est_xdd, est_ydd, err_x, err_y, err_xd, err_yd, err_sum_x, err_sum_y, cmd_x, cmd_y, cmd_heading) {}
 #define DOWNLINK_SEND_ROTORCRAFT_FP(_trans, _dev, east, north, up, veast, vnorth, vup, phi, theta, psi, carrot_east, carrot_north, carrot_up, carrot_psi, thrust, flight_time) {}
-#define DOWNLINK_SEND_BOOZ2_FMS_INFO(_trans, _dev, tbd) {}
 #define DOWNLINK_SEND_GUIDANCE_H_REF_INT(_trans, _dev, sp_x, ref_x, ref_xd, ref_xdd, sp_y, ref_y, ref_yd, ref_ydd) {}
-#define DOWNLINK_SEND_ROTORCRAFT_TUNE_HOVER(_trans, _dev, rc_roll, rc_pitch, rc_yaw, cmd_roll, cmd_pitch, cmd_yaw, cmd_thrust, imu_phi, imu_theta, imu_psi, body_phi, body_theta, body_psi) {}
-#define DOWNLINK_SEND_INS_Z(_trans, _dev, baro_alt, ins_z, ins_zd, ins_zdd) {}
+#define DOWNLINK_SEND_ROTORCRAFT_TUNE_HOVER(_trans, _dev, rc_roll, rc_pitch, rc_yaw, cmd_roll, cmd_pitch, cmd_yaw, cmd_thrust, body_phi, body_theta, body_psi) {}
+#define DOWNLINK_SEND_INS_Z(_trans, _dev, baro_z, ins_z, ins_zd, ins_zdd) {}
 #define DOWNLINK_SEND_PCAP01_STATUS(_trans, _dev, ihumid, itemp, humid, temp) {}
 #define DOWNLINK_SEND_GEIGER_COUNTER(_trans, _dev, tube1, tube2, vsupply) {}
 #define DOWNLINK_SEND_INS_REF(_trans, _dev, ecef_x0, ecef_y0, ecef_z0, lat0, lon0, alt0, hmsl0, baro_qfe) {}
 #define DOWNLINK_SEND_GPS_INT(_trans, _dev, ecef_x, ecef_y, ecef_z, lat, lon, alt, hmsl, ecef_xd, ecef_yd, ecef_zd, pacc, sacc, tow, pdop, numsv, fix) {}
 #define DOWNLINK_SEND_AHRS_EULER_INT(_trans, _dev, imu_phi, imu_theta, imu_psi, body_phi, body_theta, body_psi) {}
-#define DOWNLINK_SEND_AHRS_QUAT_INT(_trans, _dev, imu_qi, imu_qx, imu_qy, imu_qz, body_qi, body_qx, body_qy, body_qz) {}
+#define DOWNLINK_SEND_AHRS_QUAT_INT(_trans, _dev, weight, imu_qi, imu_qx, imu_qy, imu_qz, body_qi, body_qx, body_qy, body_qz) {}
 #define DOWNLINK_SEND_AHRS_RMAT_INT(_trans, _dev, imu_m00, imu_m01, imu_m02, imu_m10, imu_m11, imu_m12, imu_m20, imu_m21, imu_m22, body_m00, body_m01, body_m02, body_m10, body_m11, body_m12, body_m20, body_m21, body_m22) {}
 #define DOWNLINK_SEND_ROTORCRAFT_NAV_STATUS(_trans, _dev, block_time, stage_time, cur_block, cur_stage, horizontal_mode) {}
 #define DOWNLINK_SEND_ROTORCRAFT_RADIO_CONTROL(_trans, _dev, roll, pitch, yaw, throttle, mode, kill, status) {}
 #define DOWNLINK_SEND_VFF_EXTENDED(_trans, _dev, measure1, measure2, z, zd, zdd, bias, offset) {}
 #define DOWNLINK_SEND_VFF(_trans, _dev, measure, z, zd, bias, Pzz, Pzdzd, Pbb) {}
-#define DOWNLINK_SEND_BOOZ2_TUNE_FF(_trans, _dev, fb_rms, dg, g) {}
 #define DOWNLINK_SEND_HFF(_trans, _dev, x, y, xd, yd, xdd, ydd) {}
-#define DOWNLINK_SEND_HFF_DBG(_trans, _dev, x_measure, y_measure, yd_measure, xd_measure, Pxx, Pyy, Pxdxd, Pydyd) {}
+#define DOWNLINK_SEND_HFF_DBG(_trans, _dev, x_measure, y_measure, xd_measure, yd_measure, Pxx, Pyy, Pxdxd, Pydyd) {}
 #define DOWNLINK_SEND_HFF_GPS(_trans, _dev, lag_cnt, lag_cnt_err, save_cnt) {}
-#define DOWNLINK_SEND_INS_SONAR(_trans, _dev, raw, scaled, var) {}
+#define DOWNLINK_SEND_INS_SONAR(_trans, _dev, distance, var) {}
 #define DOWNLINK_SEND_ROTORCRAFT_CAM(_trans, _dev, tilt, pan) {}
 #define DOWNLINK_SEND_AHRS_REF_QUAT(_trans, _dev, ref_qi, ref_qx, ref_qy, ref_qz, body_qi, body_qx, body_qy, body_qz) {}
 #define DOWNLINK_SEND_EKF7_XHAT(_trans, _dev, c, s1, s2, s3, p, q, r, bp, bq, br) {}
@@ -4153,17 +4256,21 @@
 #define DOWNLINK_SEND_IMU_PRESSURE(_trans, _dev, p) {}
 #define DOWNLINK_SEND_IMU_HS_GYRO(_trans, _dev, axis, nb_samples, samples) {}
 #define DOWNLINK_SEND_TEST_PASSTHROUGH_STATUS(_trans, _dev, io_proc_msg_cnt, io_proc_err_cnt, io_link_msg_cnt, io_link_err_cnt, rc_status) {}
+#define DOWNLINK_SEND_TUNE_VERT(_trans, _dev, z_sp, est_z, ref_z, ref_zd) {}
+#define DOWNLINK_SEND_MF_DAQ_STATE(_trans, _dev, flight_time, p, q, r, phi, theta, psi, ax, ay, az, ve, vn, vu, lat, lon, alt, we, wn) {}
 #define DOWNLINK_SEND_WEATHER(_trans, _dev, p_amb, t_amb, windspeed, wind_from, humidity) {}
 #define DOWNLINK_SEND_IMU_TURNTABLE(_trans, _dev, omega) {}
 #define DOWNLINK_SEND_BARO_RAW(_trans, _dev, abs, diff) {}
+#define DOWNLINK_SEND_PERIODIC_TELEMETRY_ERR(_trans, _dev, process, mode, id) {}
 #define DOWNLINK_SEND_TIME(_trans, _dev, t) {}
 #define DOWNLINK_SEND_AHRS_ARDRONE2(_trans, _dev, state, control_state, phi, theta, psi, speed_x, speed_y, speed_z, accel_x, accel_y, accel_z, altitude, battery) {}
-#define DOWNLINK_SEND_ROTORCRAFT_STATUS(_trans, _dev, link_imu_nb_err, blmc_nb_err, rc_status, frame_rate, gps_status, ap_mode, ap_in_flight, ap_motors_on, ap_h_mode, ap_v_mode, vsupply, cpu_time) {}
+#define DOWNLINK_SEND_ROTORCRAFT_STATUS(_trans, _dev, link_imu_nb_err, motor_nb_err, rc_status, frame_rate, gps_status, ap_mode, ap_in_flight, ap_motors_on, ap_h_mode, ap_v_mode, vsupply, cpu_time) {}
 #define DOWNLINK_SEND_STATE_FILTER_STATUS(_trans, _dev, state_filter_mode, value) {}
 #define DOWNLINK_SEND_PX4FLOW(_trans, _dev, sensor_id, flow_x, flow_y, flow_comp_m_x, flow_comp_m_y, quality, ground_distance) {}
 #define DOWNLINK_SEND_OPTICFLOW(_trans, _dev, flow, ref_alt) {}
 #define DOWNLINK_SEND_VISUALTARGET(_trans, _dev, x, y) {}
 #define DOWNLINK_SEND_SONAR(_trans, _dev, sonar_meas, sonar_distance) {}
+#define DOWNLINK_SEND_PAYLOAD_FLOAT(_trans, _dev, nb_values, values) {}
 #define DOWNLINK_SEND_NPS_POS_LLH(_trans, _dev, pprz_lat, lat_geod, lat_geoc, pprz_lon, lon, pprz_alt, alt_geod, agl, asl) {}
 #define DOWNLINK_SEND_NPS_RPMS(_trans, _dev, front, back, right, left) {}
 #define DOWNLINK_SEND_NPS_SPEED_POS(_trans, _dev, ltpp_xdd, ltpp_ydd, ltpp_zdd, ltpp_xd, ltpp_yd, ltpp_zd, ltpp_x, ltpp_y, ltpp_z) {}
@@ -4171,15 +4278,12 @@
 #define DOWNLINK_SEND_NPS_GYRO_BIAS(_trans, _dev, bp, bq, br) {}
 #define DOWNLINK_SEND_NPS_RANGE_METER(_trans, _dev, dist) {}
 #define DOWNLINK_SEND_NPS_WIND(_trans, _dev, vx, vy, vz) {}
-#define DOWNLINK_SEND_BOOZ_DEBUG_FOO(_trans, _dev, ami_stat) {}
-#define DOWNLINK_SEND_BOOZ_MAX1167_ERR(_trans, _dev, erno) {}
 #define DOWNLINK_SEND_PPRZ_DEBUG(_trans, _dev, module, errno) {}
 #define DOWNLINK_SEND_NPS_ACCEL_LTP(_trans, _dev, xdd, ydd, zdd) {}
 #define DOWNLINK_SEND_LOOSE_INS_GPS(_trans, _dev, status, time_running, q0, q1, q2, q3, phi, theta, psi, north, east, down, v_north, v_east, v_down, est_p, est_q, est_r, gyroBias_x, gyroBias_y, gyroBias_z, imuCallbacks, gpsCallbacks, baroCallbacks) {}
 #define DOWNLINK_SEND_AFL_COEFFS(_trans, _dev, roll_a, roll_b, roll_c, pitch_a, pitch_b, pitch_c, yaw_a, yaw_b, yaw_c) {}
-#define DOWNLINK_SEND_BOOZ_ATT_REF_MODEL(_trans, _dev, omega_p, zeta_p, omega_q, zeta_q, omega_r, zeta_r) {}
-#define DOWNLINK_SEND_BOOZ2_FF_ADAP(_trans, _dev, roll, pitch, yaw) {}
-#define DOWNLINK_SEND_I2C_ERRORS(_trans, _dev, acknowledge_failure_cnt, misplaced_start_or_stop_cnt, arbitration_lost_cnt, overrun_or_underrun_cnt, pec_error_in_reception_cnt, timeout_or_tlow_error_cnt, smbus_alert_cnt, unexpected_event_cnt, last_unexpected_event, bus_number) {}
+#define DOWNLINK_SEND_NPS_ATP_CMD(_trans, _dev, yaw, roll, pitch, throttle) {}
+#define DOWNLINK_SEND_I2C_ERRORS(_trans, _dev, queue_full_cnt, acknowledge_failure_cnt, misplaced_start_or_stop_cnt, arbitration_lost_cnt, overrun_or_underrun_cnt, pec_error_in_reception_cnt, timeout_or_tlow_error_cnt, smbus_alert_cnt, unexpected_event_cnt, last_unexpected_event, bus_number) {}
 #define DOWNLINK_SEND_RDYB_TRAJECTORY(_trans, _dev, commanded_phi, commanded_theta, commanded_psi, setpoint_x, setpoint_y, setpoint_z) {}
 #define DOWNLINK_SEND_HENRY_GNSS(_trans, _dev, last_imu_update, GPS_time, GPS_solution_valid, latitude, longitude, altitude, North, East, Down, SVs_Tracked, SVs_PVT, V_North, V_East, V_Down) {}
 #endif // DOWNLINK
@@ -4215,11 +4319,12 @@
 #define DL_ARDRONE_NAVDATA_gradient(_payload) ((int16_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8))
 #define DL_ARDRONE_NAVDATA_flag_echo_ini(_payload) ((uint16_t)(*((uint8_t*)_payload+46)|*((uint8_t*)_payload+46+1)<<8))
 #define DL_ARDRONE_NAVDATA_pressure(_payload) ((int32_t)(*((uint8_t*)_payload+48)|*((uint8_t*)_payload+48+1)<<8|((uint32_t)*((uint8_t*)_payload+48+2))<<16|((uint32_t)*((uint8_t*)_payload+48+3))<<24))
-#define DL_ARDRONE_NAVDATA_temperature_pressure(_payload) ((int16_t)(*((uint8_t*)_payload+52)|*((uint8_t*)_payload+52+1)<<8))
+#define DL_ARDRONE_NAVDATA_temperature_pressure(_payload) ((uint16_t)(*((uint8_t*)_payload+52)|*((uint8_t*)_payload+52+1)<<8))
 #define DL_ARDRONE_NAVDATA_mx(_payload) ((int16_t)(*((uint8_t*)_payload+54)|*((uint8_t*)_payload+54+1)<<8))
 #define DL_ARDRONE_NAVDATA_my(_payload) ((int16_t)(*((uint8_t*)_payload+56)|*((uint8_t*)_payload+56+1)<<8))
 #define DL_ARDRONE_NAVDATA_mz(_payload) ((int16_t)(*((uint8_t*)_payload+58)|*((uint8_t*)_payload+58+1)<<8))
 #define DL_ARDRONE_NAVDATA_chksum(_payload) ((uint16_t)(*((uint8_t*)_payload+60)|*((uint8_t*)_payload+60+1)<<8))
+#define DL_ARDRONE_NAVDATA_checksum_errors(_payload) ((uint32_t)(*((uint8_t*)_payload+62)|*((uint8_t*)_payload+62+1)<<8|((uint32_t)*((uint8_t*)_payload+62+2))<<16|((uint32_t)*((uint8_t*)_payload+62+3))<<24))
 
 #define DL_ATTITUDE_phi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_ATTITUDE_psi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
@@ -4370,11 +4475,13 @@
 #define DL_MARK_long(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+7)|*((uint8_t*)_payload+7+1)<<8|((uint32_t)*((uint8_t*)_payload+7+2))<<16|((uint32_t)*((uint8_t*)_payload+7+3))<<24); _f.f; }))
 
 #define DL_SYS_MON_periodic_time(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
-#define DL_SYS_MON_periodic_cycle(_payload) ((uint16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
-#define DL_SYS_MON_periodic_cycle_min(_payload) ((uint16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
-#define DL_SYS_MON_periodic_cycle_max(_payload) ((uint16_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8))
-#define DL_SYS_MON_event_number(_payload) ((uint16_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8))
-#define DL_SYS_MON_cpu_load(_payload) ((uint8_t)(*((uint8_t*)_payload+12)))
+#define DL_SYS_MON_periodic_time_min(_payload) ((uint16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
+#define DL_SYS_MON_periodic_time_max(_payload) ((uint16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
+#define DL_SYS_MON_periodic_cycle(_payload) ((uint16_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8))
+#define DL_SYS_MON_periodic_cycle_min(_payload) ((uint16_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8))
+#define DL_SYS_MON_periodic_cycle_max(_payload) ((uint16_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8))
+#define DL_SYS_MON_event_number(_payload) ((uint16_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8))
+#define DL_SYS_MON_cpu_load(_payload) ((uint8_t)(*((uint8_t*)_payload+16)))
 
 #define DL_MOTOR_rpm(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
 #define DL_MOTOR_current(_payload) ((int32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
@@ -4532,9 +4639,15 @@
 #define DL_GPS_LLA_gps_nb_err(_payload) ((uint8_t)(*((uint8_t*)_payload+27)))
 
 #define DL_H_CTL_A_roll_sum_err(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
-#define DL_H_CTL_A_ref_roll_angle(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
-#define DL_H_CTL_A_pitch_sum_err(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
-#define DL_H_CTL_A_ref_pitch_angle(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24); _f.f; }))
+#define DL_H_CTL_A_roll_sp(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
+#define DL_H_CTL_A_roll_ref(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
+#define DL_H_CTL_A_phi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24); _f.f; }))
+#define DL_H_CTL_A_aileron_sp(_payload) ((int16_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8))
+#define DL_H_CTL_A_pitch_sum_err(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_H_CTL_A_pitch_sp(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+#define DL_H_CTL_A_pitch_ref(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24); _f.f; }))
+#define DL_H_CTL_A_theta(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24); _f.f; }))
+#define DL_H_CTL_A_elevator_sp(_payload) ((int16_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8))
 
 #define DL_TURB_PRESSURE_RAW_ch_0(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
 #define DL_TURB_PRESSURE_RAW_ch_1(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
@@ -4614,8 +4727,8 @@
 #define DL_MPL3115_BARO_temp(_payload) ((int16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
 #define DL_MPL3115_BARO_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
 
-#define DL_AOA_adc_adcVal(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
-#define DL_AOA_adc_AOA(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_AOA_ADC_adcVal(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
+#define DL_AOA_ADC_AOA(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
 
 #define DL_XTEND_RSSI_datalink_time(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
 #define DL_XTEND_RSSI_rssi_fade_margin(_payload) ((uint8_t)(*((uint8_t*)_payload+4)))
@@ -4631,10 +4744,66 @@
 #define DL_LINK_STATUS_rx_msgs_rate(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+27)|*((uint8_t*)_payload+27+1)<<8|((uint32_t)*((uint8_t*)_payload+27+2))<<16|((uint32_t)*((uint8_t*)_payload+27+3))<<24); _f.f; }))
 #define DL_LINK_STATUS_ping_time(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+31)|*((uint8_t*)_payload+31+1)<<8|((uint32_t)*((uint8_t*)_payload+31+2))<<16|((uint32_t)*((uint8_t*)_payload+31+3))<<24); _f.f; }))
 
+#define DL_SUPERBITRF_status(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_SUPERBITRF_cyrf_status(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_SUPERBITRF_irq_count(_payload) ((uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
+#define DL_SUPERBITRF_rx_packet_count(_payload) ((uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24))
+#define DL_SUPERBITRF_tx_packet_count(_payload) ((uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24))
+#define DL_SUPERBITRF_transfer_timeouts(_payload) ((uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24))
+#define DL_SUPERBITRF_resync_count(_payload) ((uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24))
+#define DL_SUPERBITRF_uplink_count(_payload) ((uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24))
+#define DL_SUPERBITRF_rc_count(_payload) ((uint32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24))
+#define DL_SUPERBITRF_timing1(_payload) ((uint32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24))
+#define DL_SUPERBITRF_timing2(_payload) ((uint32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24))
+#define DL_SUPERBITRF_bind_mfg_id(_payload) ((uint32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24))
+#define DL_SUPERBITRF_mfg_id_length(_payload) ((uint8_t)(*((uint8_t*)_payload+44)))
+#define DL_SUPERBITRF_mfg_id(_payload) ((uint8_t*)(_payload+45))
+
+#define DL_GX3_INFO_GX3_freq(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+#define DL_GX3_INFO_chksm_error(_payload) ((uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
+#define DL_GX3_INFO_hdr_error(_payload) ((uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
+#define DL_GX3_INFO_GX3_chksm(_payload) ((uint16_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8))
+
+#define DL_EXPLAIN_type(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_EXPLAIN_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_EXPLAIN_string_length(_payload) ((uint8_t)(*((uint8_t*)_payload+4)))
+#define DL_EXPLAIN_string(_payload) ((uint8_t*)(_payload+5))
+
+#define DL_VIDEO_TELEMETRY_blob_x1(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_y1(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_x2(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_y2(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_x3(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_y3(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_x4(_payload) ((int32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24))
+#define DL_VIDEO_TELEMETRY_blob_y4(_payload) ((int32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24))
+
 #define DL_VF_UPDATE_baro(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_VF_UPDATE_range_meter(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
 
 #define DL_VF_PREDICT_accel(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+
+#define DL_INV_FILTER_quat(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+#define DL_INV_FILTER_phi_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
+#define DL_INV_FILTER_theta_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
+#define DL_INV_FILTER_psi_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24); _f.f; }))
+#define DL_INV_FILTER_Vx_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24); _f.f; }))
+#define DL_INV_FILTER_Vy_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24); _f.f; }))
+#define DL_INV_FILTER_Vz_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24); _f.f; }))
+#define DL_INV_FILTER_Px_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24); _f.f; }))
+#define DL_INV_FILTER_Py_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+34)|*((uint8_t*)_payload+34+1)<<8|((uint32_t)*((uint8_t*)_payload+34+2))<<16|((uint32_t)*((uint8_t*)_payload+34+3))<<24); _f.f; }))
+#define DL_INV_FILTER_Pz_inv(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+38)|*((uint8_t*)_payload+38+1)<<8|((uint32_t)*((uint8_t*)_payload+38+2))<<16|((uint32_t)*((uint8_t*)_payload+38+3))<<24); _f.f; }))
+#define DL_INV_FILTER_bias_phi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+42)|*((uint8_t*)_payload+42+1)<<8|((uint32_t)*((uint8_t*)_payload+42+2))<<16|((uint32_t)*((uint8_t*)_payload+42+3))<<24); _f.f; }))
+#define DL_INV_FILTER_bias_theta(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+46)|*((uint8_t*)_payload+46+1)<<8|((uint32_t)*((uint8_t*)_payload+46+2))<<16|((uint32_t)*((uint8_t*)_payload+46+3))<<24); _f.f; }))
+#define DL_INV_FILTER_bias_psi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+50)|*((uint8_t*)_payload+50+1)<<8|((uint32_t)*((uint8_t*)_payload+50+2))<<16|((uint32_t)*((uint8_t*)_payload+50+3))<<24); _f.f; }))
+#define DL_INV_FILTER_bias_as(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+54)|*((uint8_t*)_payload+54+1)<<8|((uint32_t)*((uint8_t*)_payload+54+2))<<16|((uint32_t)*((uint8_t*)_payload+54+3))<<24); _f.f; }))
+#define DL_INV_FILTER_bias_hb(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+58)|*((uint8_t*)_payload+58+1)<<8|((uint32_t)*((uint8_t*)_payload+58+2))<<16|((uint32_t)*((uint8_t*)_payload+58+3))<<24); _f.f; }))
+#define DL_INV_FILTER_meas_baro(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+62)|*((uint8_t*)_payload+62+1)<<8|((uint32_t)*((uint8_t*)_payload+62+2))<<16|((uint32_t)*((uint8_t*)_payload+62+3))<<24); _f.f; }))
+#define DL_INV_FILTER_meas_gps(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+66)|*((uint8_t*)_payload+66+1)<<8|((uint32_t)*((uint8_t*)_payload+66+2))<<16|((uint32_t)*((uint8_t*)_payload+66+3))<<24); _f.f; }))
+
+#define DL_MISSION_STATUS_remaining_time(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+#define DL_MISSION_STATUS_task_list_length(_payload) ((uint8_t)(*((uint8_t*)_payload+6)))
+#define DL_MISSION_STATUS_task_list(_payload) ((uint8_t*)(_payload+7))
 
 #define DL_CROSS_TRACK_ERROR_cross_track_error(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_CROSS_TRACK_ERROR_cte_int(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
@@ -5112,13 +5281,9 @@
 #define DL_HOVER_LOOP_err_yd(_payload) ((int32_t)(*((uint8_t*)_payload+46)|*((uint8_t*)_payload+46+1)<<8|((uint32_t)*((uint8_t*)_payload+46+2))<<16|((uint32_t)*((uint8_t*)_payload+46+3))<<24))
 #define DL_HOVER_LOOP_err_sum_x(_payload) ((int32_t)(*((uint8_t*)_payload+50)|*((uint8_t*)_payload+50+1)<<8|((uint32_t)*((uint8_t*)_payload+50+2))<<16|((uint32_t)*((uint8_t*)_payload+50+3))<<24))
 #define DL_HOVER_LOOP_err_sum_y(_payload) ((int32_t)(*((uint8_t*)_payload+54)|*((uint8_t*)_payload+54+1)<<8|((uint32_t)*((uint8_t*)_payload+54+2))<<16|((uint32_t)*((uint8_t*)_payload+54+3))<<24))
-#define DL_HOVER_LOOP_err_nav_x(_payload) ((int32_t)(*((uint8_t*)_payload+58)|*((uint8_t*)_payload+58+1)<<8|((uint32_t)*((uint8_t*)_payload+58+2))<<16|((uint32_t)*((uint8_t*)_payload+58+3))<<24))
-#define DL_HOVER_LOOP_err_nav_y(_payload) ((int32_t)(*((uint8_t*)_payload+62)|*((uint8_t*)_payload+62+1)<<8|((uint32_t)*((uint8_t*)_payload+62+2))<<16|((uint32_t)*((uint8_t*)_payload+62+3))<<24))
-#define DL_HOVER_LOOP_cmd_x(_payload) ((int32_t)(*((uint8_t*)_payload+66)|*((uint8_t*)_payload+66+1)<<8|((uint32_t)*((uint8_t*)_payload+66+2))<<16|((uint32_t)*((uint8_t*)_payload+66+3))<<24))
-#define DL_HOVER_LOOP_cmd_y(_payload) ((int32_t)(*((uint8_t*)_payload+70)|*((uint8_t*)_payload+70+1)<<8|((uint32_t)*((uint8_t*)_payload+70+2))<<16|((uint32_t)*((uint8_t*)_payload+70+3))<<24))
-#define DL_HOVER_LOOP_cmd_phi(_payload) ((int32_t)(*((uint8_t*)_payload+74)|*((uint8_t*)_payload+74+1)<<8|((uint32_t)*((uint8_t*)_payload+74+2))<<16|((uint32_t)*((uint8_t*)_payload+74+3))<<24))
-#define DL_HOVER_LOOP_cmd_theta(_payload) ((int32_t)(*((uint8_t*)_payload+78)|*((uint8_t*)_payload+78+1)<<8|((uint32_t)*((uint8_t*)_payload+78+2))<<16|((uint32_t)*((uint8_t*)_payload+78+3))<<24))
-#define DL_HOVER_LOOP_cmd_psi(_payload) ((int32_t)(*((uint8_t*)_payload+82)|*((uint8_t*)_payload+82+1)<<8|((uint32_t)*((uint8_t*)_payload+82+2))<<16|((uint32_t)*((uint8_t*)_payload+82+3))<<24))
+#define DL_HOVER_LOOP_cmd_x(_payload) ((int32_t)(*((uint8_t*)_payload+58)|*((uint8_t*)_payload+58+1)<<8|((uint32_t)*((uint8_t*)_payload+58+2))<<16|((uint32_t)*((uint8_t*)_payload+58+3))<<24))
+#define DL_HOVER_LOOP_cmd_y(_payload) ((int32_t)(*((uint8_t*)_payload+62)|*((uint8_t*)_payload+62+1)<<8|((uint32_t)*((uint8_t*)_payload+62+2))<<16|((uint32_t)*((uint8_t*)_payload+62+3))<<24))
+#define DL_HOVER_LOOP_cmd_heading(_payload) ((int32_t)(*((uint8_t*)_payload+66)|*((uint8_t*)_payload+66+1)<<8|((uint32_t)*((uint8_t*)_payload+66+2))<<16|((uint32_t)*((uint8_t*)_payload+66+3))<<24))
 
 #define DL_ROTORCRAFT_FP_east(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
 #define DL_ROTORCRAFT_FP_north(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
@@ -5136,8 +5301,6 @@
 #define DL_ROTORCRAFT_FP_thrust(_payload) ((int32_t)(*((uint8_t*)_payload+54)|*((uint8_t*)_payload+54+1)<<8|((uint32_t)*((uint8_t*)_payload+54+2))<<16|((uint32_t)*((uint8_t*)_payload+54+3))<<24))
 #define DL_ROTORCRAFT_FP_flight_time(_payload) ((uint16_t)(*((uint8_t*)_payload+58)|*((uint8_t*)_payload+58+1)<<8))
 
-#define DL_BOOZ2_FMS_INFO_tbd(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
-
 #define DL_GUIDANCE_H_REF_INT_sp_x(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
 #define DL_GUIDANCE_H_REF_INT_ref_x(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
 #define DL_GUIDANCE_H_REF_INT_ref_xd(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
@@ -5154,14 +5317,11 @@
 #define DL_ROTORCRAFT_TUNE_HOVER_cmd_pitch(_payload) ((int32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24))
 #define DL_ROTORCRAFT_TUNE_HOVER_cmd_yaw(_payload) ((int32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24))
 #define DL_ROTORCRAFT_TUNE_HOVER_cmd_thrust(_payload) ((int32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24))
-#define DL_ROTORCRAFT_TUNE_HOVER_imu_phi(_payload) ((int32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24))
-#define DL_ROTORCRAFT_TUNE_HOVER_imu_theta(_payload) ((int32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24))
-#define DL_ROTORCRAFT_TUNE_HOVER_imu_psi(_payload) ((int32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24))
-#define DL_ROTORCRAFT_TUNE_HOVER_body_phi(_payload) ((int32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24))
-#define DL_ROTORCRAFT_TUNE_HOVER_body_theta(_payload) ((int32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24))
-#define DL_ROTORCRAFT_TUNE_HOVER_body_psi(_payload) ((int32_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8|((uint32_t)*((uint8_t*)_payload+44+2))<<16|((uint32_t)*((uint8_t*)_payload+44+3))<<24))
+#define DL_ROTORCRAFT_TUNE_HOVER_body_phi(_payload) ((int32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24))
+#define DL_ROTORCRAFT_TUNE_HOVER_body_theta(_payload) ((int32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24))
+#define DL_ROTORCRAFT_TUNE_HOVER_body_psi(_payload) ((int32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24))
 
-#define DL_INS_Z_baro_alt(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
+#define DL_INS_Z_baro_z(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_INS_Z_ins_z(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
 #define DL_INS_Z_ins_zd(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
 #define DL_INS_Z_ins_zdd(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
@@ -5182,25 +5342,25 @@
 #define DL_INS_REF_lon0(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
 #define DL_INS_REF_alt0(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
 #define DL_INS_REF_hmsl0(_payload) ((int32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24))
-#define DL_INS_REF_baro_qfe(_payload) ((int32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24))
-/*
-#define DL_GPS_INT_ecef_x(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
-#define DL_GPS_INT_ecef_y(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
-#define DL_GPS_INT_ecef_z(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
-#define DL_GPS_INT_lat(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
-#define DL_GPS_INT_lon(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
-#define DL_GPS_INT_alt(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
-#define DL_GPS_INT_hmsl(_payload) ((int32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24))
-#define DL_GPS_INT_ecef_xd(_payload) ((int32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24))
-#define DL_GPS_INT_ecef_yd(_payload) ((int32_t)(*((uint8_t*)_payload+34)|*((uint8_t*)_payload+34+1)<<8|((uint32_t)*((uint8_t*)_payload+34+2))<<16|((uint32_t)*((uint8_t*)_payload+34+3))<<24))
-#define DL_GPS_INT_ecef_zd(_payload) ((int32_t)(*((uint8_t*)_payload+38)|*((uint8_t*)_payload+38+1)<<8|((uint32_t)*((uint8_t*)_payload+38+2))<<16|((uint32_t)*((uint8_t*)_payload+38+3))<<24))
-#define DL_GPS_INT_pacc(_payload) ((int32_t)(*((uint8_t*)_payload+42)|*((uint8_t*)_payload+42+1)<<8|((uint32_t)*((uint8_t*)_payload+42+2))<<16|((uint32_t)*((uint8_t*)_payload+42+3))<<24))
-#define DL_GPS_INT_sacc(_payload) ((int32_t)(*((uint8_t*)_payload+46)|*((uint8_t*)_payload+46+1)<<8|((uint32_t)*((uint8_t*)_payload+46+2))<<16|((uint32_t)*((uint8_t*)_payload+46+3))<<24))
-#define DL_GPS_INT_tow(_payload) ((uint32_t)(*((uint8_t*)_payload+50)|*((uint8_t*)_payload+50+1)<<8|((uint32_t)*((uint8_t*)_payload+50+2))<<16|((uint32_t)*((uint8_t*)_payload+50+3))<<24))
-#define DL_GPS_INT_pdop(_payload) ((uint16_t)(*((uint8_t*)_payload+54)|*((uint8_t*)_payload+54+1)<<8))
-#define DL_GPS_INT_numsv(_payload) ((uint8_t)(*((uint8_t*)_payload+56)))
-#define DL_GPS_INT_fix(_payload) ((uint8_t)(*((uint8_t*)_payload+57)))
-*/
+#define DL_INS_REF_baro_qfe(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24); _f.f; }))
+
+//#define DL_GPS_INT_ecef_x(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
+//#define DL_GPS_INT_ecef_y(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
+//#define DL_GPS_INT_ecef_z(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
+//#define DL_GPS_INT_lat(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
+//#define DL_GPS_INT_lon(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
+//#define DL_GPS_INT_alt(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
+//#define DL_GPS_INT_hmsl(_payload) ((int32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24))
+//#define DL_GPS_INT_ecef_xd(_payload) ((int32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24))
+//#define DL_GPS_INT_ecef_yd(_payload) ((int32_t)(*((uint8_t*)_payload+34)|*((uint8_t*)_payload+34+1)<<8|((uint32_t)*((uint8_t*)_payload+34+2))<<16|((uint32_t)*((uint8_t*)_payload+34+3))<<24))
+//#define DL_GPS_INT_ecef_zd(_payload) ((int32_t)(*((uint8_t*)_payload+38)|*((uint8_t*)_payload+38+1)<<8|((uint32_t)*((uint8_t*)_payload+38+2))<<16|((uint32_t)*((uint8_t*)_payload+38+3))<<24))
+//#define DL_GPS_INT_pacc(_payload) ((int32_t)(*((uint8_t*)_payload+42)|*((uint8_t*)_payload+42+1)<<8|((uint32_t)*((uint8_t*)_payload+42+2))<<16|((uint32_t)*((uint8_t*)_payload+42+3))<<24))
+//#define DL_GPS_INT_sacc(_payload) ((int32_t)(*((uint8_t*)_payload+46)|*((uint8_t*)_payload+46+1)<<8|((uint32_t)*((uint8_t*)_payload+46+2))<<16|((uint32_t)*((uint8_t*)_payload+46+3))<<24))
+//#define DL_GPS_INT_tow(_payload) ((uint32_t)(*((uint8_t*)_payload+50)|*((uint8_t*)_payload+50+1)<<8|((uint32_t)*((uint8_t*)_payload+50+2))<<16|((uint32_t)*((uint8_t*)_payload+50+3))<<24))
+//#define DL_GPS_INT_pdop(_payload) ((uint16_t)(*((uint8_t*)_payload+54)|*((uint8_t*)_payload+54+1)<<8))
+//#define DL_GPS_INT_numsv(_payload) ((uint8_t)(*((uint8_t*)_payload+56)))
+//#define DL_GPS_INT_fix(_payload) ((uint8_t)(*((uint8_t*)_payload+57)))
+
 #define DL_AHRS_EULER_INT_imu_phi(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
 #define DL_AHRS_EULER_INT_imu_theta(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
 #define DL_AHRS_EULER_INT_imu_psi(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
@@ -5208,14 +5368,15 @@
 #define DL_AHRS_EULER_INT_body_theta(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
 #define DL_AHRS_EULER_INT_body_psi(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
 
-#define DL_AHRS_QUAT_INT_imu_qi(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
-#define DL_AHRS_QUAT_INT_imu_qx(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
-#define DL_AHRS_QUAT_INT_imu_qy(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
-#define DL_AHRS_QUAT_INT_imu_qz(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
-#define DL_AHRS_QUAT_INT_body_qi(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
-#define DL_AHRS_QUAT_INT_body_qx(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
-#define DL_AHRS_QUAT_INT_body_qy(_payload) ((int32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24))
-#define DL_AHRS_QUAT_INT_body_qz(_payload) ((int32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24))
+#define DL_AHRS_QUAT_INT_weight(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+#define DL_AHRS_QUAT_INT_imu_qi(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
+#define DL_AHRS_QUAT_INT_imu_qx(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
+#define DL_AHRS_QUAT_INT_imu_qy(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
+#define DL_AHRS_QUAT_INT_imu_qz(_payload) ((int32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
+#define DL_AHRS_QUAT_INT_body_qi(_payload) ((int32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24))
+#define DL_AHRS_QUAT_INT_body_qx(_payload) ((int32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24))
+#define DL_AHRS_QUAT_INT_body_qy(_payload) ((int32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24))
+#define DL_AHRS_QUAT_INT_body_qz(_payload) ((int32_t)(*((uint8_t*)_payload+34)|*((uint8_t*)_payload+34+1)<<8|((uint32_t)*((uint8_t*)_payload+34+2))<<16|((uint32_t)*((uint8_t*)_payload+34+3))<<24))
 
 #define DL_AHRS_RMAT_INT_imu_m00(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
 #define DL_AHRS_RMAT_INT_imu_m01(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
@@ -5266,10 +5427,6 @@
 #define DL_VFF_Pzdzd(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24); _f.f; }))
 #define DL_VFF_Pbb(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24); _f.f; }))
 
-#define DL_BOOZ2_TUNE_FF_fb_rms(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
-#define DL_BOOZ2_TUNE_FF_dg(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
-#define DL_BOOZ2_TUNE_FF_g(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
-
 #define DL_HFF_x(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_HFF_y(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
 #define DL_HFF_xd(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
@@ -5279,8 +5436,8 @@
 
 #define DL_HFF_DBG_x_measure(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_HFF_DBG_y_measure(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
-#define DL_HFF_DBG_yd_measure(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
-#define DL_HFF_DBG_xd_measure(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24); _f.f; }))
+#define DL_HFF_DBG_xd_measure(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
+#define DL_HFF_DBG_yd_measure(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24); _f.f; }))
 #define DL_HFF_DBG_Pxx(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24); _f.f; }))
 #define DL_HFF_DBG_Pyy(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24); _f.f; }))
 #define DL_HFF_DBG_Pxdxd(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+26)|*((uint8_t*)_payload+26+1)<<8|((uint32_t)*((uint8_t*)_payload+26+2))<<16|((uint32_t)*((uint8_t*)_payload+26+3))<<24); _f.f; }))
@@ -5290,9 +5447,8 @@
 #define DL_HFF_GPS_lag_cnt_err(_payload) ((int16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
 #define DL_HFF_GPS_save_cnt(_payload) ((int16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
 
-#define DL_INS_SONAR_raw(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
-#define DL_INS_SONAR_scaled(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
-#define DL_INS_SONAR_var(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
+#define DL_INS_SONAR_distance(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+#define DL_INS_SONAR_var(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
 
 #define DL_ROTORCRAFT_CAM_tilt(_payload) ((int16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
 #define DL_ROTORCRAFT_CAM_pan(_payload) ((int16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
@@ -5584,6 +5740,30 @@
 #define DL_TEST_PASSTHROUGH_STATUS_io_link_err_cnt(_payload) ((uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
 #define DL_TEST_PASSTHROUGH_STATUS_rc_status(_payload) ((uint8_t)(*((uint8_t*)_payload+18)))
 
+#define DL_TUNE_VERT_z_sp(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
+#define DL_TUNE_VERT_est_z(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
+#define DL_TUNE_VERT_ref_z(_payload) ((int32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24))
+#define DL_TUNE_VERT_ref_zd(_payload) ((int32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24))
+
+#define DL_MF_DAQ_STATE_flight_time(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
+#define DL_MF_DAQ_STATE_p(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_q(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_r(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_phi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8|((uint32_t)*((uint8_t*)_payload+16+2))<<16|((uint32_t)*((uint8_t*)_payload+16+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_theta(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_psi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+24)|*((uint8_t*)_payload+24+1)<<8|((uint32_t)*((uint8_t*)_payload+24+2))<<16|((uint32_t)*((uint8_t*)_payload+24+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_ax(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+28)|*((uint8_t*)_payload+28+1)<<8|((uint32_t)*((uint8_t*)_payload+28+2))<<16|((uint32_t)*((uint8_t*)_payload+28+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_ay(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+32)|*((uint8_t*)_payload+32+1)<<8|((uint32_t)*((uint8_t*)_payload+32+2))<<16|((uint32_t)*((uint8_t*)_payload+32+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_az(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+36)|*((uint8_t*)_payload+36+1)<<8|((uint32_t)*((uint8_t*)_payload+36+2))<<16|((uint32_t)*((uint8_t*)_payload+36+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_ve(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+40)|*((uint8_t*)_payload+40+1)<<8|((uint32_t)*((uint8_t*)_payload+40+2))<<16|((uint32_t)*((uint8_t*)_payload+40+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_vn(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+44)|*((uint8_t*)_payload+44+1)<<8|((uint32_t)*((uint8_t*)_payload+44+2))<<16|((uint32_t)*((uint8_t*)_payload+44+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_vu(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+48)|*((uint8_t*)_payload+48+1)<<8|((uint32_t)*((uint8_t*)_payload+48+2))<<16|((uint32_t)*((uint8_t*)_payload+48+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_lat(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+52)|*((uint8_t*)_payload+52+1)<<8|((uint32_t)*((uint8_t*)_payload+52+2))<<16|((uint32_t)*((uint8_t*)_payload+52+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_lon(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+56)|*((uint8_t*)_payload+56+1)<<8|((uint32_t)*((uint8_t*)_payload+56+2))<<16|((uint32_t)*((uint8_t*)_payload+56+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_alt(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+60)|*((uint8_t*)_payload+60+1)<<8|((uint32_t)*((uint8_t*)_payload+60+2))<<16|((uint32_t)*((uint8_t*)_payload+60+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_we(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+64)|*((uint8_t*)_payload+64+1)<<8|((uint32_t)*((uint8_t*)_payload+64+2))<<16|((uint32_t)*((uint8_t*)_payload+64+3))<<24); _f.f; }))
+#define DL_MF_DAQ_STATE_wn(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+68)|*((uint8_t*)_payload+68+1)<<8|((uint32_t)*((uint8_t*)_payload+68+2))<<16|((uint32_t)*((uint8_t*)_payload+68+3))<<24); _f.f; }))
+
 #define DL_WEATHER_p_amb(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_WEATHER_t_amb(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
 #define DL_WEATHER_windspeed(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
@@ -5592,8 +5772,12 @@
 
 #define DL_IMU_TURNTABLE_omega(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 
-#define DL_BARO_RAW_abs(_payload) ((int32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
-#define DL_BARO_RAW_diff(_payload) ((int32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24))
+#define DL_BARO_RAW_abs(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
+#define DL_BARO_RAW_diff(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
+
+#define DL_PERIODIC_TELEMETRY_ERR_process(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_PERIODIC_TELEMETRY_ERR_mode(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
+#define DL_PERIODIC_TELEMETRY_ERR_id(_payload) ((uint8_t)(*((uint8_t*)_payload+4)))
 
 #define DL_TIME_t(_payload) ((uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
 
@@ -5612,7 +5796,7 @@
 #define DL_AHRS_ARDRONE2_battery(_payload) ((uint32_t)(*((uint8_t*)_payload+50)|*((uint8_t*)_payload+50+1)<<8|((uint32_t)*((uint8_t*)_payload+50+2))<<16|((uint32_t)*((uint8_t*)_payload+50+3))<<24))
 
 #define DL_ROTORCRAFT_STATUS_link_imu_nb_err(_payload) ((uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24))
-#define DL_ROTORCRAFT_STATUS_blmc_nb_err(_payload) ((uint8_t)(*((uint8_t*)_payload+6)))
+#define DL_ROTORCRAFT_STATUS_motor_nb_err(_payload) ((uint8_t)(*((uint8_t*)_payload+6)))
 #define DL_ROTORCRAFT_STATUS_rc_status(_payload) ((uint8_t)(*((uint8_t*)_payload+7)))
 #define DL_ROTORCRAFT_STATUS_frame_rate(_payload) ((uint8_t)(*((uint8_t*)_payload+8)))
 #define DL_ROTORCRAFT_STATUS_gps_status(_payload) ((uint8_t)(*((uint8_t*)_payload+9)))
@@ -5643,6 +5827,9 @@
 
 #define DL_SONAR_sonar_meas(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
 #define DL_SONAR_sonar_distance(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24); _f.f; }))
+
+#define DL_PAYLOAD_FLOAT_values_length(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
+#define DL_PAYLOAD_FLOAT_values(_payload) ((float*)(_payload+3))
 
 #define DL_NPS_POS_LLH_pprz_lat(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_NPS_POS_LLH_lat_geod(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
@@ -5686,10 +5873,6 @@
 #define DL_NPS_WIND_vy(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
 #define DL_NPS_WIND_vz(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
 
-#define DL_BOOZ_DEBUG_FOO_ami_stat(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
-
-#define DL_BOOZ_MAX1167_ERR_erno(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
-
 #define DL_PPRZ_DEBUG_module(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_PPRZ_DEBUG_errno(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
 
@@ -5732,27 +5915,22 @@
 #define DL_AFL_COEFFS_yaw_b(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+30)|*((uint8_t*)_payload+30+1)<<8|((uint32_t)*((uint8_t*)_payload+30+2))<<16|((uint32_t)*((uint8_t*)_payload+30+3))<<24); _f.f; }))
 #define DL_AFL_COEFFS_yaw_c(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+34)|*((uint8_t*)_payload+34+1)<<8|((uint32_t)*((uint8_t*)_payload+34+2))<<16|((uint32_t)*((uint8_t*)_payload+34+3))<<24); _f.f; }))
 
-#define DL_BOOZ_ATT_REF_MODEL_omega_p(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
-#define DL_BOOZ_ATT_REF_MODEL_zeta_p(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
-#define DL_BOOZ_ATT_REF_MODEL_omega_q(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
-#define DL_BOOZ_ATT_REF_MODEL_zeta_q(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8|((uint32_t)*((uint8_t*)_payload+14+2))<<16|((uint32_t)*((uint8_t*)_payload+14+3))<<24); _f.f; }))
-#define DL_BOOZ_ATT_REF_MODEL_omega_r(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24); _f.f; }))
-#define DL_BOOZ_ATT_REF_MODEL_zeta_r(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+22)|*((uint8_t*)_payload+22+1)<<8|((uint32_t)*((uint8_t*)_payload+22+2))<<16|((uint32_t)*((uint8_t*)_payload+22+3))<<24); _f.f; }))
+#define DL_NPS_ATP_CMD_yaw(_payload) ((int16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
+#define DL_NPS_ATP_CMD_roll(_payload) ((int16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
+#define DL_NPS_ATP_CMD_pitch(_payload) ((int16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
+#define DL_NPS_ATP_CMD_throttle(_payload) ((int16_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8))
 
-#define DL_BOOZ2_FF_ADAP_roll(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
-#define DL_BOOZ2_FF_ADAP_pitch(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))
-#define DL_BOOZ2_FF_ADAP_yaw(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8|((uint32_t)*((uint8_t*)_payload+10+2))<<16|((uint32_t)*((uint8_t*)_payload+10+3))<<24); _f.f; }))
-
-#define DL_I2C_ERRORS_acknowledge_failure_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
-#define DL_I2C_ERRORS_misplaced_start_or_stop_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
-#define DL_I2C_ERRORS_arbitration_lost_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
-#define DL_I2C_ERRORS_overrun_or_underrun_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8))
-#define DL_I2C_ERRORS_pec_error_in_reception_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8))
-#define DL_I2C_ERRORS_timeout_or_tlow_error_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8))
-#define DL_I2C_ERRORS_smbus_alert_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8))
-#define DL_I2C_ERRORS_unexpected_event_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8))
-#define DL_I2C_ERRORS_last_unexpected_event(_payload) ((uint32_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8|((uint32_t)*((uint8_t*)_payload+18+2))<<16|((uint32_t)*((uint8_t*)_payload+18+3))<<24))
-#define DL_I2C_ERRORS_bus_number(_payload) ((uint8_t)(*((uint8_t*)_payload+22)))
+#define DL_I2C_ERRORS_queue_full_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8))
+#define DL_I2C_ERRORS_acknowledge_failure_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8))
+#define DL_I2C_ERRORS_misplaced_start_or_stop_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8))
+#define DL_I2C_ERRORS_arbitration_lost_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8))
+#define DL_I2C_ERRORS_overrun_or_underrun_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+10)|*((uint8_t*)_payload+10+1)<<8))
+#define DL_I2C_ERRORS_pec_error_in_reception_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+12)|*((uint8_t*)_payload+12+1)<<8))
+#define DL_I2C_ERRORS_timeout_or_tlow_error_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+14)|*((uint8_t*)_payload+14+1)<<8))
+#define DL_I2C_ERRORS_smbus_alert_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+16)|*((uint8_t*)_payload+16+1)<<8))
+#define DL_I2C_ERRORS_unexpected_event_cnt(_payload) ((uint16_t)(*((uint8_t*)_payload+18)|*((uint8_t*)_payload+18+1)<<8))
+#define DL_I2C_ERRORS_last_unexpected_event(_payload) ((uint32_t)(*((uint8_t*)_payload+20)|*((uint8_t*)_payload+20+1)<<8|((uint32_t)*((uint8_t*)_payload+20+2))<<16|((uint32_t)*((uint8_t*)_payload+20+3))<<24))
+#define DL_I2C_ERRORS_bus_number(_payload) ((uint8_t)(*((uint8_t*)_payload+24)))
 
 #define DL_RDYB_TRAJECTORY_commanded_phi(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+2)|*((uint8_t*)_payload+2+1)<<8|((uint32_t)*((uint8_t*)_payload+2+2))<<16|((uint32_t)*((uint8_t*)_payload+2+3))<<24); _f.f; }))
 #define DL_RDYB_TRAJECTORY_commanded_theta(_payload) (({ union { uint32_t u; float f; } _f; _f.u = (uint32_t)(*((uint8_t*)_payload+6)|*((uint8_t*)_payload+6+1)<<8|((uint32_t)*((uint8_t*)_payload+6+2))<<16|((uint32_t)*((uint8_t*)_payload+6+3))<<24); _f.f; }))

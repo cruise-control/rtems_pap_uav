@@ -174,16 +174,9 @@ ts_dbgT debug_dbgT;
 // what version is this ????
 static const uint16_t version = 1;
 
-static uint8_t mcu1_status;
-
 #if defined RADIO_CONTROL || defined RADIO_CONTROL_AUTO1
 static uint8_t mcu1_ppm_cpt;
 #endif
-
-/** Supply current in milliAmpere.
- * This the ap copy of the measurement from fbw
- */
-static int32_t current;	// milliAmpere
 
 tid_t modules_tid;     ///< id for modules_periodic_task() timer
 tid_t telemetry_tid;   ///< id for telemetry_periodic() timer
@@ -444,8 +437,10 @@ static inline void telecommand_task(void) {
 #endif
 	}
 	mode_changed |= mcu1_status_update();
-	if (mode_changed)
-		PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
+	if (mode_changed){
+		autopilot_send_mode();
+		//PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
+	}
 
 #if defined RADIO_CONTROL || defined RADIO_CONTROL_AUTO1
 	/** In AUTO1 mode, compute roll setpoint and pitch setpoint from
@@ -546,7 +541,8 @@ void navigation_task(void) {
 			if (pprz_mode == PPRZ_MODE_AUTO2 || pprz_mode == PPRZ_MODE_HOME) {
 				last_pprz_mode = pprz_mode;
 				pprz_mode = PPRZ_MODE_GPS_OUT_OF_ORDER;
-				PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
+				autopilot_send_mode();
+				//PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
 				gps_lost = TRUE;
 			}
 		} else if (gps_lost) { /* GPS is ok */
@@ -554,7 +550,8 @@ void navigation_task(void) {
 			pprz_mode = last_pprz_mode;
 			gps_lost = FALSE;
 
-			PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
+			autopilot_send_mode();
+			//PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
 		}
 	}
 #endif /* GPS && FAILSAFE_DELAY_WITHOUT_GPS */
@@ -734,7 +731,8 @@ void reporting_task(void) {
 	}
 	/** then report periodicly */
 	else {
-		PeriodicSendAp(DefaultChannel, DefaultDevice);
+		periodic_telemetry_send_Ap();
+		//PeriodicSendAp(DefaultChannel, DefaultDevice);
 	}
 
 #if DEBUG_TIMING_AUTOPILOT > 0
@@ -770,16 +768,8 @@ void event_task_ap(void) {
 	BaroEvent(on_baro_abs_event, on_baro_dif_event);
 #endif
 
-	/* Sai: */
-	/* Add another method for Ethernet communication */
-//#ifndef NO_ETHERNET
-//	EthernetEvent();
-//#else
-	//TODO IS opening a socket connection every main loop expensive with RTEMS?
-	//Probably, slow down the data link access
 	DatalinkEvent();
 
-//#endif
 
 #if defined MCU_SPI_LINK || defined MCU_UART_LINK
 	link_mcu_event_task();

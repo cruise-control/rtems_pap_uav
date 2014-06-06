@@ -30,6 +30,9 @@
 #define DL_GPS_INT 155
 #define DL_AHRS_LTP 156
 #define DL_AHRS_ECEF 157
+#define DL_INS_POS 158
+#define DL_INS_ECEF_VEL 159
+#define DL_INS_ECEF_ACCEL 160
 #define DL_HITL_GPS_COMMON 171
 #define DL_HITL_IR_AHRS 172
 #define DL_MSG_datalink_NB 28

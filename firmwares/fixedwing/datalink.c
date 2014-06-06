@@ -222,7 +222,6 @@ void dl_parse_msg(void) {
 		gps_feed_value(ecef_x, ecef_y, ecef_z, ecef_xd, ecef_yd, ecef_zd, lat,
 				lon, alt, hsml, pacc, sacc, tow);
 		sim_update_sv();
-
 	} else if (msg_id == DL_AHRS_ECEF) {
 		double p = DL_AHRS_ECEF_p(dl_buffer);
 		double q = DL_AHRS_ECEF_q(dl_buffer);
@@ -236,6 +235,24 @@ void dl_parse_msg(void) {
 		double qz = DL_AHRS_LTP_qz(dl_buffer);
 		sim_overwrite_ahrs_ltp(qi, qx, qy, qz);
 		//TODO Process this data now
+	} else if (msg_id == DL_INS_POS) {
+		//The stripping is correct, the naming is not
+		double x = DL_AHRS_ECEF_p(dl_buffer);
+		double y = DL_AHRS_ECEF_q(dl_buffer);
+		double z = DL_AHRS_ECEF_r(dl_buffer);
+		sim_overwrite_ins_ltpprz_pos(x, y, z);
+	} else if (msg_id == DL_INS_ECEF_VEL) {
+		//The stripping is correct, the naming is not
+		double x = DL_AHRS_ECEF_p(dl_buffer);
+		double y = DL_AHRS_ECEF_q(dl_buffer);
+		double z = DL_AHRS_ECEF_r(dl_buffer);
+		sim_overwrite_ins_ltpprz_ecef_vel(x, y, z);
+	} else if (msg_id == DL_INS_ECEF_ACCEL) {
+		//The stripping is correct, the naming is not
+		double x = DL_AHRS_ECEF_p(dl_buffer);
+		double y = DL_AHRS_ECEF_q(dl_buffer);
+		double z = DL_AHRS_ECEF_r(dl_buffer);
+		sim_overwrite_ins_ltpprz_ecef_accel(x, y, z);
 	} else if (msg_id == DL_HITL_IR_AHRS) {
 		//double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);
 		double roll = DL_HITL_IR_AHRS_roll(dl_buffer);

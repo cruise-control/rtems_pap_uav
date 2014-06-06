@@ -32,7 +32,6 @@
 #include <inttypes.h>
 #include "std.h"
 #include "paparazzi.h"
-#include "mcu_periph/sys_time.h"
 #include "generated/airframe.h"
 
 
@@ -61,6 +60,7 @@ extern void autopilot_init(void);
 
 extern uint8_t pprz_mode;
 extern bool_t kill_throttle;
+extern uint8_t  mcu1_status;
 
 /** flight time in seconds. */
 extern uint16_t autopilot_flight_time;
@@ -88,8 +88,13 @@ extern uint8_t lateral_mode;
  */
 extern uint16_t vsupply;
 
-/** Fuel consumption (mAh)
- * TODO: move to electrical subsystem
+/** Supply current in milliAmpere.
+ * This the ap copy of the measurement from fbw
+ */
+extern int32_t current;	// milliAmpere
+
+/** Energy consumption (mAh)
+ * This is the ap copy of the measurement from fbw
  */
 extern float energy;
 
@@ -104,19 +109,24 @@ extern bool_t gps_lost;
   (_mode != new_mode ? _mode = new_mode, TRUE : FALSE); \
 })
 
+/** Send mode over telemetry
+ */
+extern void autopilot_send_mode(void);
 
 /** Power switch control.
  */
 extern bool_t power_switch;
 
-#ifdef POWER_SWITCH_LED
+#ifdef POWER_SWITCH_GPIO
+#include "mcu_periph/gpio.h"
 #define autopilot_SetPowerSwitch(_x) { \
   power_switch = _x; \
-  if (_x) LED_ON(POWER_SWITCH_LED) else LED_OFF(POWER_SWITCH_LED); \
+  if (_x) { gpio_set(POWER_SWITCH_GPIO); } \
+  else { gpio_clear(POWER_SWITCH_GPIO); } \
 }
-#else // POWER_SWITCH_LED
+#else // POWER_SWITCH_GPIO
 #define autopilot_SetPowerSwitch(_x) { power_switch = _x; }
-#endif // POWER_SWITCH_LED
+#endif // POWER_SWITCH_GPIO
 
 
 /* CONTROL_RATE will be removed in the next release

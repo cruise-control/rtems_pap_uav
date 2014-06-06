@@ -190,11 +190,11 @@
 
 #define PERIODIC_SEND_ESTIMATOR(_trans, _dev) DOWNLINK_SEND_ESTIMATOR(_trans, _dev, &(stateGetPositionUtm_f()->alt), &(stateGetSpeedEnu_f()->z))
 
-#define SEND_NAVIGATION(_trans, _dev) Downlink({ \
-    uint8_t _circle_count = NavCircleCount(); \
-    struct EnuCoor_f* pos = stateGetPositionEnu_f(); \
-    DOWNLINK_SEND_NAVIGATION(_trans, _dev, &nav_block, &nav_stage, &(pos->x), &(pos->y), &dist2_to_wp, &dist2_to_home, &_circle_count, &nav_oval_count); \
-    })
+//#define SEND_NAVIGATION(_trans, _dev) Downlink({ \
+//    uint8_t _circle_count = NavCircleCount(); \
+//    struct EnuCoor_f* pos = stateGetPositionEnu_f(); \
+//    DOWNLINK_SEND_NAVIGATION(_trans, _dev, &nav_block, &nav_stage, &(pos->x), &(pos->y), &dist2_to_wp, &dist2_to_home, &_circle_count, &nav_oval_count); \
+//    })
 
 #define PERIODIC_SEND_NAVIGATION(_trans, _dev) SEND_NAVIGATION(_trans, _dev)
 
