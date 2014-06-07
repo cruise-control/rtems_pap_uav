@@ -45,11 +45,13 @@
 									<listOptionValue builtIn="false" value="AGR_CLIMB"/>
 									<listOptionValue builtIn="false" value="USE_BARO_BOARD=FALSE"/>
 									<listOptionValue builtIn="false" value="USE_IMU"/>
+									<listOptionValue builtIn="false" value="USE_IMU=1"/>
 									<listOptionValue builtIn="false" value="GPS_USE_LATLONG"/>
 									<listOptionValue builtIn="false" value="AHRS_UPDATE_FW_ESTIMATOR"/>
 									<listOptionValue builtIn="false" value="USE_AHRS_ALIGNER"/>
 									<listOptionValue builtIn="false" value="AHRS_GRAVITY_UPDATE_COORDINATED_TURN"/>
 									<listOptionValue builtIn="false" value="AHRS_USE_GPS_HEADING"/>
+									<listOptionValue builtIn="false" value="AHRS_USE_GPS_HEADING=1"/>
 									<listOptionValue builtIn="false" value="USE_RTEMS_GPIO"/>
 									<listOptionValue builtIn="false" value="USE_UART1"/>
 									<listOptionValue builtIn="false" value="LOITER_TRIM"/>
@@ -75,7 +77,9 @@
 									<listOptionValue builtIn="false" value="RADIO_CONTROL"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
 									<listOptionValue builtIn="false" value="USE_AHRS"/>
+									<listOptionValue builtIn="false" value="USE_AHRS=1"/>
 									<listOptionValue builtIn="false" value="USE_GPS"/>
+									<listOptionValue builtIn="false" value="USE_GPS=1"/>
 									<listOptionValue builtIn="false" value="NAV"/>
 									<listOptionValue builtIn="false" value="DC_SHUTTER_SERVO=COMMAND_SHUTTER"/>
 									<listOptionValue builtIn="false" value="DIGITAL_CAM"/>
@@ -86,7 +90,7 @@
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
 									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=UART1"/>
 								</option>
-								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u"/>
+								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u" valueType="undefDefinedSymbols"/>
 								<option id="org.rtems.cdt.tool.gcc.option.optimizationflags.700160298" name="Optimization flags:" superClass="org.rtems.cdt.tool.gcc.option.optimizationflags" value="" valueType="string"/>
 								<inputType id="org.rtems.cdt.compiler.input.c.1068194445" superClass="org.rtems.cdt.compiler.input.c"/>
 							</tool>

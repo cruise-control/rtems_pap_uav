@@ -190,8 +190,8 @@ void dl_parse_msg(void) {
 		double gspeed = DL_HITL_GPS_COMMON_gspeed(dl_buffer);
 		double climb = DL_HITL_GPS_COMMON_climb(dl_buffer);
 		double time = DL_HITL_GPS_COMMON_time(dl_buffer);
-		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
-		sim_update_sv();
+//		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
+//		sim_update_sv();
 #ifdef DEBUG_DL_HITL_GPS_COMMON
 		char buf[256];
 		buf[0] = "\0";
@@ -294,9 +294,9 @@ void dl_parse_msg(void) {
 		UART1PutBuf(buf);
 #endif
 	} else if (msg_id == DL_NPS_SENSORS_ACCEL) {
-		int32_t x = DL_NPS_SENSOR_XXX_X(dl_buffer);
-		int32_t y = DL_NPS_SENSOR_XXX_Y(dl_buffer);
-		int32_t z = DL_NPS_SENSOR_XXX_Z(dl_buffer);
+		double x = DL_NPS_SENSOR_XXX_X(dl_buffer);
+		double y = DL_NPS_SENSOR_XXX_Y(dl_buffer);
+		double z = DL_NPS_SENSOR_XXX_Z(dl_buffer);
 		imu_feed_accel(x, y, z);
 //#define DEBUG_DL_NPS_SENSORS_ACCEL
 #ifdef DEBUG_DL_NPS_SENSORS_ACCEL
@@ -306,9 +306,9 @@ void dl_parse_msg(void) {
 		UART1PutBuf(buf);
 #endif
 	} else if (msg_id == DL_NPS_SENSORS_GYRO) {
-		int32_t x = DL_NPS_SENSOR_XXX_X(dl_buffer);
-		int32_t y = DL_NPS_SENSOR_XXX_Y(dl_buffer);
-		int32_t z = DL_NPS_SENSOR_XXX_Z(dl_buffer);
+		double x = DL_NPS_SENSOR_XXX_X(dl_buffer);
+		double y = DL_NPS_SENSOR_XXX_Y(dl_buffer);
+		double z = DL_NPS_SENSOR_XXX_Z(dl_buffer);
 		imu_feed_gyro(x, y, z);
 //#define DEBUG_DL_NPS_SENSORS_GYRO
 #ifdef DEBUG_DL_NPS_SENSORS_GYRO
@@ -326,11 +326,11 @@ void dl_parse_msg(void) {
 		double q = DL_HITL_IR_AHRS_q(dl_buffer);
 		double r = DL_HITL_IR_AHRS_r(dl_buffer);
 
-		// copy to AHRS
-		provide_attitude_and_rates(roll, pitch, yaw, p, q, r);
+//		// copy to AHRS
+//		provide_attitude_and_rates(roll, pitch, yaw, p, q, r);
 
-		// copy IR
-		set_ir(roll, pitch);
+//		// copy IR
+//		set_ir(roll, pitch);
 
 #ifdef DEBUG_DL_HITL_IR_AHRS
 		//Only print the data on every 100th message

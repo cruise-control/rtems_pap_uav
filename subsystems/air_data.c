@@ -61,6 +61,7 @@ static void send_baro_raw(void) {
  *  Bind ABI messages
  */
 void air_data_init( void ) {
+	//TODO Try to get his working
 //  AbiBindMsgBARO_ABS(AIR_DATA_BARO_ABS_ID, &pressure_abs_ev, pressure_abs_cb);
 
 #if PERIODIC_TELEMETRY

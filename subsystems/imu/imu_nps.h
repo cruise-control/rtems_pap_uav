@@ -79,8 +79,8 @@ extern struct ImuNps imu_nps;
 
 extern void imu_feed_gyro_accel(void);
 extern void imu_feed_mag(void);
-void imu_feed_accel(int32_t x, int32_t y, int32_t z);
-void imu_feed_gyro(int32_t x, int32_t y, int32_t z);
+void imu_feed_accel(double x, double y, double z);
+void imu_feed_gyro(double x, double y, double z);
 
 #define ImuMagEvent(_mag_handler) {                             \
     if (imu_nps.mag_available) {                                \

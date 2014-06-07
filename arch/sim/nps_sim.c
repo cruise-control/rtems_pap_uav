@@ -8,8 +8,12 @@
 #include "state.h"
 #include "math/pprz_geodetic_double.h"
 
-void sim_overwrite_ahrs_ltp(double qi, double qx, double qy, double qz) {
+bool_t nps_bypass_ahrs = false;
+bool_t nps_bypass_ins = false;
 
+void sim_overwrite_ahrs_ltp(double qi, double qx, double qy, double qz) {
+	if (!nps_bypass_ahrs)
+		return;
 	struct DoubleQuat ltp_to_body_quat;
 
 	ltp_to_body_quat.qi = qi;
@@ -23,7 +27,8 @@ void sim_overwrite_ahrs_ltp(double qi, double qx, double qy, double qz) {
 }
 
 void sim_overwrite_ahrs_ecef(double p, double q, double r) {
-
+	if (!nps_bypass_ahrs)
+		return;
 	struct DoubleRates body_ecef_rotvel;
 
 	body_ecef_rotvel.p = p;
@@ -36,6 +41,8 @@ void sim_overwrite_ahrs_ecef(double p, double q, double r) {
 }
 
 void sim_overwrite_ins_ltpprz_pos(double x, double y, double z) {
+	if (!nps_bypass_ins)
+		return;
 	struct NedCoor_d lltpprz_pos;
 	lltpprz_pos.x = x;
 	lltpprz_pos.y = y;
@@ -46,6 +53,8 @@ void sim_overwrite_ins_ltpprz_pos(double x, double y, double z) {
 }
 
 void sim_overwrite_ins_ltpprz_ecef_vel(double x, double y, double z) {
+	if (!nps_bypass_ins)
+		return;
 	struct NedCoor_d lltpprz_ecef_vel;
 	lltpprz_ecef_vel.x = x;
 	lltpprz_ecef_vel.y = y;
@@ -56,6 +65,8 @@ void sim_overwrite_ins_ltpprz_ecef_vel(double x, double y, double z) {
 }
 
 void sim_overwrite_ins_ltpprz_ecef_accel(double x, double y, double z) {
+	if (!nps_bypass_ins)
+		return;
 	struct NedCoor_d lltpprz_ecef_accel;
 	lltpprz_ecef_accel.x = x;
 	lltpprz_ecef_accel.y = y;

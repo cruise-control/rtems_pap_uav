@@ -32,9 +32,10 @@ struct Ahrs ahrs;
 #define WEAK __attribute__((weak))
 // weak functions, used if not explicitly provided by implementation
 
-void WEAK ahrs_propagate(void) {}
+//SC Making sure this is not getting called, unsure if compiler properly supports it
+//void WEAK ahrs_propagate(void) {}
 
-void WEAK ahrs_update_accel(void) {}
+//void WEAK ahrs_update_accel(void) {}
 
 void WEAK ahrs_update_mag(void) {}
 

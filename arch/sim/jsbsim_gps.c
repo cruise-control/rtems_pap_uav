@@ -1,72 +1,72 @@
-/* OCaml binding to link the simulator to autopilot functions. */
-
-#include <assert.h>
-#include <math.h>
-#include <inttypes.h>
-
-/** From airborne/autopilot/ */
-#include "generated/airframe.h"
-#include "generated/flight_plan.h"
-#include "autopilot.h"
+///* OCaml binding to link the simulator to autopilot functions. */
+//
+//#include <assert.h>
+//#include <math.h>
+//#include <inttypes.h>
+//
+///** From airborne/autopilot/ */
+//#include "generated/airframe.h"
+//#include "generated/flight_plan.h"
+//#include "autopilot.h"
 #include "subsystems/gps.h"
-#include "math/pprz_geodetic_float.h"
-#include "math/pprz_geodetic_int.h"
-
-// currently needed to get nav_utm_zone0
-#include "subsystems/navigation/common_nav.h"
-
-void sim_use_gps_pos(double lat, double lon, double alt, double course,
-		double gspeed, double climb, double time) {
-//#define STRAIGHT_COPY
-#ifdef STRAIGHT_COPY
-	gps.fix = 3; // Mode 3D
-	gps.course = course;
-	gps.hmsl = alt;
-	gps.gspeed = gspeed;
-	gps.ned_vel.z = climb;
-	gps.week = 0;// FIXME
-	gps.tow = time;
-
-	//TODO set alt above ellipsoid and hmsl
-
-	struct LlaCoor_f lla_f;
-	struct UtmCoor_f utm_f;
-	lla_f.lat = lat;
-	lla_f.lon = lon;
-	utm_f.zone = nav_utm_zone0;
-	utm_of_lla_f(&utm_f, &lla_f);
-	LLA_BFP_OF_REAL(gps.lla_pos, lla_f);
-	gps.utm_pos.east = utm_f.east*100;
-	gps.utm_pos.north = utm_f.north*100;
-	gps.utm_pos.zone = nav_utm_zone0;
-
-	gps_available = TRUE;
-#else
-	gps.fix = 3; // Mode 3D
-	gps.course = course * 1e7;
-	gps.hmsl = alt * 1000.;
-	gps.gspeed = gspeed * 100.;
-	gps.ned_vel.z = -climb * 100.;
-	gps.week = 0; // FIXME
-	gps.tow = time * 1000.;
-
-	//TODO set alt above ellipsoid and hmsl
-
-	struct LlaCoor_f lla_f;
-	struct UtmCoor_f utm_f;
-	lla_f.lat = lat;
-	lla_f.lon = lon;
-	utm_f.zone = nav_utm_zone0;
-	utm_of_lla_f(&utm_f, &lla_f);
-	LLA_BFP_OF_REAL(gps.lla_pos, lla_f);
-	gps.utm_pos.east = utm_f.east * 100;
-	gps.utm_pos.north = utm_f.north * 100;
-	gps.utm_pos.zone = nav_utm_zone0;
-
-	gps_available = TRUE;
-#endif
-}
-
+//#include "math/pprz_geodetic_float.h"
+//#include "math/pprz_geodetic_int.h"
+//
+//// currently needed to get nav_utm_zone0
+//#include "subsystems/navigation/common_nav.h"
+//
+//void sim_use_gps_pos(double lat, double lon, double alt, double course,
+//		double gspeed, double climb, double time) {
+////#define STRAIGHT_COPY
+//#ifdef STRAIGHT_COPY
+//	gps.fix = 3; // Mode 3D
+//	gps.course = course;
+//	gps.hmsl = alt;
+//	gps.gspeed = gspeed;
+//	gps.ned_vel.z = climb;
+//	gps.week = 0;// FIXME
+//	gps.tow = time;
+//
+//	//TODO set alt above ellipsoid and hmsl
+//
+//	struct LlaCoor_f lla_f;
+//	struct UtmCoor_f utm_f;
+//	lla_f.lat = lat;
+//	lla_f.lon = lon;
+//	utm_f.zone = nav_utm_zone0;
+//	utm_of_lla_f(&utm_f, &lla_f);
+//	LLA_BFP_OF_REAL(gps.lla_pos, lla_f);
+//	gps.utm_pos.east = utm_f.east*100;
+//	gps.utm_pos.north = utm_f.north*100;
+//	gps.utm_pos.zone = nav_utm_zone0;
+//
+//	gps_available = TRUE;
+//#else
+//	gps.fix = 3; // Mode 3D
+//	gps.course = course * 1e7;
+//	gps.hmsl = alt * 1000.;
+//	gps.gspeed = gspeed * 100.;
+//	gps.ned_vel.z = -climb * 100.;
+//	gps.week = 0; // FIXME
+//	gps.tow = time * 1000.;
+//
+//	//TODO set alt above ellipsoid and hmsl
+//
+//	struct LlaCoor_f lla_f;
+//	struct UtmCoor_f utm_f;
+//	lla_f.lat = lat;
+//	lla_f.lon = lon;
+//	utm_f.zone = nav_utm_zone0;
+//	utm_of_lla_f(&utm_f, &lla_f);
+//	LLA_BFP_OF_REAL(gps.lla_pos, lla_f);
+//	gps.utm_pos.east = utm_f.east * 100;
+//	gps.utm_pos.north = utm_f.north * 100;
+//	gps.utm_pos.zone = nav_utm_zone0;
+//
+//	gps_available = TRUE;
+//#endif
+//}
+//
 /** Space vehicle info simulation */
 void sim_update_sv(void) {
 	gps.nb_channels = 7;
@@ -86,8 +86,8 @@ void sim_update_sv(void) {
 
 }
 
-void ubxsend_cfg_rst(uint16_t a __attribute__ ((unused)),
-		uint8_t b __attribute__ ((unused))) {
-	return;
-}
+//void ubxsend_cfg_rst(uint16_t a __attribute__ ((unused)),
+//		uint8_t b __attribute__ ((unused))) {
+//	return;
+//}
 

@@ -61,6 +61,7 @@ PRINT_CONFIG_MSG_VALUE("USE_BARO_BOARD is TRUE, reading onboard baro: ", BARO_BO
 #endif
 #include "subsystems/ins.h"
 
+
 // autopilot & control
 #include "state.h"
 #include "firmwares/fixedwing/autopilot.h"
@@ -111,21 +112,21 @@ PRINT_CONFIG_MSG_VALUE("USE_BARO_BOARD is TRUE, reading onboard baro: ", BARO_BO
 #endif
 
 /* if PRINT_CONFIG is defined, print some config options */
-PRINT_CONFIG_VAR(PERIODIC_FREQUENCY)PRINT_CONFIG_VAR(NAVIGATION_FREQUENCY)PRINT_CONFIG_VAR(
-		CONTROL_FREQUENCY)
+PRINT_CONFIG_VAR(PERIODIC_FREQUENCY)
+PRINT_CONFIG_VAR(NAVIGATION_FREQUENCY)
+PRINT_CONFIG_VAR(CONTROL_FREQUENCY)
 
-#ifndef TELEMETRY_FREQUENCY
-#define TELEMETRY_FREQUENCY 60
-#endif
+/* TELEMETRY_FREQUENCY is defined in generated/periodic_telemetry.h
+ * defaults to 60Hz or set by TELEMETRY_FREQUENCY configure option in airframe file
+ */
 PRINT_CONFIG_VAR(TELEMETRY_FREQUENCY)
 
-#ifndef MODULES_FREQUENCY
-#define MODULES_FREQUENCY 60
-#endif
+/* MODULES_FREQUENCY is defined in generated/modules.h
+ * according to main_freq parameter set for modules in airframe file
+ */
 PRINT_CONFIG_VAR(MODULES_FREQUENCY)
 
-
-#if USE_AHRS && USE_IMU
+#if defined USE_AHRS && defined USE_IMU
 
 #ifndef AHRS_PROPAGATE_FREQUENCY
 #define AHRS_PROPAGATE_FREQUENCY PERIODIC_FREQUENCY
@@ -143,17 +144,19 @@ volatile uint8_t ahrs_timeout_counter = 0;
 
 //FIXME not the correct place
 static void send_fliter_status(void) {
-  uint8_t mde = 3;
-  if (ahrs.status == AHRS_UNINIT) mde = 2;
-  if (ahrs_timeout_counter > 10) mde = 5;
-  uint16_t val = 0;
-  DOWNLINK_SEND_STATE_FILTER_STATUS(DefaultChannel, DefaultDevice, &mde, &val);
+	uint8_t mde = 3;
+	if (ahrs.status == AHRS_UNINIT)
+	mde = 2;
+	if (ahrs_timeout_counter > 10)
+	mde = 5;
+	uint16_t val = 0;
+	DOWNLINK_SEND_STATE_FILTER_STATUS(DefaultChannel, DefaultDevice, &mde, &val);
 }
 
 #endif // USE_AHRS && USE_IMU
 
 #if USE_GPS
-static inline void on_gps_solution( void );
+static inline void on_gps_solution(void);
 #endif
 
 #if USE_BAROMETER
@@ -175,8 +178,9 @@ ts_dbgT debug_dbgT;
 static const uint16_t version = 1;
 
 #if defined RADIO_CONTROL || defined RADIO_CONTROL_AUTO1
-static uint8_t mcu1_ppm_cpt;
+static uint8_t  mcu1_ppm_cpt;
 #endif
+
 
 tid_t modules_tid;     ///< id for modules_periodic_task() timer
 tid_t telemetry_tid;   ///< id for telemetry_periodic() timer
@@ -184,18 +188,17 @@ tid_t sensors_tid;     ///< id for sensors_task() timer
 tid_t attitude_tid;    ///< id for attitude_loop() timer
 tid_t navigation_tid;  ///< id for navigation_task() timer
 tid_t monitor_tid;     ///< id for monitor_task() timer
-tid_t debug_tid;     ///< id for monitor_task() timer
 
 void init_ap(void) {
 #ifndef SINGLE_MCU /** init done in main_fbw in single MCU */
 	mcu_init();
 #endif /* SINGLE_MCU */
 
-  /****** initialize and reset state interface ********/
+	/****** initialize and reset state interface ********/
 
-  stateInit();
+	stateInit();
 
-  /************* Sensors initialization ***************/
+	/************* Sensors initialization ***************/
 #if USE_GPS
 	gps_init();
 #endif
@@ -204,14 +207,14 @@ void init_ap(void) {
 	GpioInit();
 #endif
 
-#if USE_IMU
-  imu_init();
+#if defined USE_IMU
+	imu_init();
 #if USE_IMU_FLOAT
-  imu_float_init();
+	imu_float_init();
 #endif
 #endif
 
-#if USE_AHRS_ALIGNER
+#if defined USE_AHRS_ALIGNER
 	ahrs_aligner_init();
 #endif
 
@@ -219,16 +222,16 @@ void init_ap(void) {
 	ahrs_init();
 #endif
 
-#if USE_AHRS && USE_IMU
-  register_periodic_telemetry(DefaultPeriodic, "STATE_FILTER_STATUS", send_fliter_status);
+#if defined USE_AHRS && defined USE_IMU
+	register_periodic_telemetry(DefaultPeriodic, "STATE_FILTER_STATUS", send_fliter_status);
 #endif
 
-//  air_data_init();
+	air_data_init();
 #if USE_BARO_BOARD
-  baro_init();
+	baro_init();
 #endif
 
-  ins_init();
+	ins_init();
 
 	/************* Links initialization ***************/
 #if defined MCU_SPI_LINK || defined MCU_UART_LINK
@@ -261,7 +264,6 @@ void init_ap(void) {
 	rtems_barrier_wait(rtems_task_self(), 5);
 	monitor_tid = sys_time_register_timer(1.0, NULL);
 	rtems_barrier_wait(rtems_task_self(), 6);
-//	debug_tid = sys_time_register_timer(1. / 100, NULL);
 	UART1Puts("Just registered all ap timers\r\n");
 
 	/** - start interrupt task */
@@ -287,12 +289,12 @@ void init_ap(void) {
 	traffic_info_init();
 #endif
 
-  /* set initial trim values.
-   * these are passed to fbw via inter_mcu.
-   */
-  ap_state->command_roll_trim = COMMAND_ROLL_TRIM;
-  ap_state->command_pitch_trim = COMMAND_PITCH_TRIM;
-  ap_state->command_yaw_trim = COMMAND_YAW_TRIM;
+	/* set initial trim values.
+	 * these are passed to fbw via inter_mcu.
+	 */
+	ap_state->command_roll_trim = COMMAND_ROLL_TRIM;
+	ap_state->command_pitch_trim = COMMAND_PITCH_TRIM;
+	ap_state->command_yaw_trim = COMMAND_YAW_TRIM;
 }
 
 
@@ -307,7 +309,6 @@ void handle_periodic_tasks_ap(void) {
 		dbgTinit(&monitor_dbgT, MONITOR_ID);
 		dbgTinit(&telemetry_dbgT, TELEMETRY_ID);
 		dbgTinit(&attitude_dbgT, ATTITUDE_ID);
-//		dbgTinit(&debug_dbgT, DEBUG_ID);
 		init = 1;
 	}
 #endif
@@ -438,10 +439,8 @@ static inline void telecommand_task(void) {
 #endif
 	}
 	mode_changed |= mcu1_status_update();
-	if (mode_changed){
+	if (mode_changed)
 		autopilot_send_mode();
-		//PERIODIC_SEND_PPRZ_MODE(DefaultChannel, DefaultDevice);
-	}
 
 #if defined RADIO_CONTROL || defined RADIO_CONTROL_AUTO1
 	/** In AUTO1 mode, compute roll setpoint and pitch setpoint from
@@ -467,10 +466,9 @@ static inline void telecommand_task(void) {
 	mcu1_ppm_cpt = fbw_state->ppm_cpt;
 #endif // RADIO_CONTROL
 
-
-  vsupply = fbw_state->vsupply;
-  current = fbw_state->current;
-  energy = fbw_state->energy;
+	vsupply = fbw_state->vsupply;
+	current = fbw_state->current;
+	energy = fbw_state->energy;
 
 #ifdef RADIO_CONTROL
 	if (!autopilot_flight_time) {
@@ -480,6 +478,14 @@ static inline void telecommand_task(void) {
 			launch = TRUE;
 		}
 	}
+	/*
+	 #ifndef SITL
+	 if (!autopilot_flight_time) {
+	 if (pprz_mode == PPRZ_MODE_AUTO2 && fbw_state->channels[RADIO_THROTTLE] > THROTTLE_THRESHOLD_TAKEOFF) {
+	 launch = TRUE;
+	 }
+	 }
+	 #endif*/
 #endif
 }
 
@@ -492,17 +498,17 @@ void sensors_task(void) {
 	dbgTstart(&sensors_dbgT);
 #endif
 
-#if USE_IMU
+#if defined USE_IMU
 	imu_periodic();
 
 #if USE_AHRS
 	if (ahrs_timeout_counter < 255)
-	ahrs_timeout_counter ++;
+	ahrs_timeout_counter++;
 #endif // USE_AHRS
 #endif // USE_IMU
 
 	//FIXME: this is just a kludge
-#if USE_AHRS && defined SITL && defined SHITL
+#if USE_AHRS && defined SHITL
 	ahrs_propagate();
 #endif
 
@@ -569,7 +575,7 @@ void navigation_task(void) {
 	CallTCAS();
 #endif
 
-#ifndef PERIOD_NAVIGATION_0 // If not sent periodically (in default 0 mode)
+#ifndef PERIOD_NAVIGATION_Ap_0 // If not sent periodically (in default 0 mode)
 	SEND_NAVIGATION(DefaultChannel, DefaultDevice);
 #endif
 
@@ -592,7 +598,7 @@ void navigation_task(void) {
 
 		// climb_loop(); //4Hz
 	}
-	energy += ((float) current) / 3600.0f * 0.25f; // mAh = mA * dt (4Hz -> hours)
+	//energy += ((float) current) / 3600.0f * 0.25f; // mAh = mA * dt (4Hz -> hours)
 
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstop(&navigation_dbgT);
@@ -700,10 +706,6 @@ void monitor_task(void) {
 		DOWNLINK_SEND_TAKEOFF(DefaultChannel, DefaultDevice, &time_sec);
 	}
 
-#ifdef USE_GPIO
-	GpioUpdate1();
-#endif
-
 #if DEBUG_TIMING_AUTOPILOT > 0
 	dbgTstop(&monitor_dbgT);
 #endif
@@ -739,7 +741,6 @@ void reporting_task(void) {
 
 }
 
-
 /*********** EVENT ***********************************************************/
 #ifndef SERIO_TESTING
 void event_task_ap(void) {
@@ -750,7 +751,7 @@ void event_task_ap(void) {
 #endif
 #endif
 
-#if USE_AHRS && USE_IMU
+#if defined USE_AHRS && defined USE_IMU
 	ImuEvent(on_gyro_event, on_accel_event, on_mag_event);
 #endif
 
@@ -764,11 +765,10 @@ void event_task_ap(void) {
 #endif /* USE_GPS */
 
 #if USE_BARO_BOARD
-  BaroEvent();
+	BaroEvent();
 #endif
 
 	DatalinkEvent();
-
 
 #if defined MCU_SPI_LINK || defined MCU_UART_LINK
 	link_mcu_event_task();
@@ -786,7 +786,6 @@ void event_task_ap(void) {
 	if (new_ins_attitude > 0)
 	{
 		attitude_loop();
-		//LED_TOGGLE(3);
 		new_ins_attitude = 0;
 	}
 #endif
@@ -798,7 +797,7 @@ void event_task_ap( void ) {
 }
 #endif
 #if USE_GPS
-static inline void on_gps_solution( void ) {
+static inline void on_gps_solution(void) {
 	ins_update_gps();
 #if USE_AHRS
 	ahrs_update_gps();
@@ -808,6 +807,7 @@ static inline void on_gps_solution( void ) {
 #endif
 }
 #endif
+
 #if USE_AHRS
 #if USE_IMU
 static inline void on_accel_event( void ) {
@@ -835,10 +835,6 @@ static inline void on_gyro_event( void ) {
 
 	ahrs_propagate();
 	ahrs_update_accel();
-
-#ifdef AHRS_TRIGGERED_ATTITUDE_LOOP
-	new_ins_attitude = 1;
-#endif
 
 #else //PERIODIC_FREQUENCY
 	static uint8_t _reduced_propagation_rate = 0;
@@ -873,17 +869,15 @@ static inline void on_gyro_event( void ) {
 			ImuScaleAccel(imu);
 			ahrs_update_accel();
 		}
-
-#ifdef AHRS_TRIGGERED_ATTITUDE_LOOP
-		new_ins_attitude = 1;
-#endif
 	}
 #endif //PERIODIC_FREQUENCY
 
+#ifdef AHRS_TRIGGERED_ATTITUDE_LOOP
+	new_ins_attitude = 1;
+#endif
 }
 
-static inline void on_mag_event(void)
-{
+static inline void on_mag_event(void) {
 #if USE_MAGNETOMETER
 	ImuScaleMag(imu);
 	if (ahrs.status == AHRS_RUNNING) {
@@ -896,14 +890,3 @@ static inline void on_mag_event(void)
 
 #endif // USE_AHRS
 
-#if USE_BAROMETER
-
-static inline void on_baro_abs_event( void ) {
-	ins_update_baro();
-}
-
-static inline void on_baro_dif_event( void ) {
-
-}
-
-#endif // USE_BAROMETER

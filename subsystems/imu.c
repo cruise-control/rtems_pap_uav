@@ -34,7 +34,7 @@
 #endif
 #endif
 
-#if PERIODIC_TELEMETRY
+#if defined PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
 #if USE_IMU_FLOAT
@@ -141,7 +141,7 @@ INFO("Magnetometer neutrals are set to zero, you should calibrate!")
   INT32_QUAT_NORMALIZE(imu.body_to_imu_quat);
   INT32_RMAT_OF_EULERS(imu.body_to_imu_rmat, body_to_imu_eulers);
 
-#if PERIODIC_TELEMETRY
+#if defined PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, "IMU_ACCEL", send_accel);
   register_periodic_telemetry(DefaultPeriodic, "IMU_GYRO", send_gyro);
 #if USE_IMU_FLOAT

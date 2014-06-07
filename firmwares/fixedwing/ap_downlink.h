@@ -86,10 +86,10 @@
 }
 
 
-#define PERIODIC_SEND_ATTITUDE(_trans, _dev) Downlink({ \
-    struct FloatEulers* att = stateGetNedToBodyEulers_f(); \
-    DOWNLINK_SEND_ATTITUDE(_trans, _dev, &(att->phi), &(att->psi), &(att->theta)); \
-})
+//#define PERIODIC_SEND_ATTITUDE(_trans, _dev) Downlink({ \
+//    struct FloatEulers* att = stateGetNedToBodyEulers_f(); \
+//    DOWNLINK_SEND_ATTITUDE(_trans, _dev, &(att->phi), &(att->psi), &(att->theta)); \
+//})
 
 
 #ifndef USE_AIRSPEED

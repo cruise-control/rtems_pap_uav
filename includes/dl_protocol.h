@@ -989,9 +989,9 @@
 
 #define DL_NPS_SENSOR_XXX_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_NPS_SENSOR_XXX_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))
-#define DL_NPS_SENSOR_XXX_X(_payload) ((int32_t)(*((uint8_t*)_payload+4)|*((uint8_t*)_payload+4+1)<<8|((uint32_t)*((uint8_t*)_payload+4+2))<<16|((uint32_t)*((uint8_t*)_payload+4+3))<<24))
-#define DL_NPS_SENSOR_XXX_Y(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+8+1)<<8|((uint32_t)*((uint8_t*)_payload+8+2))<<16|((uint32_t)*((uint8_t*)_payload+8+3))<<24))
-#define DL_NPS_SENSOR_XXX_Z(_payload) ((int32_t)(*((uint8_t*)_payload+8)|*((uint8_t*)_payload+12+1)<<8|((uint32_t)*((uint8_t*)_payload+12+2))<<16|((uint32_t)*((uint8_t*)_payload+12+3))<<24))
+#define DL_NPS_SENSOR_XXX_X(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+4)|((uint64_t)*((uint8_t*)_payload+4+1))<<8|((uint64_t)*((uint8_t*)_payload+4+2))<<16|((uint64_t)*((uint8_t*)_payload+4+3))<<24|((uint64_t)*((uint8_t*)_payload+4+4))<<32|((uint64_t)*((uint8_t*)_payload+4+5))<<40|((uint64_t)*((uint8_t*)_payload+4+6))<<48|((uint64_t)*((uint8_t*)_payload+4+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_NPS_SENSOR_XXX_Y(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+12)|((uint64_t)*((uint8_t*)_payload+12+1))<<8|((uint64_t)*((uint8_t*)_payload+12+2))<<16|((uint64_t)*((uint8_t*)_payload+12+3))<<24|((uint64_t)*((uint8_t*)_payload+12+4))<<32|((uint64_t)*((uint8_t*)_payload+12+5))<<40|((uint64_t)*((uint8_t*)_payload+12+6))<<48|((uint64_t)*((uint8_t*)_payload+12+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
+#define DL_NPS_SENSOR_XXX_Z(_payload) (({ union { uint64_t u; double f; } _f; _f.u = (uint64_t)(*((uint8_t*)_payload+20)|((uint64_t)*((uint8_t*)_payload+20+1))<<8|((uint64_t)*((uint8_t*)_payload+20+2))<<16|((uint64_t)*((uint8_t*)_payload+20+3))<<24|((uint64_t)*((uint8_t*)_payload+20+4))<<32|((uint64_t)*((uint8_t*)_payload+20+5))<<40|((uint64_t)*((uint8_t*)_payload+20+6))<<48|((uint64_t)*((uint8_t*)_payload+20+7))<<56); Swap32IfBigEndian(_f.u); _f.f; }))
 
 #define DL_HITL_IR_AHRS_ir_id(_payload) ((uint8_t)(*((uint8_t*)_payload+2)))
 #define DL_HITL_IR_AHRS_ac_id(_payload) ((uint8_t)(*((uint8_t*)_payload+3)))

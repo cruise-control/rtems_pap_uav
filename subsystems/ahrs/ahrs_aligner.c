@@ -69,7 +69,7 @@ void ahrs_aligner_init(void) {
   ahrs_aligner.noise = 0;
   ahrs_aligner.low_noise_cnt = 0;
 
-#if PERIODIC_TELEMETRY
+#if defined PERIODIC_TELEMETRY
   register_periodic_telemetry(DefaultPeriodic, "FILTER_ALIGNER", send_aligner);
 #endif
 }
