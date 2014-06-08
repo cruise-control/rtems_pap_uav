@@ -8,7 +8,25 @@
 #include "state.h"
 #include "math/pprz_geodetic_double.h"
 
-bool_t nps_bypass_ahrs = false;
+//false with IMU appears to work poorly :)
+//True without IMU causes the plane to launch and then glide down to ground
+//false without IMU causes no useful movement
+
+/* 	by_AHRS 	by_INS 	USE_AHRS 	USE_IMU		Result
+ * 	false		false	true		true		Poorly working simulation that blows up
+ * 	false		false	true		false		No calculation of COMMANDS, plane launches and glides to ground FDM crashes
+ * 	true		true	true		false
+ * 	true		true	true		true
+ * 	true		false	true		false
+ * 	true		true	true		true		Launches, strange trajectory, no throttle, fall to gnd
+ * 	true		false	true		true		Launches, strange trajectory, no throttle, fall to gnd
+ *	true		false	false		true
+ *
+ *
+ */
+
+
+bool_t nps_bypass_ahrs = true;
 bool_t nps_bypass_ins = false;
 
 void sim_overwrite_ahrs_ltp(double qi, double qx, double qy, double qz) {

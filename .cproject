@@ -43,9 +43,9 @@
 									<listOptionValue builtIn="false" value="DefaultPeriodic='&amp;telemetry_Ap'"/>
 									<listOptionValue builtIn="false" value="PERIODIC_TELEMETRY"/>
 									<listOptionValue builtIn="false" value="AGR_CLIMB"/>
-									<listOptionValue builtIn="false" value="USE_BARO_BOARD=FALSE"/>
 									<listOptionValue builtIn="false" value="USE_IMU"/>
 									<listOptionValue builtIn="false" value="USE_IMU=1"/>
+									<listOptionValue builtIn="false" value="USE_BARO_BOARD=FALSE"/>
 									<listOptionValue builtIn="false" value="GPS_USE_LATLONG"/>
 									<listOptionValue builtIn="false" value="AHRS_UPDATE_FW_ESTIMATOR"/>
 									<listOptionValue builtIn="false" value="USE_AHRS_ALIGNER"/>
@@ -76,8 +76,6 @@
 									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=IvyTransport"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
-									<listOptionValue builtIn="false" value="USE_AHRS"/>
-									<listOptionValue builtIn="false" value="USE_AHRS=1"/>
 									<listOptionValue builtIn="false" value="USE_GPS"/>
 									<listOptionValue builtIn="false" value="USE_GPS=1"/>
 									<listOptionValue builtIn="false" value="NAV"/>
