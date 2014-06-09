@@ -872,7 +872,7 @@ extern struct pprz_telemetry telemetry_Fbw;
 static inline void periodic_telemetry_send_Fbw(void) {  /* 60Hz */
   if (telemetry_mode_Fbw == TELEMETRY_MODE_Fbw_default) {
     static uint8_t i120 = 0; i120++; if (i120>=120) i120=0;
-    static uint16_t i300 = 0; i300++; if (i300>=3) i300=0;
+    static uint16_t i300 = 0; i300++; if (i300>=2) i300=0;
     if (i300 == 0) {
       if (telemetry_Fbw.msgs[TELEMETRY_FBW_MSG_ACTUATORS_ID].cb != NULL)
         telemetry_Fbw.msgs[TELEMETRY_FBW_MSG_ACTUATORS_ID].cb();
@@ -880,7 +880,7 @@ static inline void periodic_telemetry_send_Fbw(void) {  /* 60Hz */
       else periodic_telemetry_err_report(TELEMETRY_PROCESS_Fbw, telemetry_mode_Fbw, TELEMETRY_FBW_MSG_ACTUATORS_ID);
 #endif
     }
-    else if (i300 == 2) {
+    else if (i300 == 1) {
       if (telemetry_Fbw.msgs[TELEMETRY_FBW_MSG_COMMANDS_ID].cb != NULL)
         telemetry_Fbw.msgs[TELEMETRY_FBW_MSG_COMMANDS_ID].cb();
 #if USE_PERIODIC_TELEMETRY_REPORT

@@ -13,16 +13,23 @@
 //false without IMU causes no useful movement
 
 /* 	by_AHRS 	by_INS 	USE_AHRS 	USE_IMU		Result
- * 	false		false	true		true		Poorly working simulation that blows up
+ * 	false		false	true		true		1:Poorly working simulation that blows up
+ * 												2:No throttle,launch and then glide to gnd
+ * 												3:Sys reboot, recompile, launches, poor simulation, throttle etc
  * 	false		false	true		false		No calculation of COMMANDS, plane launches and glides to ground FDM crashes
  * 	true		true	true		false
  * 	true		true	true		true
  * 	true		false	true		false
  * 	true		true	true		true		Launches, strange trajectory, no throttle, fall to gnd
- * 	true		false	true		true		Launches, strange trajectory, no throttle, fall to gnd
- *	true		false	false		true
+ * 	true		false	true		true		1:Launches, strange trajectory, no throttle, fall to gnd
+ * 												2: Launches, poor simulation
+ * 												3: Launch, let run, then restart pc side, not autopilot, works poorly but works
+ *	true		false	false		true		1:WORKING!!!
+ *												2: -- Now its not!!
+ *												3: After a system reboot, it is working again...
  *
- *
+ *	true		true	false		true		Launches, no throttle
+ * 	true		false	false		false		Launches, no throttle.
  */
 
 
