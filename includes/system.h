@@ -29,6 +29,13 @@
 //#define CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM
 #define CONFIGURE_INIT_TASK_STACK_SIZE    (10*1024)
 #define ENABLE_NETWORK
+
+#define CONFIGURE_INIT_TASK_PRIORITY    254
+#define CONFIGURE_INIT_TASK_INITIAL_MODES (RTEMS_PREEMPT | \
+                                           RTEMS_NO_TIMESLICE | \
+                                           RTEMS_NO_ASR | \
+                                           RTEMS_INTERRUPT_LEVEL(0))
+
 #include <rtems/confdefs.h>
 
 /*

@@ -41,6 +41,7 @@
 								<option id="org.rtems.cdt.tool.gcc.option.b.540189051" name="Search paths (-B)" superClass="org.rtems.cdt.tool.gcc.option.b"/>
 								<option id="org.rtems.cdt.tool.gcc.option.d.40729312" name="Defined symbols (-D)" superClass="org.rtems.cdt.tool.gcc.option.d" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DefaultPeriodic='&amp;telemetry_Ap'"/>
+									<listOptionValue builtIn="false" value="USE_ETH"/>
 									<listOptionValue builtIn="false" value="USE_IMU"/>
 									<listOptionValue builtIn="false" value="USE_IMU=1"/>
 									<listOptionValue builtIn="false" value="PERIODIC_TELEMETRY"/>
@@ -74,7 +75,6 @@
 									<listOptionValue builtIn="false" value="SHITL"/>
 									<listOptionValue builtIn="false" value="DOWNLINK"/>
 									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=Ethernet"/>
-									<listOptionValue builtIn="false" value="USE_ETH"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
 									<listOptionValue builtIn="false" value="USE_GPS"/>
@@ -83,7 +83,7 @@
 									<listOptionValue builtIn="false" value="DC_SHUTTER_SERVO=COMMAND_SHUTTER"/>
 									<listOptionValue builtIn="false" value="DIGITAL_CAM"/>
 									<listOptionValue builtIn="false" value="SENSOR_SYNC_SEND=1"/>
-									<listOptionValue builtIn="false" value="DATALINK=ETh"/>
+									<listOptionValue builtIn="false" value="DATALINK=ETH"/>
 									<listOptionValue builtIn="false" value="PPRZ_UART=UART1"/>
 									<listOptionValue builtIn="false" value="SINGLE_MCU"/>
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
