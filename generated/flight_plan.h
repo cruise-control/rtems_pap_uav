@@ -129,6 +129,7 @@ static inline bool_t InsidePOLY_SURVEY(float _x, float _y) { \
     }
   }
 }
+
 #ifdef NAV_C
 
 static inline void auto_nav(void) {

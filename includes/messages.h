@@ -610,13 +610,14 @@
 	  DownlinkOverrun(_trans, _dev ); \
 }
 
-#define DOWNLINK_SEND_NAVIGATION_REF(_trans, _dev, utm_east, utm_north, utm_zone){ \
-	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+1))) {\
-	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+1)); \
-	  DownlinkStartMessage(_trans, _dev, "NAVIGATION_REF", DL_NAVIGATION_REF, 0+4+4+1) \
+#define DOWNLINK_SEND_NAVIGATION_REF(_trans, _dev, utm_east, utm_north, utm_zone, ground_alt){ \
+	if (DownlinkCheckFreeSpace(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+1+4))) {\
+	  DownlinkCountBytes(_trans, _dev, DownlinkSizeOf(_trans, _dev, 0+4+4+1+4)); \
+	  DownlinkStartMessage(_trans, _dev, "NAVIGATION_REF", DL_NAVIGATION_REF, 0+4+4+1+4) \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (utm_east)); \
 	  DownlinkPutInt32ByAddr(_trans, _dev, (utm_north)); \
 	  DownlinkPutUint8ByAddr(_trans, _dev, (utm_zone)); \
+	  DownlinkPutFloatByAddr(_trans, _dev, (ground_alt)); \
 	  DownlinkEndMessage(_trans, _dev ) \
 	} else \
 	  DownlinkOverrun(_trans, _dev ); \
@@ -4055,7 +4056,7 @@
 #define DOWNLINK_SEND_ATTITUDE(_trans, _dev, phi, psi, theta) {}
 #define DOWNLINK_SEND_IR_SENSORS(_trans, _dev, ir1, ir2, longitudinal, lateral, vertical) {}
 #define DOWNLINK_SEND_GPS(_trans, _dev, mode, utm_east, utm_north, course, alt, speed, climb, week, itow, utm_zone, gps_nb_err) {}
-#define DOWNLINK_SEND_NAVIGATION_REF(_trans, _dev, utm_east, utm_north, utm_zone) {}
+#define DOWNLINK_SEND_NAVIGATION_REF(_trans, _dev, utm_east, utm_north, utm_zone, ground_alt) {}
 #define DOWNLINK_SEND_NAVIGATION(_trans, _dev, cur_block, cur_stage, pos_x, pos_y, dist2_wp, dist2_home, circle_count, oval_count) {}
 #define DOWNLINK_SEND_PPRZ_MODE(_trans, _dev, ap_mode, ap_gaz, ap_lateral, ap_horizontal, if_calib_mode, mcu1_status) {}
 #define DOWNLINK_SEND_BAT(_trans, _dev, throttle, voltage, amps, flight_time, kill_auto_throttle, block_time, stage_time, energy) {}
