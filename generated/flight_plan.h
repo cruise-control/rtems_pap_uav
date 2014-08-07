@@ -1,4 +1,4 @@
-/* This file has been generated from /home/j3/paparazzi/conf/flight_plans/nav_modules.xml */
+/* This file has been generated from /home/j3/paparazzi/conf/flight_plans/nav_modules_j.xml */
 /* Please DO NOT EDIT */
 
 #ifndef FLIGHT_PLAN_H
@@ -38,8 +38,8 @@
  {42.0, 42.0, 260},\
  {0.0, 0.0, 260},\
  {49.5, 100.1, 260},\
- {10.1, 189.9, 260},\
- {132.3, 139.1, 260},\
+ {-337.0, 17.0, 260},\
+ {230.0, -30.0, 260},\
  {137.0, -11.6, 260},\
  {-109.0, 245.9, 260},\
  {274.4, 209.5, 260},\
@@ -49,14 +49,14 @@
  {177.4, 45.1, 215.0},\
  {28.8, 57.0, 185.0},\
  {168.8, -13.8, 260},\
- {-114.5, 162.3, 260},\
+ {-150.0, 50.0, 260},\
 };
 #define WAYPOINTS_LLA { \
  {434626158, 12733981, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434622299, 12728900, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434631401, 12734759, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
- {434639410, 12729661, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
- {434635066, 12744890, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
+ {434623200, 12687216, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
+ {434620028, 12757395, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434621511, 12745857, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434644228, 12714801, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434641667, 12762269, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
@@ -66,7 +66,7 @@
  {434626690, 12750704, 21500}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434627483, 12732312, 18500}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
  {434621372, 12749792, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
- {434636693, 12714335, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
+ {434626519, 12710237, 26000}, /* 1e7deg, 1e7deg, cm (hmsl=51.85m) */ \
 };
 #define NB_WAYPOINT 15
 #define FP_BLOCKS { \
@@ -129,7 +129,6 @@ static inline bool_t InsidePOLY_SURVEY(float _x, float _y) { \
     }
   }
 }
-
 #ifdef NAV_C
 
 static inline void auto_nav(void) {
@@ -225,7 +224,7 @@ static inline void auto_nav(void) {
     ; // post_call
     break;
 
-    Block(4) // Standby
+    Block(8) // Standby
     ; // pre_call
     switch(nav_stage) {
       Stage(0)
@@ -303,7 +302,7 @@ static inline void auto_nav(void) {
     ; // post_call
     break;
 
-    Block(8) // Line 1-2
+    Block(4) // Line 1-2
     ; // pre_call
     switch(nav_stage) {
       Stage(0)
