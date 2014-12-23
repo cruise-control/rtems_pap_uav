@@ -56,6 +56,7 @@ void dbgGpioInit() {
 }
 
 void dbgGpioSet(int chan) {
+#ifdef USE_RTEMS_GPIO
 	switch (chan) {
 	case GPIO_PORT_A:
 		gpiolib_set(portA, 1, 1);
@@ -66,9 +67,11 @@ void dbgGpioSet(int chan) {
 	default:
 		break;
 	}
+#endif
 }
 
 void dbgGpioClear(int chan) {
+#ifdef USE_RTEMS_GPIO
 	switch (chan) {
 	case GPIO_PORT_A:
 		gpiolib_set(portA, 1, 0);
@@ -79,6 +82,7 @@ void dbgGpioClear(int chan) {
 	default:
 		break;
 	}
+#endif
 }
 
 void dbgTinit(ts_dbgT* t, int id) {
