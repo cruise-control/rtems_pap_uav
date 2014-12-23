@@ -13,8 +13,15 @@
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
+#if defined TARGET_PLATFORM && TARGET_PLATFORM == RPI
+//<> is not working ... must not be properly linked to the project somehow
+#include "/home/j3/dev/projects/utilities/rtems/built/4.11/arm-rtems4.11/raspberrypi/lib/include/bsp/usart.h"
+#else
 #include <apbuart.h>
+#endif
 #include "uart.h"
+
+//#define _DEBUG
 
 /*
  * All communication to UART device will be done through the
@@ -42,12 +49,21 @@ typedef struct {
 // Initially all UART devices has "-1" as their file
 // descriptor which will be considered as "Invalid Descriptor".
 #define MAX_UART_DEV_CNT                 3
+#if defined TARGET_PLATFORM && TARGET_PLATFORM == RPI
 static uart_dev_info_t uart_dev_arry[MAX_UART_DEV_CNT] = { { "/dev/console_a", {
-		's', 'e', 'm', '0' }, 0, -1 }, { "/dev/console_b",
-		{ 's', 'e', 'm', '1' }, 0, -1 }, { "/dev/console_c", { 's', 'e', 'm',
-		'2' }, 0, -1 },
+		's', 'e', 'm', '0' }, 0, -1 }, { /*"/dev/console"*/"/dev/ttyS0", { 's',
+		'e', 'm', '1' }, 0, -1 },
 /*Add to this list if we do have more uart */
 };
+#else
+static uart_dev_info_t uart_dev_arry[MAX_UART_DEV_CNT] = { {"/dev/console_a", {
+			's', 'e', 'm', '0'}, 0, -1}, {"/dev/console_b",
+		{	's', 'e', 'm', '1'}, 0, -1}, {"/dev/console_c", {'s', 'e', 'm',
+			'2'}, 0, -1},
+	/*Add to this list if we do have more uart */
+};
+#endif
+
 /* uart_dev_arry[0] might being used as system console so watch for this */
 
 /** Note:
@@ -60,11 +76,11 @@ static uart_dev_info_t uart_dev_arry[MAX_UART_DEV_CNT] = { { "/dev/console_a", {
  */
 /*ASSUMPTIONS:
  * 1.All UART devices can be initialized once means once they are opened, they will have a
- * valid file discriptor and this discriptor will not be changed when some other task or same
+ * valid file descriptor and this descriptor will not be changed when some other task or same
  * task will try to initalize the opened UART again.
- * 2.We have assumed all calls like transmitting or receivng the data are non-blocking.
+ * 2.We have assumed all calls like transmitting or recievng the data are non-blocking.
  * 3.If more than one task want to use the same UART at the same time access to device will
- * be syncrionised.
+ * be synchronised.
  */
 #define TX_BUFFER_LEN					 1024
 #define RX_BUFFER_LEN					 1024
@@ -93,7 +109,7 @@ static void uart_init(int dev_index) {
 	struct termios tm;
 	if (ISUARTOPENED(dev_index)) {
 #ifdef _DEBUG
-		printf("\nUART%d is already opened\n",dev_index);
+		printf("\nUART%d is already opened\n", dev_index);
 #endif
 		return;
 	}
@@ -101,17 +117,17 @@ static void uart_init(int dev_index) {
 	/*Before opening the UART set the size of the receiver and transmitter buffer.*/
 	rtems_termios_bufsize(256, RX_BUFFER_LEN, TX_BUFFER_LEN);
 
-	fd = open(uart_dev_arry[dev_index].uart_name, O_RDWR);
+	fd = open(uart_dev_arry[dev_index].uart_name, O_RDWR | O_NONBLOCK);
 	if (fd < 0) {
 #ifdef _DEBUG
-		printf("\nError:couldn't open uart%d\n",dev_index);
+		printf("\nError:couldn't open uart%d\n", dev_index);
 #endif
 		return;
 	}
 
 	if (tcgetattr(fd, &tm) < 0) {
 #ifdef _DEBUG
-		printf("\nError:couldn't  get attr for uart%d\n",dev_index);
+		printf("\nError:couldn't  get attr for uart%d\n", dev_index);
 #endif
 		close(fd);
 		return;
@@ -128,16 +144,23 @@ static void uart_init(int dev_index) {
 
 	/*For Non Blocking I/O.*/
 	tm.c_cc[VTIME] = 0;
-	tm.c_cc[VMIN] = 1;
+	tm.c_cc[VMIN] = 0;
 
+#if defined TARGET_PLATFORM && TARGET_PLATFORM == RPI
+	/*set initial baud rate*/
+	//This is hard coded in the RTEMS Rpi BSP for now. So, ensure that the termios is aware of it
+	cfsetispeed(&tm, B115200);
+	cfsetospeed(&tm, B115200);
+#else
 	/*set initial baud rate*/
 	cfsetispeed(&tm, B230400);
 	cfsetospeed(&tm, B230400);
+#endif
 
 	/*set and flush*/
 	if (tcsetattr(fd, TCSANOW, &tm) < 0) {
 #ifdef _DEBUG
-		printf("\nError:couldn't  set attr for uart%d\n",dev_index);
+		printf("\nError:couldn't  set attr for uart%d\n", dev_index);
 #endif
 		close(fd);
 		return;
@@ -162,7 +185,7 @@ static void uart_init(int dev_index) {
 	RTEMS_BINARY_SEMAPHORE | RTEMS_FIFO, 0, &sem_id);
 	if (status != RTEMS_SUCCESSFUL) {
 #ifdef _DEBUG
-		printf("Error:couldn't create semaphore for uart%d",dev_index);
+		printf("Error:couldn't create semaphore for uart%d", dev_index);
 #endif
 		close(fd);
 		return;
@@ -187,7 +210,7 @@ static void uart_transmit_block(int dev_index, uint8_t *data, int length) {
 
 	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
 #ifdef _DEBUG
-		printf("\nUART%d is already opened\n",dev_index);
+		printf("\nUART%d is already opened\n", dev_index);
 #endif
 		return;
 	}
@@ -195,7 +218,7 @@ static void uart_transmit_block(int dev_index, uint8_t *data, int length) {
 	if (bytes < 0) {
 		rtems_semaphore_release(sem_id);
 #ifdef _DEBUG
-		printf("Error in writing data to UART %d",dev_index);
+		printf("Error in writing data to UART %d", dev_index);
 #endif
 	}
 	rtems_semaphore_release(sem_id);
@@ -215,7 +238,7 @@ static void uart_transmit(int dev_index, uint8_t data) {
 
 	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
 #ifdef _DEBUG
-		printf("\nUART%d is already opened\n",dev_index);
+		printf("\nUART%d is already opened\n", dev_index);
 #endif
 		return;
 	}
@@ -223,7 +246,7 @@ static void uart_transmit(int dev_index, uint8_t data) {
 	if (bytes < 0) {
 		rtems_semaphore_release(sem_id);
 #ifdef _DEBUG
-		printf("Error in writing data to UART %d",dev_index);
+		printf("Error in writing data to UART %d", dev_index);
 #endif
 	}
 	rtems_semaphore_release(sem_id);
@@ -240,6 +263,43 @@ static void spit_test_recvbuffer(void) {
 	return;
 }
 #endif
+#if defined TARGET_PLATFORM && TARGET_PLATFORM == RPI
+
+static uint8_t uart_getch(int dev_index) {
+	int fd;
+	uint8_t data = 0;
+	size_t bytes;
+	rtems_id sem_id;
+	if (!ISUARTOPENED(dev_index)) {
+		return 0;
+	}
+	fd = uart_dev_arry[dev_index].fd;
+	sem_id = uart_dev_arry[dev_index].semaphore_id;
+
+	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
+#ifdef _DEBUG
+		printf("\nUART%d is already opened\n", dev_index);
+#endif
+		return data;
+	}
+
+	bytes = read(fd, &data, 1);
+
+	//There was no new data read so bail
+	if (bytes <= 0) {
+		rtems_semaphore_release(sem_id);
+		uart_dev_arry[dev_index].byteAvailable = 0;
+#ifdef _DEBUG
+		printf("Error in reading data to UART %d", dev_index);
+#endif
+		return 0x00;
+	}
+	uart_dev_arry[dev_index].byteAvailable = 1;
+	rtems_semaphore_release(sem_id);
+
+	return data;
+}
+#else
 static uint8_t uart_getch(int dev_index) {
 	int fd;
 	uint8_t data = 0;
@@ -256,7 +316,7 @@ static uint8_t uart_getch(int dev_index) {
 
 	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
 #ifdef _DEBUG
-		printf("\nUART%d is already opened\n",dev_index);
+		printf("\nUART%d is already opened\n", dev_index);
 #endif
 		return data;
 	}
@@ -266,7 +326,7 @@ static uint8_t uart_getch(int dev_index) {
 	if (bytes < 0) {
 		rtems_semaphore_release(sem_id);
 #ifdef _DEBUG
-		printf("Error in reading data to UART %d",dev_index);
+		printf("Error in reading data to UART %d", dev_index);
 #endif
 		return data;
 	}
@@ -283,6 +343,7 @@ static uint8_t uart_getch(int dev_index) {
 	rtems_semaphore_release(sem_id);
 	return data;
 }
+#endif
 
 static void uart_setbaudrate(int dev_index, uint32_t baudrate,
 		bool_t hw_Ctrl_flow) {
@@ -365,6 +426,22 @@ static bool_t uart_checkfreespace(int dev_index, uint8_t len) {
 	return result;
 
 }
+#if defined TARGET_PLATFORM && TARGET_PLATFORM == RPI
+/**
+ * Return true if the byte just read is valid. Otherwise, ignore it.
+ */
+static bool_t uart_chavailable(int dev_index) {
+
+	if (!ISUARTOPENED(dev_index)) {
+		return 0;
+	}
+	if (uart_dev_arry[dev_index].byteAvailable > 0) {
+		return true;
+	}
+
+	return false;
+}
+#else
 static bool_t uart_chavailable(int dev_index) {
 	int fd;
 	bool_t bresult;
@@ -386,23 +463,28 @@ static bool_t uart_chavailable(int dev_index) {
 
 	if (rtems_semaphore_obtain(sem_id, RTEMS_WAIT, 0) != RTEMS_SUCCESSFUL) {
 		/*an error must be returned.*/
+		debug_pprz_msg("Getch: could not obtain the semaphore\r\n");
 		return false;
 	}
+
 	if (ioctl(fd, FIONREAD, &bytesQueued) == -1) {
 		rtems_semaphore_release(sem_id);
+		debug_pprz_msg("Getch: ioctl return -1\r\n");
 		return false;
 	}
 	if (bytesQueued) {
 		bresult = true;
 		uart_dev_arry[dev_index].byteAvailable = bytesQueued;
+		debug_pprz_msg("Getch: has bytes queued!\r\n");
 	} else {
 		bresult = false;
 		uart_dev_arry[dev_index].byteAvailable = 0;
+//		debug_pprz_msg("Getch: has no bytes queued!\r\n");
 	}
 	rtems_semaphore_release(sem_id);
 	return bresult;
-
 }
+#endif
 #ifdef USE_UART0
 void UART0Init(void) {
 	uart_init(0);

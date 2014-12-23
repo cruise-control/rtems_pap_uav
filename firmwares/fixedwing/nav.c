@@ -452,9 +452,14 @@ void nav_periodic_task(void) {
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
+//static void send_nav_ref(void) {
+//  DOWNLINK_SEND_NAVIGATION_REF(DefaultChannel, DefaultDevice,
+//      &nav_utm_east0, &nav_utm_north0, &nav_utm_zone0,&ground_alt);
+//}
+
 static void send_nav_ref(void) {
   DOWNLINK_SEND_NAVIGATION_REF(DefaultChannel, DefaultDevice,
-      &nav_utm_east0, &nav_utm_north0, &nav_utm_zone0,&ground_alt);
+      &nav_utm_east0, &nav_utm_north0, &nav_utm_zone0);
 }
 
 static void send_nav(void) {

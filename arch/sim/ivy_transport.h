@@ -6,6 +6,8 @@ extern char* ivy_p;
 extern char *plen;
 #define IVY_START 0x7E
 #define IVY_END   0x7F
+#define SPACE	  0x20
+#define COMMA	  0x2C
 /*IVY_START + LEN_BUFFER + IVY_END */
 
 #define IvyTransportCheckFreeSpace(_dev,_) TRUE
@@ -13,17 +15,16 @@ extern char *plen;
 #define IvyTransportPut1Byte(_dev,_x)  { \
     int bytes =sprintf(ivy_p,"%c",_x);		 \
     (*plen)+=bytes;				 \
-    ivy_p+=bytes;				 \
+    ivy_p+=bytes; \
   }
 #define IvyTransportByte(_dev,_x)  TransportLink(_dev, Transmit(_x))
 
 #define IvyTransportHeader(_dev,len) { \
     ivy_p=ivy_buf;		       \
-    (*plen)=0;				\
+    (*plen)=0;	\
     IvyTransportPut1Byte(_dev,IVY_START);	\
     IvyTransportPut1Byte(_dev,*plen);		\
   }
-
 
 #define IvyTransportTrailer(_dev) {		\
   IvyTransportPut1Byte(_dev,'\0');		\
@@ -32,36 +33,40 @@ extern char *plen;
 }
 
 /*
+ #define IvyTransportTrailer(_dev) {		\
+  IvyTransportPut1Byte(_dev,'\0');		\
+  IvyTransportPut1Byte(_dev,IVY_END);		\
   uint8_t _i=0;					\
   while(_i<*plen) {				\
   IvyTransportByte(_dev,ivy_buf[_i]);		\
   _i++;						\
   }						\
   }
-*/
+ */
 
 #define IvyTransportPutUint8(_dev,x) {		\
     int bytes= sprintf(ivy_p, "%u ", x);	\
     (*plen)+=bytes;				\
-    ivy_p+=bytes;				\
+    ivy_p+=bytes;\
   }
 
 #define IvyTransportPutNamedUint8(_dev,_name, _x) {	\
     int bytes = sprintf(ivy_p, "%s ", _name);		\
     (*plen)+=bytes;					\
-    ivy_p+=bytes;					\
+    ivy_p+=bytes;	\
   }
 
+//This was the root of the RPI uart errors.... It did not like the " ". So hardcoding it to its ASCII representative value instead.
 #define Space() {					\
-    int bytes = sprintf(ivy_p, " ");			\
+	int bytes = sprintf(ivy_p,"%c",SPACE); \
+    /*int bytes = sprintf(ivy_p, " ");*/			\
     (*plen)+=bytes;					\
-    ivy_p+=bytes;					\
+    ivy_p+=bytes;	\
   }
-
-
 
 #define Comma() {					\
-    int bytes  = sprintf(ivy_p, ",");			\
+	int bytes = sprintf(ivy_p,"%c",COMMA); \
+    /*int bytes  = sprintf(ivy_p, ",");	*/		\
     (*plen)+=bytes;					\
     ivy_p+=bytes;					\
   }
@@ -69,7 +74,7 @@ extern char *plen;
 #define IvyTransportPutUintByAddr(_dev,x) {		\
     int bytes = sprintf(ivy_p, "%u", *x);				\
     (*plen)+=bytes;					\
-    ivy_p+=bytes;					\
+    ivy_p+=bytes;				\
   }
 #define IvyTransportPutUint8ByAddr(_dev,x) IvyTransportPutUintByAddr(_dev,x) Space()
 #define IvyTransportPutUint16ByAddr(_dev,x) IvyTransportPutUintByAddr(_dev,x) Space()
@@ -78,21 +83,48 @@ extern char *plen;
 #define IvyTransportPutIntByAddr(_dev,x){ \
   int bytes = sprintf(ivy_p, "%d", *x);\
   (*plen)+=bytes;					\
-  ivy_p+=bytes;						\
+  ivy_p+=bytes;\
 }
 #define IvyTransportPutInt8ByAddr(_dev,x) IvyTransportPutIntByAddr(_dev,x) Space()
 #define IvyTransportPutInt16ByAddr(_dev,x) IvyTransportPutIntByAddr(_dev,x) Space()
 #define IvyTransportPutInt32ByAddr(_dev,x) IvyTransportPutIntByAddr(_dev,x) Space()
 
-#define IvyTransportPutOneFloatByAddr(_dev,x) { \
+//Debug purposes for the Rpi UART Issue
+#define IvyTransportPutOneFloatByAddr(_dev,x) {\
+	char buf[256];	\
+	buf[0] = '\0';	\
+	/*sprintf(buf, "Starting writing at %d \r\n", ivy_p);*/	\
+	/*UART1Puts(buf);*/	\
+	char tempbuf[256]; \
+	tempbuf[0] = '\0';	\
+	int bytes = sprintf(tempbuf, "%f", *x);		\
+	int i = 0; \
+	for(i=0;i<bytes;i++){\
+		*ivy_p = tempbuf[i]; \
+		ivy_p++;\
+		(*plen)+=1; \
+	}	\
+	/*buf[0] = '\0';	\
+	sprintf(buf, "Ivy F -> Float: %f : written %d bytes, from %d to %d\r\n", *x, bytes, &ivy_buf[0], ivy_p);	\
+	UART1Puts(buf);	\
+	UART1Puts("Buffer Dump\r\n");\
+	uint8_t _i=0;					\
+	while(_i<*plen) {				\
+		UART1Putc(ivy_buf[_i]);		\
+	  	_i++;						\
+	} \
+	UART1Puts("\r\n");\*/ \
+}
+
+/*
+ #define IvyTransportPutOneFloatByAddr(_dev,x) { \
     int bytes = sprintf(ivy_p, "%f", *x);		\
     (*plen)+=bytes;					\
     ivy_p+=bytes;					\
   }
-
+ */
 #define IvyTransportPutFloatByAddr(_dev,x) IvyTransportPutOneFloatByAddr(_dev,x) Space()
 #define IvyTransportPutDoubleByAddr(_dev,x) IvyTransportPutOneFloatByAddr(_dev,x) Space()
-
 
 #define IvyTransportPutArray(_dev,_put, _n, _x) { \
   int __i; \

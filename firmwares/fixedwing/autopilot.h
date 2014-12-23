@@ -39,6 +39,7 @@
  */
 extern void autopilot_init(void);
 
+
 /** Threshold for RC mode detection.
  */
 #define THRESHOLD_MANUAL_PPRZ (MIN_PPRZ / 2)

@@ -111,6 +111,9 @@ extern uint16_t downlink_nb_msgs;
 #define DownlinkPutInt32Array(_trans, _dev, _n, _x) Transport(_trans, PutInt32Array(_dev, _n, _x))
 #define DownlinkPutUint32Array(_trans, _dev, _n, _x) Transport(_trans, PutUint32Array(_dev, _n, _x))
 #define DownlinkPutUint8Array(_trans, _dev, _n, _x) Transport(_trans, PutUint8Array(_dev, _n, _x))
+#ifdef USE_MESSAGE_DEBUG_MODIFIED
+#define DownlinkPutNamedUint8(_trans, _dev, _n, _x) Transport(_trans, PutNamedUint8(_dev, _n, _x))
+#endif
 
 #define DownlinkOverrun(_trans, _dev) downlink_nb_ovrn++;
 #define DownlinkCountBytes(_trans, _dev, _n) downlink_nb_bytes += _n;

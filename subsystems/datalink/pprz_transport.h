@@ -166,10 +166,14 @@ struct pprz_transport {
 extern struct pprz_transport pprz_tp;
 
 static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
+//#define UART_RX_DEBUG
 	switch (t->status) {
 	case UNINIT:
 		if (c == STX) {
 			t->status++;
+//#ifdef UART_RX_DEBUG
+//			debug_pprz_msg("Detected a header\r\n");
+//#endif
 		}
 		break;
 	case GOT_STX:
@@ -181,6 +185,9 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		t->ck_a = t->ck_b = c;
 		t->status++;
 		t->payload_idx = 0;
+//#ifdef UART_RX_DEBUG
+//		debug_pprz_msg("Detected a crc thingy\r\n");
+//#endif
 		break;
 	case GOT_LENGTH:
 		t->trans.payload[t->payload_idx] = c;
@@ -189,6 +196,16 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		t->payload_idx++;
 		if (t->payload_idx == t->trans.payload_len) {
 			t->status++;
+//#ifdef UART_RX_DEBUG
+//			int i = 0;
+//			char buf[256];
+//			buf[0] = "\0";
+//			int len;
+//			for (i = 0; i < t->trans.payload_len; i++) {
+//				len += sprintf(&buf[0] + len, "%d", t->trans.payload[i]);
+//			}
+//			debug_pprz_msg(buf);
+//#endif
 		}
 		break;
 	case GOT_PAYLOAD:
@@ -200,7 +217,10 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		if (c != t->ck_b)
 			goto error;
 		t->trans.msg_received = TRUE;
-#define ETH_RX_DEBUG
+//#ifdef UART_RX_DEBUG
+//		debug_pprz_msg("Got a message\r\n");
+//#endif
+//#define ETH_RX_DEBUG
 #ifdef ETH_RX_DEBUG
 		//Only print the data on every 100th message
 		static int counter = 0;
@@ -219,7 +239,12 @@ static inline void parse_pprz(struct pprz_transport * t, uint8_t c) {
 		goto error;
 	}
 	return;
-	error: t->trans.error++;
+	error: {
+		t->trans.error++;
+#ifdef UART_RX_DEBUG
+		debug_pprz_msg("Error detected\r\n");
+#endif
+	}
 	restart: t->status = UNINIT;
 	return;
 }
@@ -235,6 +260,28 @@ static inline void pprz_parse_payload(struct pprz_transport * t) {
 //however, if the main loop runs slower than the numer of incoming bytes we will not be able to
 //keep up pace and data will get backlogged (and the simulation will be slower)
 #define PprzBuffer(_dev) TransportLink(_dev,ChAvailable())
+#if defined TARGET_PLATFORM && TARGET_PLATFORM == RPI
+//Essentially, read from the buffer. If it is valid, then do the pprz parsing stuff.
+#define ReadPprzBuffer(_dev,_trans) { \
+	uint8_t d = 0; \
+	d = TransportLink(_dev,Getch()); \
+	int i = 10; \
+	while(i--) {\
+		if(TransportLink(_dev,ChAvailable())){ \
+			parse_pprz(&(_trans),d);\
+		}\
+		else break; \
+		d = TransportLink(_dev,Getch()); \
+	}\
+}
+#define PprzCheckAndParse(_dev,_trans) {  \
+    ReadPprzBuffer(_dev,_trans);          \
+    if (_trans.trans.msg_received) {      \
+      pprz_parse_payload(&(_trans));      \
+      _trans.trans.msg_received = FALSE;  \
+    }                                     \
+}
+#else
 #define ReadPprzBuffer(_dev,_trans) { /*while*/if (TransportLink(_dev,ChAvailable())&&!(_trans.trans.msg_received)) parse_pprz(&(_trans),TransportLink(_dev,Getch())); }
 #define PprzCheckAndParse(_dev,_trans) {  \
   if (PprzBuffer(_dev)) {                 \
@@ -245,6 +292,7 @@ static inline void pprz_parse_payload(struct pprz_transport * t) {
     }                                     \
   }                                       \
 }
+#endif
 
 #endif /* PPRZ_TRANSPORT_H */
 

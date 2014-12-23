@@ -22,7 +22,7 @@
 						<toolChain id="org.rtems.cdt.config.toolchain.1606663555" name="RTEMS Toolchain" superClass="org.rtems.cdt.config.toolchain">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="org.rtems.cdt.target.778399243" name="RTEMS Target" osList="all" superClass="org.rtems.cdt.target"/>
 							<builder buildPath="${workspace_loc:/rtems_pap_uav/DEBUG}" id="org.rtems.cdt.builder.640944855" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="org.rtems.cdt.builder"/>
-							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-gcc" id="org.rtems.cdt.compiler.c.1505954636" name="RTEMS C Compiler" superClass="org.rtems.cdt.compiler.c">
+							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.11/bin/arm-rtems4.11-gcc" id="org.rtems.cdt.compiler.c.1505954636" name="RTEMS C Compiler" superClass="org.rtems.cdt.compiler.c">
 								<option id="org.rtems.cdt.tool.gcc.option.glevel.1640716240" name="Debug level:" superClass="org.rtems.cdt.tool.gcc.option.glevel" value="org.rtems.cdt.tool.gcc.option.g3" valueType="enumerated"/>
 								<option id="org.rtems.cdt.tool.gcc.option.olevel.1608799924" name="Optimization level:" superClass="org.rtems.cdt.tool.gcc.option.olevel" value="org.rtems.cdt.tool.gcc.option.o0" valueType="enumerated"/>
 								<option id="org.rtems.cdt.tool.gcc.option.werror.43672008" name="Warnings are errors (-Werror)" superClass="org.rtems.cdt.tool.gcc.option.werror" value="false" valueType="boolean"/>
@@ -41,7 +41,7 @@
 								<option id="org.rtems.cdt.tool.gcc.option.b.540189051" name="Search paths (-B)" superClass="org.rtems.cdt.tool.gcc.option.b"/>
 								<option id="org.rtems.cdt.tool.gcc.option.d.40729312" name="Defined symbols (-D)" superClass="org.rtems.cdt.tool.gcc.option.d" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="DefaultPeriodic='&amp;telemetry_Ap'"/>
-									<listOptionValue builtIn="false" value="USE_ETH"/>
+									<listOptionValue builtIn="false" value="TARGET_PLATFORM=RPI"/>
 									<listOptionValue builtIn="false" value="USE_IMU"/>
 									<listOptionValue builtIn="false" value="USE_IMU=1"/>
 									<listOptionValue builtIn="false" value="PERIODIC_TELEMETRY"/>
@@ -53,8 +53,6 @@
 									<listOptionValue builtIn="false" value="AHRS_GRAVITY_UPDATE_COORDINATED_TURN"/>
 									<listOptionValue builtIn="false" value="AHRS_USE_GPS_HEADING"/>
 									<listOptionValue builtIn="false" value="AHRS_USE_GPS_HEADING=1"/>
-									<listOptionValue builtIn="false" value="USE_RTEMS_GPIO"/>
-									<listOptionValue builtIn="false" value="USE_UART1"/>
 									<listOptionValue builtIn="false" value="LOITER_TRIM"/>
 									<listOptionValue builtIn="false" value="BOARD_CONFIG=\&quot;boards/pc_sim.h\&quot;"/>
 									<listOptionValue builtIn="false" value="PERIPHERALS_AUTO_INIT"/>
@@ -73,8 +71,6 @@
 									<listOptionValue builtIn="false" value="CTRL_TYPE_H=\&quot;firmwares/fixedwing/guidance/guidance_v.h\&quot;"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_H=\&quot;subsystems/radio_control/ppm.h\&quot;"/>
 									<listOptionValue builtIn="false" value="SHITL"/>
-									<listOptionValue builtIn="false" value="DOWNLINK"/>
-									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=Ethernet"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL"/>
 									<listOptionValue builtIn="false" value="RADIO_CONTROL_TYPE_PPM"/>
 									<listOptionValue builtIn="false" value="USE_GPS"/>
@@ -82,19 +78,26 @@
 									<listOptionValue builtIn="false" value="NAV"/>
 									<listOptionValue builtIn="false" value="DC_SHUTTER_SERVO=COMMAND_SHUTTER"/>
 									<listOptionValue builtIn="false" value="DIGITAL_CAM"/>
-									<listOptionValue builtIn="false" value="SENSOR_SYNC_SEND=1"/>
-									<listOptionValue builtIn="false" value="DATALINK=ETH"/>
-									<listOptionValue builtIn="false" value="PPRZ_UART=UART1"/>
 									<listOptionValue builtIn="false" value="SINGLE_MCU"/>
+									<listOptionValue builtIn="false" value="SENSOR_SYNC_SEND=1"/>
 									<listOptionValue builtIn="false" value="TRAFFIC_INFO"/>
-									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=Ethernet"/>
+									<listOptionValue builtIn="false" value="USE_UART1"/>
+									<listOptionValue builtIn="false" value="USE_MESSAGE_DEBUG_MODIFIED"/>
+									<listOptionValue builtIn="false" value="DATALINK=PPRZ"/>
+									<listOptionValue builtIn="false" value="PPRZ_UART=UART1"/>
+									<listOptionValue builtIn="false" value="DOWNLINK"/>
+									<listOptionValue builtIn="false" value="DOWNLINK_TRANSPORT=IvyTransport"/>
+									<listOptionValue builtIn="false" value="DOWNLINK_DEVICE=UART1"/>
 								</option>
-								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u"/>
+								<option id="org.rtems.cdt.tool.gcc.option.u.978394733" name="Undefined symbols (-U)" superClass="org.rtems.cdt.tool.gcc.option.u" valueType="undefDefinedSymbols">
+									<listOptionValue builtIn="false" value="USE_ETH"/>
+									<listOptionValue builtIn="false" value="USE_RTEMS_GPIO"/>
+								</option>
 								<option id="org.rtems.cdt.tool.gcc.option.optimizationflags.700160298" name="Optimization flags:" superClass="org.rtems.cdt.tool.gcc.option.optimizationflags" value="" valueType="string"/>
 								<inputType id="org.rtems.cdt.compiler.input.c.1068194445" superClass="org.rtems.cdt.compiler.input.c"/>
 							</tool>
 							<tool id="org.rtems.cdt.compiler.cpp.1118900359" name="RTEMS C++ Compiler" superClass="org.rtems.cdt.compiler.cpp"/>
-							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-gcc" id="org.rtems.cdt.linker.c.1465928182" name="RTEMS Linker" superClass="org.rtems.cdt.linker.c">
+							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.11/bin/arm-rtems4.11-gcc" id="org.rtems.cdt.linker.c.1465928182" name="RTEMS Linker" superClass="org.rtems.cdt.linker.c">
 								<option id="gnu.c.link.option.libs.1626846178" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
@@ -106,10 +109,14 @@
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-gcc" id="org.rtems.cdt.assembler.gcc.1887719239" name="RTEMS Assembler" superClass="org.rtems.cdt.assembler.gcc">
+							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.11/bin/arm-rtems4.11-gcc" id="org.rtems.cdt.assembler.gcc.1887719239" name="RTEMS Assembler" superClass="org.rtems.cdt.assembler.gcc">
+								<option id="org.rtems.cdt.tool.gcc.option.i.306857467" name="Include paths (-I)" superClass="org.rtems.cdt.tool.gcc.option.i" valueType="includePath">
+									<listOptionValue builtIn="false" value="/home/j3/dev/projects/utilities/rtems/built/4.11/arm-rtems4.11/raspberrypi/lib/include"/>
+									<listOptionValue builtIn="false" value="/home/j3/dev/projects/utilities/rtems/built/4.11/arm-rtems4.11/raspberrypi/lib/include/bsp"/>
+								</option>
 								<inputType id="org.rtems.cdt.assembler.gcc.input.1252014550" superClass="org.rtems.cdt.assembler.gcc.input"/>
 							</tool>
-							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.10/bin/sparc-rtems4.10-as" id="org.rtems.cdt.assembler.204558919" name="RTEMS Bare Assembler" superClass="org.rtems.cdt.assembler">
+							<tool command="/home/j3/dev/projects/utilities/rtems/compiler/4.11/bin/arm-rtems4.11-as" id="org.rtems.cdt.assembler.204558919" name="RTEMS Bare Assembler" superClass="org.rtems.cdt.assembler">
 								<inputType id="org.rtems.cdt.assembler.input.1285240565" superClass="org.rtems.cdt.assembler.input"/>
 							</tool>
 							<tool id="org.rtems.cdt.archiver.1730619733" name="RTEMS Archiver" superClass="org.rtems.cdt.archiver"/>

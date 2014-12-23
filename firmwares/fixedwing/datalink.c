@@ -63,6 +63,7 @@
 #include "mcu_periph/uart.h"
 #include "subsystems/datalink/downlink.h"
 #include "ap_downlink.h"
+#include "../../lib/dbg.h"
 
 #if USE_JOYSTICK
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
@@ -87,10 +88,6 @@ void dl_parse_msg(void) {
 	uint8_t msg_id = IdOfMsg(dl_buffer);
 
 	dbgGpioSet(GPIO_PORT_B);
-
-//	char buf[256];
-//	sprintf(buf, "dl_parse_msg %d\r\n", msg_id);
-//	UART1PutBuf(buf);
 
 #if 0 // not ready yet
 	uint8_t sender_id = SenderIdOfMsg(dl_buffer);
@@ -192,12 +189,13 @@ void dl_parse_msg(void) {
 		double time = DL_HITL_GPS_COMMON_time(dl_buffer);
 //		sim_use_gps_pos(lat, lon, alt, course, gspeed, climb, time);
 //		sim_update_sv();
+//#define DEBUG_DL_HITL_GPS_COMMON
 #ifdef DEBUG_DL_HITL_GPS_COMMON
 		char buf[256];
 		buf[0] = "\0";
 		sprintf(buf, "DL_HITL_GPS_COMMON %f,%f,%f,%f,%f,%f,%f\r\n", lat, lon,
 				alt, course, gspeed, climb, time);
-		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_GPS_INT) {
 
@@ -227,7 +225,7 @@ void dl_parse_msg(void) {
 		sprintf(buf, "DL_GPS_INT %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\r\n",
 				ecef_x, ecef_y, ecef_z, ecef_xd, ecef_yd, ecef_zd, lat, lon,
 				alt, hsml, pacc, sacc, tow);
-		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_AHRS_ECEF) {
 		double p = DL_AHRS_ECEF_p(dl_buffer);
@@ -239,7 +237,7 @@ void dl_parse_msg(void) {
 		char buf[256];
 		buf[0] = "\0";
 		sprintf(buf, "DL_AHRS_ECEF %f,%f,%f\r\n", p, q, r);
-		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_AHRS_LTP) {
 		double qi = DL_AHRS_LTP_qi(dl_buffer);
@@ -252,7 +250,7 @@ void dl_parse_msg(void) {
 		char buf[256];
 		buf[0] = "\0";
 		sprintf(buf, "DL_AHRS_ECEF %f,%f,%f,%f\r\n", qi, qx, qy, qz);
-		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_INS_POS) {
 		//The stripping is correct, the naming is not
@@ -266,6 +264,7 @@ void dl_parse_msg(void) {
 		buf[0] = "\0";
 		sprintf(buf, "DL_INS_POS %f,%f,%f\r\n", x, y, z);
 		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_INS_ECEF_VEL) {
 		//The stripping is correct, the naming is not
@@ -279,6 +278,7 @@ void dl_parse_msg(void) {
 		buf[0] = "\0";
 		sprintf(buf, "DL_INS_ECEF_VEL %f,%f,%f\r\n", x, y, z);
 		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_INS_ECEF_ACCEL) {
 		//The stripping is correct, the naming is not
@@ -291,7 +291,7 @@ void dl_parse_msg(void) {
 		char buf[256];
 		buf[0] = "\0";
 		sprintf(buf, "DL_INS_ECEF_ACCEL %f,%f,%f\r\n", x, y, z);
-		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_NPS_SENSORS_ACCEL) {
 		double x = DL_NPS_SENSOR_XXX_X(dl_buffer);
@@ -303,7 +303,7 @@ void dl_parse_msg(void) {
 		char buf[256];
 		buf[0] = "\0";
 		sprintf(buf, "DL_INS_ECEF_ACCEL %f,%f,%f\r\n", x, y, z);
-		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_NPS_SENSORS_GYRO) {
 		double x = DL_NPS_SENSOR_XXX_X(dl_buffer);
@@ -316,6 +316,7 @@ void dl_parse_msg(void) {
 		buf[0] = "\0";
 		sprintf(buf, "DL_INS_ECEF_GYRO %f,%f,%f\r\n", x, y, z);
 		UART1PutBuf(buf);
+		debug_pprz_msg(buf);
 #endif
 	} else if (msg_id == DL_HITL_IR_AHRS) {
 		//double roll = DL_HITL_IR_AHRS_ir_id(dl_buffer);

@@ -4,6 +4,7 @@
  *  Created on: Apr 7, 2014
  *      Author: rtdroid
  */
+#ifdef USE_ETH
 #include <stdio.h>
 #include <bsp.h>
 #include <rtems/rtems_bsdnet.h>
@@ -48,3 +49,4 @@ void ethernet_init() {
 		printf("Ethernet is already initialized! \n");
 	}
 }
+#endif
