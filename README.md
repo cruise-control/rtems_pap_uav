@@ -2,7 +2,7 @@ rtems-paparazzi
 ===============
 
 Port of the Paparazzi UAV autpilot source code to run on RTEMS.
-This is a 'light touch' conversion where the cyclic nature of the embedded code is run on a single thread in RTEMS. RTEMS controls the timing (which is used for the cyclic scheduling) and both the UART and Ethernet Comms go through RTEMS. Currently the eclipse workspace is included as this simplifies development and modification of compile time variables (passed into the build system through an auto-generated make file).
+This is a 'light touch' conversion where the cyclic nature of the embedded code is run on a single thread in RTEMS. RTEMS controls the timing (which is used for the cyclic scheduling) and both the UART and Ethernet Comms go through RTEMS. Currently the eclipse workspace is included as this simplifies development and modification of compile time variables (passed into the build system through an auto-generated make file). Also, the auto-generated build folder is included which (with the correct environment setup) can be run immediately.
 
 Highlights
 
