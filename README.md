@@ -8,6 +8,9 @@ Highlights
 
 - Paparazzi UAV autopilot ported to RTEMS
 - Setup for HIL usage
+	- NPS data sent to the autopilot over a chosen communication channel
+	- Data fed into the Autopilot in such a way as to mimic real-flight
+	- Autopilot has minimal hardware connectivity but processes data and generates control surface commands as if it was real-flight
 - Higher speed Uart
 - Ethernet Comms added as a compile time settable transport mechanism
 - Debug message path created (displays Autopilot debug messages on the PC side of the system)
